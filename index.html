@@ -80,11 +80,27 @@
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0;
+            }
+
             .text-container {
-                font-size: 48px;
-                letter-spacing: -4px; /* Same as desktop */
-                color: #333; /* Same as desktop */
+                font-size: 64px;
+                letter-spacing: -4px;
+                color: #333;
                 animation: float 3s ease-in-out infinite;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                margin: 0;
+                padding: 0;
+                width: auto;
             }
             
             /* Show question mark on mobile */
@@ -110,8 +126,8 @@
         /* Small mobile devices */
         @media (max-width: 480px) {
             .text-container {
-                font-size: 36px;
-                letter-spacing: -4px; /* Same as desktop */
+                font-size: 52px;
+                letter-spacing: -4px;
             }
         }
     </style>

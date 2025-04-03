@@ -83,6 +83,29 @@
                 opacity: 0;
             }
         }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                position: relative;
+                top: -15%; /* Move the container up on mobile */
+            }
+
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                    font-size: 0;
+                }
+                30% {
+                    opacity: 0.3;
+                    font-size: 60px;
+                }
+                100% {
+                    opacity: 1;
+                    font-size: 80px;
+                }
+            }
+        }
     </style>
 </head>
 <body>
