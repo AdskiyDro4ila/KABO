@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - KABO?</title>
+    <title>My Works - KABO?</title>
     <style>
         body {
             margin: 0;
@@ -58,23 +58,24 @@
             color: #808080;
         }
 
-        /* Special styling for the last word */
-        .last-word {
+        /* Special styling for the last phrase */
+        .last-phrase {
             display: inline-block;
             cursor: pointer;
             transition: color 0.3s ease;
+            font-weight: bold;
         }
 
-        .last-word:hover {
+        .last-phrase:hover {
             color: #3498db; /* Blue color on hover */
         }
 
-        .last-word .letter {
+        .last-phrase .word {
             display: inline-block;
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        .last-word:hover .letter {
+        .last-phrase:hover .word {
             animation: float 1s ease infinite alternate;
         }
 
@@ -87,9 +88,9 @@
             }
         }
 
-        /* Add delay to each letter's animation */
-        .last-word:hover .letter:nth-child(1) { animation-delay: 0.1s; }
-        .last-word:hover .letter:nth-child(2) { animation-delay: 0.2s; }
+        /* Add delay to each word's animation */
+        .last-phrase:hover .word:nth-child(1) { animation-delay: 0.1s; }
+        .last-phrase:hover .word:nth-child(2) { animation-delay: 0.2s; }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
@@ -109,39 +110,37 @@
 </head>
 <body>
     <div class="container">
-        <h1>ABOUT</h1>
+        <h1>MY WORKS</h1>
         
-        <p><em>What is a name but a shadow?</em></p>
+        <p><em>What is a work, but a question left unanswered?</em></p>
         
-        <p>If you are here to collect facts, to pin down a life as if it were an insect under glass, you have already taken the wrong path. No person is a fixed point in time. No work is a single, finished thought.</p>
+        <p>To create is not to offer solutions. It is to set fire to what was assumed, to leave behind traces of something that refuses to settle.</p>
         
-        <p>What matters is not where I have been, nor what titles I have carried, but the force of what I create. Thought, if it is to matter, must crack foundations. It must burn away illusion and demand more of the one who encounters it.</p>
+        <p>What you will find here are not products. Not conclusions. Not neat, finished things to be consumed and forgotten.</p>
         
-        <p>This space is not a monument. It is a provocation.</p>
+        <p>These are fractures in the familiar. Open doors that do not promise to lead anywhere safe.</p>
         
-        <h2>What drives this work?</h2>
+        <h2>What has been built?</h2>
         
-        <p>Some build for stability. Others build for power. I build to unsettle. To cast doubt on the inherited truths we carry like rusted chains. If an idea does not shake something in you, does not force you to look again, then it was never truly alive.</p>
+        <p>Call them books, writings, thoughts—call them nothing at all. What matters is not what they are, but what they do to you.</p>
         
         <ul>
-            <li>Creation is destruction—nothing new is built without first breaking ground.</li>
-            <li>Meaning is not given—it must be seized, shaped, and fought for.</li>
-            <li>Comfort is the enemy—what soothes the mind, dulls it. What challenges, awakens.</li>
+            <li>Some will pull you into the abyss, where meaning dissolves, and only your own strength will bring you back.</li>
+            <li>Some will whisper of things you always suspected but never dared to name.</li>
+            <li>Some will demand to be rejected, for only through resistance does real thought emerge.</li>
         </ul>
         
-        <h2>Why does this exist?</h2>
+        <p>What they share is this: they were never meant to comfort. They were never meant to be easy.</p>
         
-        <p>Because we are all, at some level, seeking. And not all paths should lead back to what is known.</p>
+        <h2>How should one approach them?</h2>
         
-        <p>Some roads must disappear into the dark.</p>
+        <p>Not as a follower, not as a collector, but as one who is willing to wrestle. To read is to risk. To understand is to let something change you.</p>
         
-        <p>Some words must demand more from those who read them.</p>
+        <p>If you seek entertainment, look elsewhere. If you seek a mirror, enter.</p>
         
-        <p>This is for those who refuse to settle for the surface.</p>
+        <p><span class="last-phrase"><span class="word">The</span> <span class="word">door</span> <span class="word">is</span> <span class="word">open</span><span class="word">.</span></span></p>
         
-        <p>If that is you, then <a href="works.html" class="last-word"><span class="letter">o</span><span class="letter">n</span><span class="letter">.</span></a></p>
-        
-        <a href="index.html" class="back-link">← Back to KABO?</a>
+        <a href="about.html" class="back-link">← Back to About</a>
     </div>
 </body>
 </html> 
