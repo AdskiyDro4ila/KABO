@@ -63,18 +63,19 @@
             display: inline-block;
             cursor: pointer;
             transition: color 0.3s ease;
+            font-weight: bold;
         }
 
         .last-word:hover {
             color: #3498db; /* Blue color on hover */
         }
 
-        .last-word .letter {
+        .last-word .word {
             display: inline-block;
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        .last-word:hover .letter {
+        .last-word:hover .word {
             animation: float 1s ease infinite alternate;
         }
 
@@ -87,9 +88,9 @@
             }
         }
 
-        /* Add delay to each letter's animation */
-        .last-word:hover .letter:nth-child(1) { animation-delay: 0.1s; }
-        .last-word:hover .letter:nth-child(2) { animation-delay: 0.2s; }
+        /* Add delay to each word's animation */
+        .last-word:hover .word:nth-child(1) { animation-delay: 0.1s; }
+        .last-word:hover .word:nth-child(2) { animation-delay: 0.2s; }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
@@ -139,7 +140,7 @@
         
         <p>This is for those who refuse to settle for the surface.</p>
         
-        <p>If that is you, then <a href="works.html" class="last-word"><span class="letter">o</span><span class="letter">n</span><span class="letter">.</span></a></p>
+        <p>If that is you, then <a href="works.html" class="last-word"><span class="word">on</span><span class="word">.</span></a></p>
         
         <a href="index.html" class="back-link">← Back to KABO?</a>
     </div>
