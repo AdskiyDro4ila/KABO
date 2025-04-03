@@ -12,12 +12,101 @@
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Prevent scrolling on mobile */
+        }
+
+        .text-container {
             font-size: 72px;
             font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: relative;
+            letter-spacing: -4px;
+            /* Prevent any movement */
+            transform: none !important;
+            /* Center text on all devices */
+            text-align: center;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .text-container:hover {
+            color: #808080;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: color 0.3s ease;
+            /* Prevent any movement */
+            transform: none !important;
+        }
+
+        .question-mark {
+            display: inline-block;
+            transition: transform 0.5s ease, color 0.3s ease;
+        }
+
+        .text-container:hover .question-mark {
+            animation: rotate 0.5s ease forwards;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .text-container {
+                font-size: 48px; /* Smaller font size on mobile */
+                letter-spacing: -2px; /* Less negative letter spacing on mobile */
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .text-container {
+                font-size: 36px; /* Even smaller font size on small mobile */
+                letter-spacing: -1px; /* Less negative letter spacing on small mobile */
+            }
         }
     </style>
 </head>
 <body>
-    KABO?
+    <div class="text-container">
+        <span class="letter">K</span>
+        <span class="letter">A</span>
+        <span class="letter">B</span>
+        <span class="letter">O</span>
+        <span class="question-mark">?</span>
+    </div>
+
+    <script>
+        const textContainer = document.querySelector('.text-container');
+        const questionMark = document.querySelector('.question-mark');
+
+        textContainer.addEventListener('mouseenter', () => {
+            questionMark.textContent = '.';
+        });
+
+        textContainer.addEventListener('mouseleave', () => {
+            questionMark.textContent = '?';
+        });
+
+        // Add touch support for mobile devices
+        textContainer.addEventListener('touchstart', () => {
+            questionMark.textContent = '.';
+        });
+
+        textContainer.addEventListener('touchend', () => {
+            questionMark.textContent = '?';
+        });
+    </script>
 </body>
 </html> 
