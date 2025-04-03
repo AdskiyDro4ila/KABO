@@ -64,6 +64,8 @@
             cursor: pointer;
             transition: color 0.3s ease;
             font-weight: bold;
+            text-decoration: none; /* Remove underline from link */
+            color: inherit; /* Use the same color as regular text */
         }
 
         .last-phrase:hover {
@@ -73,6 +75,11 @@
         .last-phrase .word {
             display: inline-block;
             transition: transform 0.3s ease, color 0.3s ease;
+            margin-right: 0.2em; /* Add space between words */
+        }
+
+        .last-phrase .word:last-child {
+            margin-right: 0; /* Remove margin from last word */
         }
 
         .last-phrase:hover .word {

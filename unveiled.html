@@ -58,6 +58,21 @@
             color: #808080;
         }
 
+        /* Special styling for text */
+        .text-content {
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .text-content .word {
+            display: inline-block;
+            margin-right: 0.2em; /* Add space between words */
+        }
+
+        .text-content .word:last-child {
+            margin-right: 0; /* Remove margin from last word */
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .container {
@@ -79,6 +94,8 @@
         <h1>UNVEILED</h1>
         
         <p><em>Beyond the threshold, where certainty ends...</em></p>
+        
+        <p class="text-content"><span class="word">The</span> <span class="word">door</span> <span class="word">is</span> <span class="word">open</span><span class="word">.</span></p>
         
         <p>You have crossed a line. Here, in this space, the familiar dissolves. What you find may disturb, may unsettle—this is its purpose.</p>
         
