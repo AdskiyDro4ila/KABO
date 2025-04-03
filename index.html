@@ -67,6 +67,26 @@
                 font-size: 48px; /* Smaller font size on mobile */
                 letter-spacing: -2px; /* Less negative letter spacing on mobile */
             }
+            
+            /* Hide question mark on mobile */
+            .question-mark {
+                display: none;
+            }
+            
+            /* Add period after KABO on mobile */
+            .text-container::after {
+                content: ".";
+                display: inline-block;
+            }
+            
+            /* Disable hover effects on mobile */
+            .text-container:hover {
+                color: inherit;
+            }
+            
+            .text-container:hover .question-mark {
+                animation: none;
+            }
         }
 
         /* Small mobile devices */
@@ -90,23 +110,27 @@
     <script>
         const textContainer = document.querySelector('.text-container');
         const questionMark = document.querySelector('.question-mark');
+        const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-        textContainer.addEventListener('mouseenter', () => {
-            questionMark.textContent = '.';
-        });
+        // Only add these event listeners if not on mobile
+        if (!isMobile) {
+            textContainer.addEventListener('mouseenter', () => {
+                questionMark.textContent = '.';
+            });
 
-        textContainer.addEventListener('mouseleave', () => {
-            questionMark.textContent = '?';
-        });
+            textContainer.addEventListener('mouseleave', () => {
+                questionMark.textContent = '?';
+            });
 
-        // Add touch support for mobile devices
-        textContainer.addEventListener('touchstart', () => {
-            questionMark.textContent = '.';
-        });
+            // Add touch support for mobile devices
+            textContainer.addEventListener('touchstart', () => {
+                questionMark.textContent = '.';
+            });
 
-        textContainer.addEventListener('touchend', () => {
-            questionMark.textContent = '?';
-        });
+            textContainer.addEventListener('touchend', () => {
+                questionMark.textContent = '?';
+            });
+        }
 
         // Add click event to navigate to about page
         document.getElementById('kabo-text').addEventListener('click', () => {
