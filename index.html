@@ -81,54 +81,37 @@
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .text-container {
-                font-size: 48px; /* Smaller font size on mobile */
-                letter-spacing: -2px; /* Less negative letter spacing on mobile */
-                color: #2c3e50; /* Slightly darker color for better visibility */
-                animation: float 3s ease-in-out infinite; /* Keep floating animation on mobile */
+                font-size: 48px;
+                letter-spacing: -4px; /* Same as desktop */
+                color: #333; /* Same as desktop */
+                animation: float 3s ease-in-out infinite;
             }
             
-            /* Hide question mark on mobile */
+            /* Show question mark on mobile */
             .question-mark {
-                display: none;
-            }
-            
-            /* Add period after KABO on mobile */
-            .text-container::after {
-                content: ".";
                 display: inline-block;
             }
             
-            /* Disable hover effects on mobile */
+            /* Remove period after KABO on mobile */
+            .text-container::after {
+                content: none;
+            }
+            
+            /* Enable hover effects on mobile */
             .text-container:hover {
-                color: inherit;
+                color: #808080;
             }
             
             .text-container:hover .question-mark {
-                animation: none;
-            }
-
-            /* Show mobile hint */
-            .mobile-hint {
-                display: none;
-            }
-
-            /* Add subtle pulse animation to hint */
-            @keyframes pulse {
-                0% { opacity: 0.7; }
-                50% { opacity: 0.4; }
-                100% { opacity: 0.7; }
-            }
-
-            .mobile-hint {
-                animation: none;
+                animation: rotate 0.5s ease forwards;
             }
         }
 
         /* Small mobile devices */
         @media (max-width: 480px) {
             .text-container {
-                font-size: 36px; /* Even smaller font size on small mobile */
-                letter-spacing: -1px; /* Less negative letter spacing on small mobile */
+                font-size: 36px;
+                letter-spacing: -4px; /* Same as desktop */
             }
         }
     </style>
@@ -145,27 +128,23 @@
     <script>
         const textContainer = document.querySelector('.text-container');
         const questionMark = document.querySelector('.question-mark');
-        const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-        // Only add these event listeners if not on mobile
-        if (!isMobile) {
-            textContainer.addEventListener('mouseenter', () => {
-                questionMark.textContent = '.';
-            });
+        textContainer.addEventListener('mouseenter', () => {
+            questionMark.textContent = '.';
+        });
 
-            textContainer.addEventListener('mouseleave', () => {
-                questionMark.textContent = '?';
-            });
+        textContainer.addEventListener('mouseleave', () => {
+            questionMark.textContent = '?';
+        });
 
-            // Add touch support for mobile devices
-            textContainer.addEventListener('touchstart', () => {
-                questionMark.textContent = '.';
-            });
+        // Add touch support for mobile devices
+        textContainer.addEventListener('touchstart', () => {
+            questionMark.textContent = '.';
+        });
 
-            textContainer.addEventListener('touchend', () => {
-                questionMark.textContent = '?';
-            });
-        }
+        textContainer.addEventListener('touchend', () => {
+            questionMark.textContent = '?';
+        });
 
         // Add click event to navigate to about page
         document.getElementById('kabo-text').addEventListener('click', () => {
