@@ -62,16 +62,42 @@
         .text-content {
             display: inline-block;
             font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .text-content:hover {
+            color: #3498db;
         }
 
         .text-content .word {
             display: inline-block;
-            margin-right: 0.2em; /* Add space between words */
+            margin-right: 0.2em;
+            transition: transform 0.3s ease, color 0.3s ease;
         }
 
         .text-content .word:last-child {
-            margin-right: 0; /* Remove margin from last word */
+            margin-right: 0;
         }
+
+        .text-content:hover .word {
+            animation: float 1s ease infinite alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Add delay to each word's animation */
+        .text-content:hover .word:nth-child(1) { animation-delay: 0.1s; }
+        .text-content:hover .word:nth-child(2) { animation-delay: 0.2s; }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
@@ -93,30 +119,31 @@
     <div class="container">
         <h1>UNVEILED</h1>
         
-        <p><em>Beyond the threshold, where certainty ends...</em></p>
+        <p><em>The Curtain Falls. Or Maybe It Never Existed.</em></p>
         
-        <p class="text-content"><span class="word">The</span> <span class="word">door</span> <span class="word">is</span> <span class="word">open</span><span class="word">.</span></p>
+        <p>You wanted the truth? Here it is: there is none.</p>
         
-        <p>You have crossed a line. Here, in this space, the familiar dissolves. What you find may disturb, may unsettle—this is its purpose.</p>
+        <p>I built walls to keep them out. I tore them down to see what was left. I lost everything and found—nothing. And in that nothing, I saw everything.</p>
         
-        <h2>The Collection</h2>
+        <p>I watched fools rise and thinkers fall. I saw the blind leading the blind and the world calling it progress. I laughed. Then I stopped laughing.</p>
         
-        <p>Each piece here is a fracture in reality, a glimpse through the cracks of what we take for granted:</p>
+        <p>They say time is money. They say patience is a virtue. Lies. Time is a predator. It devours. It does not wait. If you do not seize it, it will erase you as if you were never here.</p>
+        
+        <p>I have spent my life peeling away illusions. Here's what I found underneath:</p>
         
         <ul>
-            <li>Echoes of the Void (2024) - A descent into the spaces between thoughts.</li>
-            <li>Fragments of Tomorrow (2023) - Seven meditations on time's collapse.</li>
-            <li>The Unseen Mirror (2023) - Where reflection becomes refraction.</li>
-            <li>Whispers in Static (2022) - Digital dreams, analog nightmares.</li>
+            <li>Most people are asleep. They talk, they move, they rule—but they do not think.</li>
+            <li>Loss is the only true teacher. Comfort keeps you weak. Pain strips you down to what is real.</li>
+            <li>Belief is a currency for the desperate. The strong do not believe. They know.</li>
         </ul>
         
-        <h2>A Warning</h2>
+        <p>You want to know who I am? Why? Will that change what I have written? Will it make the words sharper? Softer? More real?</p>
         
-        <p>These works are not meant to be merely read. They are meant to read you. To find the weak points in your certainties. To push against the walls of your understanding.</p>
+        <p>Names mean nothing. Work speaks. Thought breathes. If you understand, you do not need to ask. If you do not, no answer will satisfy you.</p>
         
-        <p>Some will leave you questioning. Others will leave you changed. None will leave you as you were.</p>
+        <p>So, what now?</p>
         
-        <p>This is the price of seeing. This is the cost of knowing.</p>
+        <p>Press <a href="dead.html" class="text-content"><span class="word">F</span><span class="word">.</span></a> Or don't. The choice was never mine.</p>
         
         <a href="works.html" class="back-link">← Back to Works</a>
     </div>
