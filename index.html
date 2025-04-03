@@ -23,13 +23,25 @@
             transition: color 0.3s ease;
             position: relative;
             letter-spacing: -4px;
-            /* Prevent any movement */
-            transform: none !important;
+            /* Add floating animation */
+            animation: float 3s ease-in-out infinite;
             /* Center text on all devices */
             text-align: center;
             width: 100%;
             padding: 0 20px;
             box-sizing: border-box;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .text-container:hover {
@@ -64,11 +76,6 @@
         /* Mobile hint text */
         .mobile-hint {
             display: none;
-            font-size: 14px;
-            color: #666;
-            margin-top: 20px;
-            font-weight: normal;
-            opacity: 0.7;
         }
 
         /* Mobile responsiveness */
@@ -77,6 +84,7 @@
                 font-size: 48px; /* Smaller font size on mobile */
                 letter-spacing: -2px; /* Less negative letter spacing on mobile */
                 color: #2c3e50; /* Slightly darker color for better visibility */
+                animation: float 3s ease-in-out infinite; /* Keep floating animation on mobile */
             }
             
             /* Hide question mark on mobile */
@@ -101,12 +109,7 @@
 
             /* Show mobile hint */
             .mobile-hint {
-                display: block;
-                text-align: center;
-                position: absolute;
-                bottom: 20%;
-                width: 100%;
-                left: 0;
+                display: none;
             }
 
             /* Add subtle pulse animation to hint */
@@ -117,7 +120,7 @@
             }
 
             .mobile-hint {
-                animation: pulse 2s infinite ease-in-out;
+                animation: none;
             }
         }
 
@@ -126,11 +129,6 @@
             .text-container {
                 font-size: 36px; /* Even smaller font size on small mobile */
                 letter-spacing: -1px; /* Less negative letter spacing on small mobile */
-            }
-
-            .mobile-hint {
-                font-size: 12px;
-                bottom: 15%;
             }
         }
     </style>
@@ -143,7 +141,6 @@
         <span class="letter">O</span>
         <span class="question-mark">?</span>
     </div>
-    <div class="mobile-hint">tap to explore</div>
 
     <script>
         const textContainer = document.querySelector('.text-container');
