@@ -26,6 +26,18 @@
             text-align: center;
         }
 
+        .title-link {
+            display: inline-block;
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .title-link:hover {
+            color: #808080;
+        }
+
         h2 {
             font-size: 24px;
             margin-top: 40px;
@@ -107,17 +119,51 @@
 
             h1 {
                 font-size: 28px;
+                margin-bottom: 25px;
             }
 
             h2 {
                 font-size: 20px;
+                margin-top: 30px;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            ul {
+                margin-bottom: 15px;
+            }
+
+            li {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .title-link {
+                padding: 5px;
+                display: block;  /* Make the entire title area clickable */
+            }
+
+            .title-link:active {
+                color: #808080;  /* Immediate feedback on touch devices */
+            }
+
+            .back-link {
+                margin-top: 30px;
+                padding: 10px 0;
+                font-size: 16px;
+                display: block;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>MY WORKS</h1>
+        <h1><a href="shop.html" class="title-link">MY WORKS</a></h1>
         
         <p><em>What is a work, but a question left unanswered?</em></p>
         
