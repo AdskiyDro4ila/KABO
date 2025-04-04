@@ -23,7 +23,7 @@
 
         .death-text {
             color: #8b0000;
-            font-size: 0;
+            font-size: 140px;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 5px;
@@ -34,15 +34,11 @@
         @keyframes fadeIn {
             0% {
                 opacity: 0;
-                font-size: 0;
-            }
-            30% {
-                opacity: 0.3;
-                font-size: 100px; /* Increased from 60px */
+                transform: scale(0.5);
             }
             100% {
                 opacity: 1;
-                font-size: 140px; /* Increased from 80px */
+                transform: scale(1);
             }
         }
 
@@ -86,24 +82,13 @@
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
+            .death-text {
+                font-size: 80px;
+            }
+            
             .container {
                 position: relative;
-                top: -15%; /* Move the container up on mobile */
-            }
-
-            @keyframes fadeIn {
-                0% {
-                    opacity: 0;
-                    font-size: 0;
-                }
-                30% {
-                    opacity: 0.3;
-                    font-size: 60px;
-                }
-                100% {
-                    opacity: 1;
-                    font-size: 80px;
-                }
+                top: -10%;
             }
         }
     </style>
