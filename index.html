@@ -107,7 +107,7 @@
 <body>
     <a href="works.html" class="hidden-works">MY WORKS</a>
     <div class="text-container" id="kabo-text">
-        <span class="letter">T</span>
+        <span class="letter first-letter">K</span>
         <span class="letter">A</span>
         <span class="letter">B</span>
         <span class="letter">O</span>
@@ -117,22 +117,27 @@
     <script>
         const textContainer = document.querySelector('.text-container');
         const questionMark = document.querySelector('.question-mark');
+        const firstLetter = document.querySelector('.first-letter');
         let navigationTimeout;
 
         textContainer.addEventListener('mouseenter', () => {
+            firstLetter.textContent = 'T';
             questionMark.textContent = '.';
         });
 
         textContainer.addEventListener('mouseleave', () => {
+            firstLetter.textContent = 'K';
             questionMark.textContent = '?';
         });
 
         // Add touch support for mobile devices
         textContainer.addEventListener('touchstart', () => {
+            firstLetter.textContent = 'T';
             questionMark.textContent = '.';
         });
 
         textContainer.addEventListener('touchend', () => {
+            firstLetter.textContent = 'K';
             questionMark.textContent = '?';
         });
 
