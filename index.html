@@ -228,6 +228,23 @@
         const firstLetter = document.querySelector('.first-letter');
         let navigationTimeout;
 
+        // Reset animation state when page loads
+        function resetAnimationState() {
+            textContainer.classList.remove('glitch', 'shrink');
+            firstLetter.textContent = 'K';
+            questionMark.textContent = '?';
+        }
+
+        // Call reset function when page loads
+        window.addEventListener('load', resetAnimationState);
+
+        // Also reset when returning from about page (using pageshow event)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                resetAnimationState();
+            }
+        });
+
         textContainer.addEventListener('mouseenter', () => {
             firstLetter.textContent = 'T';
             questionMark.textContent = '.';
