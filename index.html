@@ -23,13 +23,8 @@
             transition: color 0.3s ease;
             position: relative;
             letter-spacing: -4px;
-            /* Add floating animation */
             animation: float 3s ease-in-out infinite;
-            /* Center text on all devices */
             text-align: center;
-            width: 100%;
-            padding: 0 20px;
-            box-sizing: border-box;
         }
 
         @keyframes float {
@@ -51,8 +46,6 @@
         .letter {
             display: inline-block;
             transition: color 0.3s ease;
-            /* Prevent any movement */
-            transform: none !important;
         }
 
         .question-mark {
@@ -73,53 +66,10 @@
             }
         }
 
-        /* Mobile hint text */
-        .mobile-hint {
-            display: none;
-        }
-
         /* Mobile responsiveness */
         @media (max-width: 768px) {
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-                padding: 0;
-            }
-
             .text-container {
-                font-size: 64px;
-                letter-spacing: -4px;
-                color: #333;
-                animation: float 3s ease-in-out infinite;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                margin: 0;
-                padding: 0;
-                width: auto;
-            }
-            
-            /* Show question mark on mobile */
-            .question-mark {
-                display: inline-block;
-            }
-            
-            /* Remove period after KABO on mobile */
-            .text-container::after {
-                content: none;
-            }
-            
-            /* Enable hover effects on mobile */
-            .text-container:hover {
-                color: #808080;
-            }
-            
-            .text-container:hover .question-mark {
-                animation: rotate 0.5s ease forwards;
+                font-size: 48px;
             }
         }
 
