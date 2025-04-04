@@ -14,6 +14,7 @@
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             overflow: hidden; /* Prevent scrolling on mobile */
+            position: relative; /* Added for absolute positioning of works link */
         }
 
         .text-container {
@@ -80,9 +81,31 @@
                 letter-spacing: -4px;
             }
         }
+
+        /* Hidden works link styles */
+        .hidden-works {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: #f1f1f1; /* Very slightly different from background */
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0.05; /* Almost invisible */
+            transition: opacity 0.3s ease;
+            writing-mode: vertical-rl; /* Vertical text */
+            text-orientation: mixed;
+            letter-spacing: 2px;
+        }
+
+        .hidden-works:hover {
+            opacity: 0.2; /* Slightly more visible on hover */
+        }
     </style>
 </head>
 <body>
+    <a href="works.html" class="hidden-works">MY WORKS</a>
     <div class="text-container" id="kabo-text">
         <span class="letter">K</span>
         <span class="letter">A</span>
