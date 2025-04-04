@@ -102,6 +102,114 @@
         .hidden-works:hover {
             opacity: 0.2; /* Slightly more visible on hover */
         }
+
+        /* Glitch animation styles */
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            5% {
+                transform: translate(2px, -2px);
+                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            10% {
+                transform: translate(-2px, 2px);
+                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            15% {
+                transform: translate(0);
+                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            20% {
+                transform: translate(-2px, -2px);
+                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            25% {
+                transform: translate(2px, 2px);
+                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            30% {
+                transform: translate(0);
+                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            35% {
+                transform: translate(2px, -2px);
+                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            40% {
+                transform: translate(-2px, 2px);
+                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            45% {
+                transform: translate(0);
+                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            50% {
+                transform: translate(-2px, -2px);
+                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            55% {
+                transform: translate(2px, 2px);
+                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            60% {
+                transform: translate(0);
+                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            65% {
+                transform: translate(2px, -2px);
+                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            70% {
+                transform: translate(-2px, 2px);
+                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            75% {
+                transform: translate(0);
+                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            80% {
+                transform: translate(-2px, -2px);
+                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            85% {
+                transform: translate(2px, 2px);
+                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            90% {
+                transform: translate(0);
+                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            95% {
+                transform: translate(2px, -2px);
+                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+            100% {
+                transform: translate(0);
+                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
+            }
+        }
+
+        .glitch {
+            animation: glitch 1s infinite;
+        }
+
+        /* Shrink animation */
+        @keyframes shrink {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.1);
+                opacity: 0;
+            }
+        }
+
+        .shrink {
+            animation: shrink 1.5s forwards;
+        }
     </style>
 </head>
 <body>
@@ -147,6 +255,15 @@
             if (navigationTimeout) {
                 clearTimeout(navigationTimeout);
             }
+            
+            // Add glitch effect
+            textContainer.classList.add('glitch');
+            
+            // After 0.5 seconds, start shrinking
+            setTimeout(() => {
+                textContainer.classList.remove('glitch');
+                textContainer.classList.add('shrink');
+            }, 500);
             
             // Set new timeout for navigation
             navigationTimeout = setTimeout(() => {
