@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - KABO?</title>
+    <title>About</title>
     <style>
         body {
             margin: 0;
@@ -64,15 +64,22 @@
             cursor: pointer;
             transition: color 0.3s ease;
             font-weight: bold;
+            text-decoration: none;
+            color: inherit;
         }
 
         .last-word:hover {
-            color: #3498db; /* Blue color on hover */
+            color: #3498db;
         }
 
         .last-word .word {
             display: inline-block;
             transition: transform 0.3s ease, color 0.3s ease;
+            margin-right: 0.2em;
+        }
+
+        .last-word .word:last-child {
+            margin-right: 0;
         }
 
         .last-word:hover .word {
@@ -141,8 +148,6 @@
         <p>This is for those who refuse to settle for the surface.</p>
         
         <p>If that is you, then <a href="works.html" class="last-word"><span class="word">on</span><span class="word">.</span></a></p>
-        
-        <a href="index.html" class="back-link">← Back to KABO?</a>
     </div>
 </body>
 </html> 

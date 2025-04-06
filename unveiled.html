@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unveiled - KABO?</title>
+    <title>UNVEILED</title>
     <style>
         body {
             margin: 0;
@@ -24,12 +24,6 @@
             font-size: 36px;
             margin-bottom: 30px;
             text-align: center;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-top: 40px;
-            margin-bottom: 20px;
         }
 
         p {
@@ -58,31 +52,25 @@
             color: #808080;
         }
 
-        /* Special styling for text */
-        .text-content {
+        .last-word {
             display: inline-block;
-            font-weight: bold;
             cursor: pointer;
             transition: color 0.3s ease;
+            font-weight: bold;
             text-decoration: none;
             color: inherit;
         }
 
-        .text-content:hover {
+        .last-word:hover {
             color: #3498db;
         }
 
-        .text-content .word {
+        .last-word .word {
             display: inline-block;
-            margin-right: 0.2em;
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        .text-content .word:last-child {
-            margin-right: 0;
-        }
-
-        .text-content:hover .word {
+        .last-word:hover .word {
             animation: float 1s ease infinite alternate;
         }
 
@@ -95,10 +83,6 @@
             }
         }
 
-        /* Add delay to each word's animation */
-        .text-content:hover .word:nth-child(1) { animation-delay: 0.1s; }
-        .text-content:hover .word:nth-child(2) { animation-delay: 0.2s; }
-
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .container {
@@ -107,10 +91,29 @@
 
             h1 {
                 font-size: 28px;
+                margin-bottom: 25px;
             }
 
-            h2 {
-                font-size: 20px;
+            p {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            ul {
+                margin-bottom: 15px;
+            }
+
+            li {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .back-link {
+                margin-top: 30px;
+                padding: 10px 0;
+                font-size: 16px;
+                display: block;
+                text-align: center;
             }
         }
     </style>
@@ -143,9 +146,15 @@
         
         <p>So, what now?</p>
         
-        <p>Press <a href="dead.html" class="text-content"><span class="word">F</span><span class="word">.</span></a> Or don't. The choice was never mine.</p>
-        
-        <a href="works.html" class="back-link">← Back to Works</a>
+        <p>Press <a href="dead.html" class="last-word"><span class="word">F</span></a>. Or don't. The choice was never mine.</p>
     </div>
+
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'f' || event.key === 'F') {
+                window.location.href = 'dead.html';
+            }
+        });
+    </script>
 </body>
 </html> 

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Shop</title>
-    <script src="https://js.stripe.com/v3/"></script>
+    <title>Projects - KABO?</title>
     <style>
         :root {
             --primary: #808080;
@@ -25,6 +24,7 @@
             background-color: var(--background);
             color: var(--text);
             padding: 20px;
+            line-height: 1.6;
         }
 
         header {
@@ -39,726 +39,240 @@
             font-size: 24px;
             font-weight: bold;
             color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
 
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
+        .logo:hover {
+            color: #6a6a6a;
         }
 
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            text-align: center;
         }
 
-        .product-grid {
+        .intro-text p {
+            margin-bottom: 20px;
+        }
+
+        .intro-text em {
+            font-style: italic;
+            color: var(--primary);
+        }
+
+        .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 30px;
+            margin-top: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .product-card {
+        .project-card {
             background-color: var(--card);
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 20px var(--shadow);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        .product-card:hover {
+        .project-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--shadow);
         }
 
-        .product-image {
+        .project-image {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background-color: #f0f0f0;
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .product-price {
-            font-size: 16px;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .add-to-cart {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-            width: 100%;
-        }
-
-        .add-to-cart:hover {
-            background-color: #6a6a6a;
-        }
-
-        /* Quick View Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background-color: var(--card);
-            width: 90%;
-            max-width: 800px;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            max-height: 90vh;
-            transform: translateY(20px);
             transition: transform 0.3s ease;
         }
 
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
+        .project-card:hover .project-image {
+            transform: scale(1.05);
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: flex-end;
-            padding: 15px;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #777;
-        }
-
-        .modal-body {
-            display: flex;
-            flex-direction: column;
-            padding: 0 30px 30px;
-            overflow-y: auto;
-        }
-
-        @media (min-width: 768px) {
-            .modal-body {
-                flex-direction: row;
-                gap: 30px;
-            }
-        }
-
-        .modal-image {
-            flex: 1;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 8px;
-            background-color: #f0f0f0;
-        }
-
-        .modal-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            margin-top: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .modal-title {
-                margin-top: 0;
-            }
-        }
-
-        .modal-price {
-            font-size: 20px;
-            color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .modal-description {
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .modal-add-to-cart {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-            margin-top: auto;
-            align-self: flex-start;
-        }
-
-        .modal-add-to-cart:hover {
-            background-color: #6a6a6a;
-        }
-
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            bottom: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            z-index: 1100;
-            transition: bottom 0.3s ease;
-        }
-
-        .toast.show {
-            bottom: 20px;
-        }
-
-        /* Cart Modal Styles */
-        .cart-modal {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 400px;
-            height: 100vh;
-            background-color: var(--card);
-            box-shadow: -5px 0 15px var(--shadow);
-            transition: right 0.3s ease;
-            z-index: 1000;
+        .project-info {
             padding: 20px;
-            overflow-y: auto;
-        }
-
-        .cart-modal.active {
-            right: 0;
-        }
-
-        .cart-header {
+            flex-grow: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            flex-direction: column;
         }
 
-        .cart-title {
-            font-size: 20px;
+        .project-title {
+            font-size: 18px;
             font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
         }
 
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #777;
-        }
-
-        .cart-items {
-            margin-bottom: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-item-image {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-right: 15px;
-        }
-
-        .cart-item-details {
-            flex: 1;
-        }
-
-        .cart-item-title {
+        .project-description {
             font-size: 14px;
-            margin-bottom: 5px;
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1;
         }
 
-        .cart-item-price {
-            font-size: 14px;
+        .project-link {
             color: var(--primary);
-        }
-
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            margin-left: 15px;
-        }
-
-        .quantity-btn {
-            background: none;
-            border: 1px solid #ddd;
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quantity-input {
-            width: 30px;
-            text-align: center;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 2px;
-        }
-
-        .cart-summary {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .checkout-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
+            text-decoration: none;
             font-weight: 500;
-            width: 100%;
-            transition: background-color 0.2s ease;
-        }
-
-        .checkout-btn:hover {
-            background-color: #6a6a6a;
-        }
-
-        .empty-cart {
+            transition: color 0.2s ease;
+            display: inline-block;
+            padding: 8px 16px;
+            border: 1px solid var(--primary);
+            border-radius: 4px;
             text-align: center;
-            padding: 40px 0;
-            color: #777;
         }
 
-        /* Mobile Responsiveness for Cart */
+        .project-link:hover {
+            color: white;
+            background-color: var(--primary);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 60px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #6a6a6a;
+        }
+
+        /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .cart-modal {
-                width: 100%;
-                right: -100%;
+            .project-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .project-card {
+                padding: 15px;
+            }
+
+            .project-title {
+                font-size: 16px;
+            }
+
+            .project-description {
+                font-size: 14px;
             }
         }
 
-        /* Loading Spinner */
-        .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+        /* Animation for project items */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .project-card {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+
+        /* Loading and error states */
+        .loading, .no-projects, .error-message {
+            text-align: center;
+            padding: 40px;
+            color: var(--primary);
+            font-style: italic;
+            grid-column: 1 / -1;
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .error-message {
+            color: #d9534f;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo">Minimalist Shop</div>
-        <div class="cart-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
-            <span class="cart-count">0</span>
-        </div>
     </header>
 
-    <div class="product-grid" id="productGrid">
-        <!-- Products will be dynamically inserted here -->
+    <div class="intro-text">
+        <p><em>What is a project, but a question left unanswered?</em></p>
+        
+        <p>To create is not to offer solutions. It is to set fire to what was assumed, to leave behind traces of something that refuses to settle.</p>
+        
+        <p>What you will find here are not products. Not conclusions. Not neat, finished things to be consumed and forgotten.</p>
+        
+        <p>These are fractures in the familiar. Open doors that do not promise to lead anywhere safe.</p>
     </div>
 
-    <!-- Quick View Modal -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close-modal" id="closeModal">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Modal content will be inserted here -->
-            </div>
-        </div>
+    <div class="project-grid" id="project-grid">
+        <!-- Projects will be loaded dynamically -->
+        <div class="loading">Loading projects...</div>
     </div>
-
-    <!-- Cart Modal -->
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-header">
-            <h2 class="cart-title">Shopping Cart</h2>
-            <button class="close-cart" id="closeCart">&times;</button>
-        </div>
-        <div class="cart-items" id="cartItems">
-            <!-- Cart items will be inserted here -->
-        </div>
-        <div class="cart-summary">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cartTotal">$0.00</span>
-            </div>
-            <button class="checkout-btn" id="checkoutBtn">
-                Proceed to Checkout
-                <div class="spinner" id="checkoutSpinner"></div>
-            </button>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">Item added to cart</div>
 
     <script>
-        // Initialize Stripe
-        const stripe = Stripe('pk_test_51NxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'); // Replace with your actual publishable key
-
-        // Sample product data
-        const products = [
-            {
-                id: 1,
-                title: "Minimalist Ceramic Vase",
-                price: 29.99,
-                image: "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                description: "Handcrafted ceramic vase with a clean, minimalist design. Perfect for modern home decor and fresh flowers."
-            },
-            {
-                id: 2,
-                title: "Eco-Friendly Water Bottle",
-                price: 24.99,
-                image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                description: "Double-walled insulated water bottle made from sustainable materials. Keeps drinks cold for 24 hours or hot for 12 hours."
-            },
-            {
-                id: 3,
-                title: "Wireless Charging Pad",
-                price: 34.99,
-                image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                description: "Sleek wireless charging pad compatible with all Qi-enabled devices. Features fast charging and ambient light indicator."
-            },
-            {
-                id: 4,
-                title: "Plant-Based Notebook",
-                price: 18.99,
-                image: "https://images.unsplash.com/photo-1531346680769-a1d79b57de5c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                description: "Eco-friendly notebook made from recycled paper with a bamboo cover. Includes 120 lined pages and a bookmark ribbon."
-            },
-            {
-                id: 5,
-                title: "Bamboo Desktop Organizer",
-                price: 39.99,
-                image: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                description: "Sustainable bamboo desk organizer with multiple compartments for all your office essentials. Keeps your workspace tidy and stylish."
-            },
-            {
-                id: 6,
-                title: "Smart LED Desk Lamp",
-                price: 49.99,
-                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-                description: "Adjustable LED desk lamp with touch controls and multiple brightness levels. Includes USB charging port and customizable color temperature."
-            }
-        ];
-
-        // DOM elements
-        const productGrid = document.getElementById('productGrid');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const closeModal = document.getElementById('closeModal');
-        const modalBody = document.getElementById('modalBody');
-        const toast = document.getElementById('toast');
-        const cartCount = document.querySelector('.cart-count');
-
-        // Cart functionality
-        let cart = [];
-
-        // Render products
-        function renderProducts() {
-            productGrid.innerHTML = '';
-            products.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'product-card';
-                productCard.innerHTML = `
-                    <img src="${product.image}" alt="${product.title}" class="product-image">
-                    <div class="product-info">
-                        <h3 class="product-title">${product.title}</h3>
-                        <p class="product-price">$${product.price}</p>
-                        <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
-                    </div>
-                `;
-                productGrid.appendChild(productCard);
-
-                // Add quick view functionality
-                productCard.addEventListener('click', (e) => {
-                    // If clicking on the add to cart button, don't open quick view
-                    if (e.target.classList.contains('add-to-cart')) {
-                        return;
-                    }
-                    openQuickView(product);
-                });
-            });
-
-            // Add event listeners to all "Add to Cart" buttons
-            document.querySelectorAll('.add-to-cart').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent quick view from opening
-                    const productId = parseInt(button.getAttribute('data-id'));
-                    addToCart(productId);
-                });
-            });
-        }
-
-        // Open quick view modal
-        function openQuickView(product) {
-            modalBody.innerHTML = `
-                <img src="${product.image}" alt="${product.title}" class="modal-image">
-                <div class="modal-info">
-                    <h2 class="modal-title">${product.title}</h2>
-                    <p class="modal-price">$${product.price}</p>
-                    <p class="modal-description">${product.description}</p>
-                    <button class="modal-add-to-cart" data-id="${product.id}">Add to Cart</button>
-                </div>
-            `;
-            
-            modalOverlay.classList.add('active');
-            
-            // Add event listener to modal's "Add to Cart" button
-            const modalAddToCartBtn = modalBody.querySelector('.modal-add-to-cart');
-            modalAddToCartBtn.addEventListener('click', () => {
-                const productId = parseInt(modalAddToCartBtn.getAttribute('data-id'));
-                addToCart(productId);
-            });
-        }
-
-        // Close modal
-        closeModal.addEventListener('click', () => {
-            modalOverlay.classList.remove('active');
-        });
-
-        // Close modal when clicking outside
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                modalOverlay.classList.remove('active');
-            }
-        });
-
-        // Add to cart functionality
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                // Check if product is already in cart
-                const existingProduct = cart.find(item => item.id === productId);
-                if (existingProduct) {
-                    existingProduct.quantity += 1;
-                } else {
-                    cart.push({
-                        ...product,
-                        quantity: 1
-                    });
-                }
-                
-                // Update cart count
-                updateCartCount();
-                
-                // Show toast notification
-                showToast();
-            }
-        }
-
-        // Update cart count
-        function updateCartCount() {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-        }
-
-        // Show toast notification
-        function showToast() {
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2000);
-        }
-
-        // Cart Modal Elements
-        const cartModal = document.getElementById('cartModal');
-        const closeCart = document.getElementById('closeCart');
-        const cartItems = document.getElementById('cartItems');
-        const cartTotal = document.getElementById('cartTotal');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-        const checkoutSpinner = document.getElementById('checkoutSpinner');
-
-        // Open cart modal when clicking cart icon
-        document.querySelector('.cart-icon').addEventListener('click', () => {
-            cartModal.classList.add('active');
-            renderCart();
-        });
-
-        // Close cart modal
-        closeCart.addEventListener('click', () => {
-            cartModal.classList.remove('active');
-        });
-
-        // Close cart modal when clicking outside
-        document.addEventListener('click', (e) => {
-            if (e.target === cartModal) {
-                cartModal.classList.remove('active');
-            }
-        });
-
-        // Render cart items
-        function renderCart() {
-            if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
-                cartTotal.textContent = '$0.00';
-                checkoutBtn.disabled = true;
-                return;
-            }
-
-            checkoutBtn.disabled = false;
-            let total = 0;
-            cartItems.innerHTML = cart.map(item => {
-                total += item.price * item.quantity;
-                return `
-                    <div class="cart-item" data-id="${item.id}">
-                        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">${item.title}</div>
-                            <div class="cart-item-price">$${item.price}</div>
-                        </div>
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
-                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" 
-                                onchange="updateQuantity(${item.id}, parseInt(this.value))">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            cartTotal.textContent = `$${total.toFixed(2)}`;
-        }
-
-        // Update item quantity
-        function updateQuantity(productId, newQuantity) {
-            if (newQuantity < 1) {
-                cart = cart.filter(item => item.id !== productId);
-            } else {
-                const item = cart.find(item => item.id === productId);
-                if (item) {
-                    item.quantity = newQuantity;
-                }
-            }
-            renderCart();
-            updateCartCount();
-        }
-
-        // Handle checkout
-        checkoutBtn.addEventListener('click', async () => {
-            checkoutSpinner.style.display = 'block';
-            checkoutBtn.disabled = true;
-
+        // Function to fetch and display projects
+        async function loadProjects() {
             try {
-                // Create a checkout session on your server
-                const response = await fetch('/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        items: cart.map(item => ({
-                            id: item.id,
-                            quantity: item.quantity,
-                            price: item.price,
-                            title: item.title
-                        }))
-                    })
-                });
-
-                const session = await response.json();
-
-                // Redirect to Stripe Checkout
-                const result = await stripe.redirectToCheckout({
-                    sessionId: session.id
-                });
-
-                if (result.error) {
-                    throw new Error(result.error.message);
+                const response = await fetch('/api/projects');
+                const projects = await response.json();
+                
+                const projectGrid = document.getElementById('project-grid');
+                projectGrid.innerHTML = ''; // Clear loading message
+                
+                if (projects.length === 0) {
+                    projectGrid.innerHTML = '<p class="no-projects">No projects available at the moment.</p>';
+                    return;
                 }
+                
+                projects.forEach((project, index) => {
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'project-card';
+                    projectCard.style.animationDelay = `${index * 0.1}s`;
+                    
+                    projectCard.innerHTML = `
+                        <img src="${project.imageUrl}" alt="${project.title}" class="project-image">
+                        <div class="project-info">
+                            <h3 class="project-title">${project.title}</h3>
+                            <p class="project-description">${project.description}</p>
+                            <a href="${project.linkUrl}" class="project-link">Explore ${project.title}</a>
+                        </div>
+                    `;
+                    
+                    projectGrid.appendChild(projectCard);
+                });
             } catch (error) {
-                console.error('Error:', error);
-                alert('Something went wrong. Please try again.');
-                checkoutSpinner.style.display = 'none';
-                checkoutBtn.disabled = false;
+                console.error('Error loading projects:', error);
+                document.getElementById('project-grid').innerHTML = 
+                    '<p class="error-message">Failed to load projects. Please try again later.</p>';
             }
-        });
-
-        // Initialize the page
-        renderProducts();
+        }
+        
+        // Load projects when the page loads
+        document.addEventListener('DOMContentLoaded', loadProjects);
     </script>
 </body>
 </html> 
