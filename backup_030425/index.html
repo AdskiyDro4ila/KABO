@@ -107,7 +107,7 @@
 <body>
     <a href="works.html" class="hidden-works">MY WORKS</a>
     <div class="text-container" id="kabo-text">
-        <span class="letter first-letter">K</span>
+        <span class="letter">K</span>
         <span class="letter">A</span>
         <span class="letter">B</span>
         <span class="letter">O</span>
@@ -117,55 +117,27 @@
     <script>
         const textContainer = document.querySelector('.text-container');
         const questionMark = document.querySelector('.question-mark');
-        const firstLetter = document.querySelector('.first-letter');
-        let navigationTimeout;
-        let hasBeenClicked = false;
 
         textContainer.addEventListener('mouseenter', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'T';
-                questionMark.textContent = '.';
-            }
+            questionMark.textContent = '.';
         });
 
         textContainer.addEventListener('mouseleave', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'K';
-                questionMark.textContent = '?';
-            }
+            questionMark.textContent = '?';
         });
 
         // Add touch support for mobile devices
         textContainer.addEventListener('touchstart', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'T';
-                questionMark.textContent = '.';
-            }
+            questionMark.textContent = '.';
         });
 
         textContainer.addEventListener('touchend', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'K';
-                questionMark.textContent = '?';
-            }
+            questionMark.textContent = '?';
         });
 
-        // Add click event to change text and navigate to about page with delay
+        // Add click event to navigate to about page
         document.getElementById('kabo-text').addEventListener('click', () => {
-            // Change text permanently
-            hasBeenClicked = true;
-            firstLetter.textContent = 'T';
-            questionMark.textContent = '.';
-            
-            // Clear any existing timeout
-            if (navigationTimeout) {
-                clearTimeout(navigationTimeout);
-            }
-            
-            // Set new timeout for navigation
-            navigationTimeout = setTimeout(() => {
-                window.location.href = 'about.html';
-            }, 1500); // 1.5 second delay
+            window.location.href = 'about.html';
         });
     </script>
 </body>

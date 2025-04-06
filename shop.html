@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minimalist Shop</title>
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
         :root {
             --primary: #808080;
@@ -259,6 +260,167 @@
         .toast.show {
             bottom: 20px;
         }
+
+        /* Cart Modal Styles */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background-color: var(--card);
+            box-shadow: -5px 0 15px var(--shadow);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-modal.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .cart-items {
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            font-size: 14px;
+            color: var(--primary);
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: 1px solid #ddd;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-input {
+            width: 30px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 2px;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: #6a6a6a;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 0;
+            color: #777;
+        }
+
+        /* Mobile Responsiveness for Cart */
+        @media (max-width: 768px) {
+            .cart-modal {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -290,52 +452,76 @@
         </div>
     </div>
 
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h2 class="cart-title">Shopping Cart</h2>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be inserted here -->
+        </div>
+        <div class="cart-summary">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">
+                Proceed to Checkout
+                <div class="spinner" id="checkoutSpinner"></div>
+            </button>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast" id="toast">Item added to cart</div>
 
     <script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_51NxXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'); // Replace with your actual publishable key
+
         // Sample product data
         const products = [
             {
                 id: 1,
                 title: "Minimalist Ceramic Vase",
                 price: 29.99,
-                image: "/api/placeholder/400/320",
+                image: "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Handcrafted ceramic vase with a clean, minimalist design. Perfect for modern home decor and fresh flowers."
             },
             {
                 id: 2,
                 title: "Eco-Friendly Water Bottle",
                 price: 24.99,
-                image: "/api/placeholder/400/320",
+                image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Double-walled insulated water bottle made from sustainable materials. Keeps drinks cold for 24 hours or hot for 12 hours."
             },
             {
                 id: 3,
                 title: "Wireless Charging Pad",
                 price: 34.99,
-                image: "/api/placeholder/400/320",
+                image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Sleek wireless charging pad compatible with all Qi-enabled devices. Features fast charging and ambient light indicator."
             },
             {
                 id: 4,
                 title: "Plant-Based Notebook",
                 price: 18.99,
-                image: "/api/placeholder/400/320",
+                image: "https://images.unsplash.com/photo-1531346680769-a1d79b57de5c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Eco-friendly notebook made from recycled paper with a bamboo cover. Includes 120 lined pages and a bookmark ribbon."
             },
             {
                 id: 5,
                 title: "Bamboo Desktop Organizer",
                 price: 39.99,
-                image: "/api/placeholder/400/320",
+                image: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Sustainable bamboo desk organizer with multiple compartments for all your office essentials. Keeps your workspace tidy and stylish."
             },
             {
                 id: 6,
                 title: "Smart LED Desk Lamp",
                 price: 49.99,
-                image: "/api/placeholder/400/320",
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
                 description: "Adjustable LED desk lamp with touch controls and multiple brightness levels. Includes USB charging port and customizable color temperature."
             }
         ];
@@ -457,6 +643,119 @@
                 toast.classList.remove('show');
             }, 2000);
         }
+
+        // Cart Modal Elements
+        const cartModal = document.getElementById('cartModal');
+        const closeCart = document.getElementById('closeCart');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutSpinner = document.getElementById('checkoutSpinner');
+
+        // Open cart modal when clicking cart icon
+        document.querySelector('.cart-icon').addEventListener('click', () => {
+            cartModal.classList.add('active');
+            renderCart();
+        });
+
+        // Close cart modal
+        closeCart.addEventListener('click', () => {
+            cartModal.classList.remove('active');
+        });
+
+        // Close cart modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target === cartModal) {
+                cartModal.classList.remove('active');
+            }
+        });
+
+        // Render cart items
+        function renderCart() {
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                cartTotal.textContent = '$0.00';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            let total = 0;
+            cartItems.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                return `
+                    <div class="cart-item" data-id="${item.id}">
+                        <img src="${item.image}" alt="${item.title}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <div class="cart-item-title">${item.title}</div>
+                            <div class="cart-item-price">$${item.price}</div>
+                        </div>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" min="1" 
+                                onchange="updateQuantity(${item.id}, parseInt(this.value))">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Update item quantity
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) {
+                cart = cart.filter(item => item.id !== productId);
+            } else {
+                const item = cart.find(item => item.id === productId);
+                if (item) {
+                    item.quantity = newQuantity;
+                }
+            }
+            renderCart();
+            updateCartCount();
+        }
+
+        // Handle checkout
+        checkoutBtn.addEventListener('click', async () => {
+            checkoutSpinner.style.display = 'block';
+            checkoutBtn.disabled = true;
+
+            try {
+                // Create a checkout session on your server
+                const response = await fetch('/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        items: cart.map(item => ({
+                            id: item.id,
+                            quantity: item.quantity,
+                            price: item.price,
+                            title: item.title
+                        }))
+                    })
+                });
+
+                const session = await response.json();
+
+                // Redirect to Stripe Checkout
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+                checkoutSpinner.style.display = 'none';
+                checkoutBtn.disabled = false;
+            }
+        });
 
         // Initialize the page
         renderProducts();

@@ -227,12 +227,14 @@
         const questionMark = document.querySelector('.question-mark');
         const firstLetter = document.querySelector('.first-letter');
         let navigationTimeout;
+        let hasBeenClicked = false;
 
         // Reset animation state when page loads
         function resetAnimationState() {
             textContainer.classList.remove('glitch', 'shrink');
             firstLetter.textContent = 'K';
             questionMark.textContent = '?';
+            hasBeenClicked = false;
         }
 
         // Call reset function when page loads
@@ -246,28 +248,41 @@
         });
 
         textContainer.addEventListener('mouseenter', () => {
-            firstLetter.textContent = 'T';
-            questionMark.textContent = '.';
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'T';
+                questionMark.textContent = '.';
+            }
         });
 
         textContainer.addEventListener('mouseleave', () => {
-            firstLetter.textContent = 'K';
-            questionMark.textContent = '?';
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'K';
+                questionMark.textContent = '?';
+            }
         });
 
         // Add touch support for mobile devices
         textContainer.addEventListener('touchstart', () => {
-            firstLetter.textContent = 'T';
-            questionMark.textContent = '.';
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'T';
+                questionMark.textContent = '.';
+            }
         });
 
         textContainer.addEventListener('touchend', () => {
-            firstLetter.textContent = 'K';
-            questionMark.textContent = '?';
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'K';
+                questionMark.textContent = '?';
+            }
         });
 
-        // Add click event to navigate to about page with delay
+        // Add click event to change text and navigate to about page with delay
         document.getElementById('kabo-text').addEventListener('click', () => {
+            // Change text permanently
+            hasBeenClicked = true;
+            firstLetter.textContent = 'T';
+            questionMark.textContent = '.';
+            
             // Clear any existing timeout
             if (navigationTimeout) {
                 clearTimeout(navigationTimeout);
