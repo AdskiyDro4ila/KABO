@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Works</title>
+    <style>
+        :root {
+            --primary: #808080;
+            --background: #f0f0f0;
+            --card: #ffffff;
+            --text: #212529;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            padding: 20px;
+        }
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .work-card {
+            background-color: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        .work-card:hover {
+            transform: translateY(-5px);
+        }
+        .work-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #f0f0f0;
+        }
+        .work-info {
+            padding: 20px;
+        }
+        .work-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .work-description {
+            font-size: 15px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">My Works</div>
+    </header>
+    <div class="works-grid" id="worksGrid">
+        <!-- Works will be dynamically inserted here -->
+    </div>
+    <script>
+        // Example works data (from previous products)
+        const works = [
+            {
+                title: "Minimalist Ceramic Vase",
+                image: "https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Handcrafted ceramic vase with a clean, minimalist design. Perfect for modern home decor and fresh flowers."
+            },
+            {
+                title: "Eco-Friendly Water Bottle",
+                image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Double-walled insulated water bottle made from sustainable materials. Keeps drinks cold for 24 hours or hot for 12 hours."
+            },
+            {
+                title: "Wireless Charging Pad",
+                image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Sleek wireless charging pad compatible with all Qi-enabled devices. Features fast charging and ambient light indicator."
+            },
+            {
+                title: "Plant-Based Notebook",
+                image: "https://images.unsplash.com/photo-1531346680769-a1d79b57de5c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Eco-friendly notebook made from recycled paper with a bamboo cover. Includes 120 lined pages and a bookmark ribbon."
+            },
+            {
+                title: "Bamboo Desktop Organizer",
+                image: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Sustainable bamboo desk organizer with multiple compartments for all your office essentials. Keeps your workspace tidy and stylish."
+            },
+            {
+                title: "Smart LED Desk Lamp",
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+                description: "Adjustable LED desk lamp with touch controls and multiple brightness levels. Includes USB charging port and customizable color temperature."
+            }
+        ];
+        // Render works
+        const worksGrid = document.getElementById('worksGrid');
+        works.forEach(work => {
+            const workCard = document.createElement('div');
+            workCard.className = 'work-card';
+            workCard.innerHTML = `
+                <img src="${work.image}" alt="${work.title}" class="work-image">
+                <div class="work-info">
+                    <h3 class="work-title">${work.title}</h3>
+                    <p class="work-description">${work.description}</p>
+                </div>
+            `;
+            worksGrid.appendChild(workCard);
+        });
+    </script>
+</body>
+</html> 
