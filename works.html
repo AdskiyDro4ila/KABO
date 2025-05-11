@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Works - KABO?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .title-link {
+            display: inline-block;
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .title-link:hover {
+            color: #808080;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #808080;
+        }
+
+        /* Special styling for the last phrase */
+        .last-phrase {
+            display: inline-block;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-weight: bold;
+            text-decoration: none; /* Remove underline from link */
+            color: inherit; /* Use the same color as regular text */
+        }
+
+        .last-phrase:hover {
+            color: #3498db; /* Blue color on hover */
+        }
+
+        .last-phrase .word {
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+            margin-right: 0.2em; /* Add space between words */
+        }
+
+        .last-phrase .word:last-child {
+            margin-right: 0; /* Remove margin from last word */
+        }
+
+        .last-phrase:hover .word {
+            animation: float 1s ease infinite alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Add delay to each word's animation */
+        .last-phrase:hover .word:nth-child(1) { animation-delay: 0.1s; }
+        .last-phrase:hover .word:nth-child(2) { animation-delay: 0.2s; }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 15px;
+            }
+
+            h1 {
+                font-size: 28px;
+                margin-bottom: 25px;
+            }
+
+            h2 {
+                font-size: 20px;
+                margin-top: 30px;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            ul {
+                margin-bottom: 15px;
+            }
+
+            li {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .title-link {
+                padding: 5px;
+                display: block;  /* Make the entire title area clickable */
+            }
+
+            .title-link:active {
+                color: #808080;  /* Immediate feedback on touch devices */
+            }
+
+            .back-link {
+                margin-top: 30px;
+                padding: 10px 0;
+                font-size: 16px;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><a href="shop.html" class="title-link">MY WORKS</a></h1>
+        
+        <p><em>What is a work, but a question left unanswered?</em></p>
+        
+        <p>To create is not to offer solutions. It is to set fire to what was assumed, to leave behind traces of something that refuses to settle.</p>
+        
+        <p>What you will find here are not products. Not conclusions. Not neat, finished things to be consumed and forgotten.</p>
+        
+        <p>These are fractures in the familiar. Open doors that do not promise to lead anywhere safe.</p>
+        
+        <h2>What has been built?</h2>
+        
+        <p>Call them books, writings, thoughts—call them nothing at all. What matters is not what they are, but what they do to you.</p>
+        
+        <ul>
+            <li>Some will pull you into the abyss, where meaning dissolves, and only your own strength will bring you back.</li>
+            <li>Some will whisper of things you always suspected but never dared to name.</li>
+            <li>Some will demand to be rejected, for only through resistance does real thought emerge.</li>
+        </ul>
+        
+        <p>What they share is this: they were never meant to comfort. They were never meant to be easy.</p>
+        
+        <h2>How should one approach them?</h2>
+        
+        <p>Not as a follower, not as a collector, but as one who is willing to wrestle. To read is to risk. To understand is to let something change you.</p>
+        
+        <p>If you seek entertainment, look elsewhere. If you seek a mirror, enter.</p>
+        
+        <p><a href="unveiled.html" class="last-phrase"><span class="word">The</span> <span class="word">door</span> <span class="word">is</span> <span class="word">open</span><span class="word">.</span></a></p>
+        
+        <a href="about.html" class="back-link">← Back to About</a>
+    </div>
+</body>
+</html> 

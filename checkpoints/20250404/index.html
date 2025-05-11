@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KABO?</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Prevent scrolling on mobile */
+            position: relative; /* Added for absolute positioning of works link */
+        }
+
+        .text-container {
+            font-size: 72px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: relative;
+            letter-spacing: -4px;
+            animation: float 3s ease-in-out infinite;
+            text-align: center;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .text-container:hover {
+            color: #808080;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .question-mark {
+            display: inline-block;
+            transition: transform 0.5s ease, color 0.3s ease;
+        }
+
+        .text-container:hover .question-mark {
+            animation: rotate 0.5s ease forwards;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .text-container {
+                font-size: 48px;
+            }
+        }
+
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .text-container {
+                font-size: 52px;
+                letter-spacing: -4px;
+            }
+        }
+
+        /* Hidden works link styles */
+        .hidden-works {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            color: #f1f1f1; /* Very slightly different from background */
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0.05; /* Almost invisible */
+            transition: opacity 0.3s ease;
+            writing-mode: vertical-rl; /* Vertical text */
+            text-orientation: mixed;
+            letter-spacing: 2px;
+        }
+
+        .hidden-works:hover {
+            opacity: 0.2; /* Slightly more visible on hover */
+        }
+    </style>
+</head>
+<body>
+    <a href="works.html" class="hidden-works">MY WORKS</a>
+    <div class="text-container" id="kabo-text">
+        <span class="letter first-letter">K</span>
+        <span class="letter">A</span>
+        <span class="letter">B</span>
+        <span class="letter">O</span>
+        <span class="question-mark">?</span>
+    </div>
+
+    <script>
+        const textContainer = document.querySelector('.text-container');
+        const questionMark = document.querySelector('.question-mark');
+        const firstLetter = document.querySelector('.first-letter');
+        let navigationTimeout;
+        let hasBeenClicked = false;
+
+        textContainer.addEventListener('mouseenter', () => {
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'T';
+                questionMark.textContent = '.';
+            }
+        });
+
+        textContainer.addEventListener('mouseleave', () => {
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'K';
+                questionMark.textContent = '?';
+            }
+        });
+
+        // Add touch support for mobile devices
+        textContainer.addEventListener('touchstart', () => {
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'T';
+                questionMark.textContent = '.';
+            }
+        });
+
+        textContainer.addEventListener('touchend', () => {
+            if (!hasBeenClicked) {
+                firstLetter.textContent = 'K';
+                questionMark.textContent = '?';
+            }
+        });
+
+        // Add click event to change text and navigate to about page with delay
+        document.getElementById('kabo-text').addEventListener('click', () => {
+            // Change text permanently
+            hasBeenClicked = true;
+            firstLetter.textContent = 'T';
+            questionMark.textContent = '.';
+            
+            // Clear any existing timeout
+            if (navigationTimeout) {
+                clearTimeout(navigationTimeout);
+            }
+            
+            // Set new timeout for navigation
+            navigationTimeout = setTimeout(() => {
+                window.location.href = 'about.html';
+            }, 1500); // 1.5 second delay
+        });
+    </script>
+</body>
+</html> 

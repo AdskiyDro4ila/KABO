@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Minimalist Shop</title>
+    <style>
+        :root {
+            --primary: #808080;
+            --background: #f0f0f0;
+            --card: #ffffff;
+            --text: #212529;
+            --shadow: rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-card {
+            background-color: var(--card);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px var(--shadow);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            color: #4CAF50;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .back-to-shop {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+
+        .back-to-shop:hover {
+            background-color: #6a6a6a;
+        }
+
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 30px 20px;
+            }
+
+            .success-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-card">
+        <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <h1>Payment Successful!</h1>
+        <p>Thank you for your purchase. Your order has been confirmed and will be processed shortly.</p>
+        <a href="shop.html" class="back-to-shop">Back to Shop</a>
+    </div>
+</body>
+</html> 

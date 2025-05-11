@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unveiled - KABO?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #808080;
+        }
+
+        /* Special styling for text */
+        .text-content {
+            display: inline-block;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .text-content:hover {
+            color: #3498db;
+        }
+
+        .text-content .word {
+            display: inline-block;
+            margin-right: 0.2em;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .text-content .word:last-child {
+            margin-right: 0;
+        }
+
+        .text-content:hover .word {
+            animation: float 1s ease infinite alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Add delay to each word's animation */
+        .text-content:hover .word:nth-child(1) { animation-delay: 0.1s; }
+        .text-content:hover .word:nth-child(2) { animation-delay: 0.2s; }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 15px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UNVEILED</h1>
+        
+        <p><em>The Curtain Falls. Or Maybe It Never Existed.</em></p>
+        
+        <p>You wanted the truth? Here it is: there is none.</p>
+        
+        <p>I built walls to keep them out. I tore them down to see what was left. I lost everything and found—nothing. And in that nothing, I saw everything.</p>
+        
+        <p>I watched fools rise and thinkers fall. I saw the blind leading the blind and the world calling it progress. I laughed. Then I stopped laughing.</p>
+        
+        <p>They say time is money. They say patience is a virtue. Lies. Time is a predator. It devours. It does not wait. If you do not seize it, it will erase you as if you were never here.</p>
+        
+        <p>I have spent my life peeling away illusions. Here's what I found underneath:</p>
+        
+        <ul>
+            <li>Most people are asleep. They talk, they move, they rule—but they do not think.</li>
+            <li>Loss is the only true teacher. Comfort keeps you weak. Pain strips you down to what is real.</li>
+            <li>Belief is a currency for the desperate. The strong do not believe. They know.</li>
+        </ul>
+        
+        <p>You want to know who I am? Why? Will that change what I have written? Will it make the words sharper? Softer? More real?</p>
+        
+        <p>Names mean nothing. Work speaks. Thought breathes. If you understand, you do not need to ask. If you do not, no answer will satisfy you.</p>
+        
+        <p>So, what now?</p>
+        
+        <p>Press <a href="dead.html" class="text-content"><span class="word">F</span><span class="word">.</span></a> Or don't. The choice was never mine.</p>
+        
+        <a href="works.html" class="back-link">← Back to Works</a>
+    </div>
+</body>
+</html> 
