@@ -3,160 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project One - Code Vault</title>
+    <title>Vibe Poster Factory</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --text-color: #212529; --text-light-color: #343a40;
+            --button-bg: rgba(255, 255, 255, 0.8); --button-border: rgba(0,0,0,0.1);
+            --button-hover-bg: rgba(255,255,255,1); --focus-outline: #007bff;
         }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f0f2f5;
-            color: #333;
-            padding: 20px;
+            margin: 0; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-color); display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: background 0.8s ease-in-out; overflow-x: hidden;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        *, *::before, *::after { box-sizing: border-box; }
+        .controls {
+            position: fixed; z-index: 100; padding: 10px 15px; background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            display: flex; gap: 10px; align-items: center;
+            top: 0; left: 0; border-radius: 0 0 16px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 30px;
-            color: #666;
-            text-decoration: none;
-            font-size: 1.1em;
+        .controls input[type="text"] {
+            font-size: 1rem; padding: 9px 12px; border: 1px solid #ced4da; border-radius: 5px;
+            min-width: 220px; background-color: var(--button-bg); color: var(--text-color);
         }
-
-        .back-link:hover {
-            color: #333;
+        .controls input[type="text"]::placeholder { color: #6c757d; }
+        button {
+            font-size: 0.9rem; padding: 9px 15px; border-radius: 5px; cursor: pointer;
+            background-color: var(--button-bg); border: 1px solid var(--button-border); color: var(--text-color);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease; white-space: nowrap; font-weight: 500;
         }
-
-        .project-header {
-            text-align: center;
-            margin-bottom: 50px;
+        button:hover, button:focus-visible {
+            background-color: var(--button-hover-bg);
+            box-shadow: 0 0 0 2px var(--focus-outline), 0 2px 5px rgba(0,0,0,0.1); outline: none;
         }
-
-        .project-header h1 {
-            font-size: 2.5em;
-            color: #1c1e21;
-            margin-bottom: 15px;
+        .poster-container {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            padding: 20px; margin-top: 75px; margin-bottom: 75px; width: 90%; max-width: 850px;
         }
-
-        .project-header .subtitle {
-            font-size: 1.2em;
-            color: #606770;
-            max-width: 600px;
-            margin: 0 auto;
+        #slogan { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.4em; text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700;}
+        #subtitle { font-size: clamp(0.9rem, 2.5vw, 1.1rem); max-width: 50ch; margin-bottom: 1.5rem; color: var(--text-light-color); min-height: 1.5em; }
+        #posterCanvas {
+            max-width: 100%; height: auto; display: block; border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15); background-color: rgba(255,255,255,0.1);
+            width: 800px; height: 600px; /* Default drawing size before JS scaling */
         }
-
-        .project-content {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-            margin-bottom: 30px;
+        .footer-actions {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 10px; padding: 10px 15px; background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px 16px 0 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
-
-        .project-image {
-            width: 100%;
-            max-width: 800px;
-            height: auto;
-            border-radius: 8px;
-            margin: 20px auto;
-            display: block;
+        @media (max-width: 700px) { #posterCanvas { width: 100%; height: auto; aspect-ratio: 4 / 3 ; } }
+        @media (max-width: 600px) {
+            .controls { width:100%; left:0; border-radius:0; justify-content:space-between; padding:8px; }
+            .controls input[type="text"] { flex-grow:1; margin-right:8px; min-width:auto; font-size:0.9rem; padding:8px 10px;}
+            button {font-size:0.85rem; padding:8px 12px;}
+            .poster-container { margin-top:70px; margin-bottom:70px; padding:10px; width:95%;}
+            #slogan {font-size:1.7rem;} #subtitle {font-size:0.85rem;}
+            .footer-actions { width:100%; border-radius:0; justify-content:space-around; padding:8px; }
         }
-
-        .code-section {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        .description {
-            margin: 20px 0;
-            line-height: 1.8;
-        }
-
-        .features {
-            margin: 30px 0;
-        }
-
-        .features h3 {
-            margin-bottom: 15px;
-            color: #1c1e21;
-        }
-
-        .features ul {
-            list-style-position: inside;
-            margin-left: 20px;
-        }
-
-        .features li {
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .project-header h1 {
-                font-size: 2em;
-            }
-            
-            .project-content {
-                padding: 20px;
-            }
-        }
+        @media (prefers-reduced-motion: reduce) { body {transition:none;} }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="projects.html" class="back-link">← Back to Projects</a>
+    <header class="controls">
+        <input type="text" id="vibeWordsInput" placeholder="E.g., Cosmic Calm Journey" aria-label="Enter 1 to 3 words for your vibe">
+        <button id="generateButton" aria-label="Generate new vibe poster">Create Vibe</button>
+    </header>
+    <main class="poster-container">
+        <h1 id="slogan">VIBE FACTORY</h1>
+        <p id="subtitle">Enter words for a unique visual poster.</p>
+        <canvas id="posterCanvas" role="img" aria-label="Vibe poster canvas"></canvas>
+    </main>
+    <footer class="footer-actions">
+        <button id="downloadButton" aria-label="Download poster as PNG">Download PNG</button>
+        <button id="shareButton" aria-label="Share this vibe (experimental)">Share Vibe</button>
+    </footer>
 
-        <header class="project-header">
-            <h1>Project One</h1>
-            <p class="subtitle">A journey into the unknown</p>
-        </header>
+    <script>
+        const USER_WORDS_TEMPLATE = "{{USER_WORDS}}";
 
-        <main class="project-content">
-            <img src="https://picsum.photos/seed/project1/800/400" alt="Project One Preview" class="project-image">
+        const canvas = document.getElementById('posterCanvas');
+        const ctx = canvas.getContext('2d');
+        const sloganEl = document.getElementById('slogan');
+        const subtitleEl = document.getElementById('subtitle');
+        const vibeWordsInput = document.getElementById('vibeWordsInput');
+        const canvasAriaLabelEl = document.getElementById('posterCanvas');
+
+        let currentWords = [];
+        let sceneElements = []; // Can be image objects or shape objects
+        let animationFrameId;
+        let isAnimationPaused = false;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let usingFallbackArt = false;
+
+        const IMG_COUNT = 4, IMG_FETCH_SIZE = 250; // Images from Unsplash
+        const SHAPE_TYPES = ['circle', 'square', 'triangle', 'star']; // Geometric shapes
+        const MIN_SHAPES = 8, MAX_SHAPES = 12; // For fallback
+
+        function stringToHash(str) { let h = 0; for(let i=0; i<str.length; i++) {h=(h<<5)-h+str.charCodeAt(i); h|=0;} return Math.abs(h); }
+        function seededRandom(seedStr, salt="") { return (stringToHash(seedStr+salt) % 10000) / 10000; }
+        function parseUserWords(str) { return str.trim().toLowerCase().split(/\s+/).filter(Boolean).slice(0,3); }
+
+        function generateSloganAndSubtitle(words, status = "") {
+            const w = words.map(s => s.charAt(0).toUpperCase() + s.slice(1));
+            let slogan;
+            if(w.length===0) slogan = "DEFINE YOUR VIBE";
+            else if(w.length===1) slogan = [`${w[0]} ENERGY`, `${w[0]} VISUALIZED`, `ART OF ${w[0]}`][stringToHash(words.join('')+'sl1')%3];
+            else if(w.length===2) slogan = [`${w[0]} & ${w[1]}`, `${w[0]} MEETS ${w[1]}`, `ESSENCE OF ${w[0]}, ${w[1]}`][stringToHash(words.join('')+'sl2')%3];
+            else slogan = [`${w[0]}, ${w[1]}, ${w[2]}`, `A ${w.join(' ')} JOURNEY`, `THE ${w.join(' ')} EXPERIENCE`][stringToHash(words.join('')+'sl3')%3];
+            sloganEl.textContent = slogan.toUpperCase();
+            let sub = w.length > 0 ? `Vibe: ${w.join(', ')}.` : "Enter words to start.";
+            if (status) sub += ` ${status}`;
+            subtitleEl.textContent = sub.length < 50 ? sub : sub.substring(0, 47) + "...";
+            canvasAriaLabelEl.setAttribute('aria-label', `Animated poster. ${sub}`);
+        }
+
+        function generateBackgroundGradient(key) {
+            const h1=stringToHash(key+'bgH1')%360,s1=40+seededRandom(key,'bgS1')*30,l1=75+seededRandom(key,'bgL1')*20;
+            const h2=(h1+90+seededRandom(key,'bgH2off')*120)%360,s2=40+seededRandom(key,'bgS2')*30,l2=75+seededRandom(key,'bgL2')*20;
+            document.body.style.background = `linear-gradient(${45+seededRandom(key,'bgAng')*90}deg, hsl(${h1},${s1}%,${l1}%), hsl(${h2},${s2}%,${l2}%))`;
+        }
+
+        // --- Image Loading Logic ---
+        async function loadIndividualImage(wordQuery, key, index) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                // Use a more general keyword if user words are too specific, plus a unique seed
+                const query = wordQuery ? `${wordQuery},abstract,pattern` : `abstract,texture,graphic`;
+                img.src = `https://source.unsplash.com/random/${IMG_FETCH_SIZE}x${IMG_FETCH_SIZE}/?${encodeURIComponent(query)}&cache_bust=${stringToHash(key + index + Date.now())}`;
+
+                const el = {img, x:0, y:0, rot:0, size:0, vx:0, vy:0, rSpeed:0, loaded:false, type:'image'};
+                img.onload = () => {
+                    if (img.naturalWidth <= 10) { resolve({...el, error: 'Placeholder image'}); return; }
+                    el.loaded = true;
+                    el.size = (canvas.width/7) + seededRandom(key,'isz'+index)*(canvas.width/10);
+                    el.x = el.size/2 + seededRandom(key,'ix'+index)*(canvas.width - el.size);
+                    el.y = el.size/2 + seededRandom(key,'iy'+index)*(canvas.height - el.size);
+                    el.rot = seededRandom(key,'irot'+index)*Math.PI*2;
+                    if(!prefersReducedMotion){
+                        el.vx=(seededRandom(key,'ivx'+index)-0.5)*0.3; el.vy=(seededRandom(key,'ivy'+index)-0.5)*0.3;
+                        el.rSpeed=(seededRandom(key,'irS'+index)-0.5)*0.003;
+                    }
+                    resolve(el);
+                };
+                img.onerror = () => resolve({...el, error: 'Load error'});
+            });
+        }
+        async function loadImagesForVibe(words, key) {
+            subtitleEl.textContent = `Loading images for "${words.join(', ')}"...`;
+            const promises = [];
+            for(let i=0; i<IMG_COUNT; i++) promises.push(loadIndividualImage(words[i%words.length] || "abstract", key, i));
             
-            <div class="description">
-                <h2>About This Project</h2>
-                <p>Welcome to the first creation in our digital vault. This project represents the beginning of our journey into the world of web development and creative coding.</p>
-            </div>
+            const results = await Promise.allSettled(promises);
+            sceneElements = results.filter(r => r.status === 'fulfilled' && r.value.loaded).map(r => r.value);
 
-            <div class="features">
-                <h3>Key Features</h3>
-                <ul>
-                    <li>Feature one description</li>
-                    <li>Feature two description</li>
-                    <li>Feature three description</li>
-                </ul>
-            </div>
+            if (sceneElements.length < Math.max(1, IMG_COUNT / 2) ) { // If less than half (or 0 if IMG_COUNT=1) load, fallback
+                generateSloganAndSubtitle(words, `Image load failed (${sceneElements.length}/${IMG_COUNT}). Using fallback art.`);
+                createGeometricShapes(words, key); // Create fallback shapes
+                usingFallbackArt = true;
+            } else {
+                generateSloganAndSubtitle(words, `(${sceneElements.length}/${IMG_COUNT} images loaded)`);
+                usingFallbackArt = false;
+            }
+        }
 
-            <div class="code-section">
-                <pre><code>// Your code will go here
-// This is where you can showcase your project's code
-// The code will be displayed with syntax highlighting</code></pre>
-            </div>
+        // --- Geometric Shapes Fallback Logic ---
+        function createGeometricShapes(words, key) {
+            sceneElements = [];
+            const numShapes = MIN_SHAPES + (stringToHash(key + 'numS') % (MAX_SHAPES - MIN_SHAPES + 1));
+            const baseHue = stringToHash(key + 'shapeHue') % 360;
 
-            <div class="description">
-                <h3>How It Works</h3>
-                <p>Explain the technical details and implementation of your project here. This is where you can share your insights and the challenges you overcame.</p>
-            </div>
-        </main>
-    </div>
+            for (let i = 0; i < numShapes; i++) {
+                const type = SHAPE_TYPES[stringToHash(key+'type'+i) % SHAPE_TYPES.length];
+                const size = (canvas.width/18) + seededRandom(key,'gsz'+i)*(canvas.width/12);
+                sceneElements.push({
+                    type, size,
+                    x: size/2 + seededRandom(key,'gx'+i)*(canvas.width-size),
+                    y: size/2 + seededRandom(key,'gy'+i)*(canvas.height-size),
+                    color: `hsla(${(baseHue+i*(360/numShapes)+seededRandom(key,'gch'+i)*30-15)%360}, ${60+seededRandom(key,'gcs'+i)*25}%, ${50+seededRandom(key,'gcl'+i)*20}%, 0.7)`,
+                    rot: seededRandom(key,'grot'+i)*Math.PI*2,
+                    vx: prefersReducedMotion?0:(seededRandom(key,'gvx'+i)-0.5)*0.5,
+                    vy: prefersReducedMotion?0:(seededRandom(key,'gvy'+i)-0.5)*0.5,
+                    rSpeed: prefersReducedMotion?0:(seededRandom(key,'grS'+i)-0.5)*0.005,
+                    loaded: true // shapes are always "loaded"
+                });
+            }
+        }
+        function drawGeometricShape(s, Ctx) { //Combined draw for shapes
+            Ctx.fillStyle = s.color; Ctx.save(); Ctx.translate(s.x,s.y); Ctx.rotate(s.rot);
+            switch(s.type){
+                case 'circle': Ctx.beginPath(); Ctx.arc(0,0,s.size/2,0,Math.PI*2); Ctx.fill(); break;
+                case 'square': Ctx.fillRect(-s.size/2,-s.size/2,s.size,s.size); break;
+                case 'triangle': {const h=s.size*0.866; Ctx.beginPath(); Ctx.moveTo(0,-h*2/3); Ctx.lineTo(-s.size/2,h/3); Ctx.lineTo(s.size/2,h/3); Ctx.closePath(); Ctx.fill(); break;}
+                case 'star': {const rO=s.size/2,rI=rO*0.4; Ctx.beginPath(); Ctx.moveTo(0,-rO); for(let i=0;i<5;i++){Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rI);Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rO);} Ctx.path();Ctx.fill(); break;}
+            }
+            Ctx.restore();
+        }
+
+        // --- Animation & Drawing ---
+        function drawScene() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            sceneElements.forEach(el => {
+                if (!el.loaded) return;
+                if (el.type === 'image') {
+                    ctx.save(); ctx.translate(el.x, el.y); ctx.rotate(el.rot);
+                    const aspect = el.img.naturalWidth/el.img.naturalHeight; let w=el.size, h=el.size/aspect; if(h>el.size){h=el.size; w=el.size*aspect;}
+                    ctx.drawImage(el.img, -w/2, -h/2, w, h); ctx.restore();
+                } else { // Geometric shape
+                    drawGeometricShape(el, ctx);
+                }
+            });
+        }
+        function animateScene() {
+            animationFrameId = requestAnimationFrame(animateScene);
+            if (isAnimationPaused && !prefersReducedMotion) { drawScene(); return; }
+            
+            if (!prefersReducedMotion) {
+                sceneElements.forEach(el => {
+                    if (!el.loaded) return;
+                    el.x += el.vx; el.y += el.vy; el.rot = (el.rot + el.rSpeed + Math.PI*2) % (Math.PI*2);
+                    const bound = el.size * 0.4;
+                    if (el.x < bound || el.x > canvas.width-bound) { el.vx *= -1; el.x = Math.max(bound, Math.min(el.x, canvas.width-bound)); }
+                    if (el.y < bound || el.y > canvas.height-bound) { el.vy *= -1; el.y = Math.max(bound, Math.min(el.y, canvas.height-bound));}
+                });
+            }
+            drawScene();
+        }
+        
+        async function generatePoster(userWordsStr) {
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            
+            const parsedWords = parseUserWords(userWordsStr);
+            if(parsedWords.length === 0){
+                alert("Please enter at least one word for your vibe!"); vibeWordsInput.focus();
+                generateSloganAndSubtitle([], "Enter words to begin."); return;
+            }
+            currentWords = parsedWords;
+            vibeWordsInput.value = currentWords.map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+            const wordsKey = currentWords.join('-');
+
+            generateSloganAndSubtitle(currentWords, "Loading...");
+            generateBackgroundGradient(wordsKey);
+            
+            // Try loading images, with fallback to shapes
+            await loadImagesForVibe(currentWords, wordsKey);
+            animateScene();
+        }
+        
+        // --- Event Listeners & Init ---
+        document.getElementById('generateButton').addEventListener('click', () => generatePoster(vibeWordsInput.value));
+        vibeWordsInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') generatePoster(vibeWordsInput.value); });
+        
+        document.getElementById('downloadButton').addEventListener('click', () => {
+            if (sceneElements.length === 0) { alert("Create a vibe first!"); return; }
+            // Temporarily pause animation and redraw for clean PNG if needed (often not necessary for toDataURL)
+            const wasPaused = isAnimationPaused; isAnimationPaused = true; drawScene();
+            const dataURL = canvas.toDataURL('image/png');
+            isAnimationPaused = wasPaused;
+
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = `${currentWords.join('-') || 'vibe'}-poster.png`;
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        });
+
+        document.getElementById('shareButton').addEventListener('click', async () => {
+            if (sceneElements.length === 0) { alert("Create a vibe first!"); return; }
+            const shareText = `Check out my vibe: ${currentWords.map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ')}! Slogan: ${sloganEl.textContent}. Made with Vibe Poster Factory.`;
+            const shareData = { title: 'My Vibe Poster', text: shareText };
+            try {
+                if(!navigator.share) throw new Error('Web Share API not supported.');
+                await navigator.share(shareData);
+            } catch(err) { alert(`Share failed: ${err.message}. You can download and share manually.`); }
+        });
+
+        canvas.addEventListener('pointerenter', () => { if(!prefersReducedMotion) isAnimationPaused = true; });
+        canvas.addEventListener('pointerleave', () => { if(!prefersReducedMotion) isAnimationPaused = false; });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Correct canvas sizing for High DPI displays
+            const style = getComputedStyle(canvas);
+            const cssWidth = parseFloat(style.width);
+            const cssHeight = parseFloat(style.height);
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = cssWidth * dpr;
+            canvas.height = cssHeight * dpr;
+            ctx.scale(dpr, dpr); // Scale context to draw at full resolution
+
+            let initialVibe = "Digital Art Abstract";
+            if (USER_WORDS_TEMPLATE && USER_WORDS_TEMPLATE !== "{{USER_WORDS}}") initialVibe = USER_WORDS_TEMPLATE;
+            vibeWordsInput.value = initialVibe;
+            generatePoster(initialVibe);
+        });
+    </script>
 </body>
 </html> 
