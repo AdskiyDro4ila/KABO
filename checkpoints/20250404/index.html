@@ -21,23 +21,9 @@
             font-size: 72px;
             font-weight: bold;
             cursor: pointer;
-            transition: color 0.3s ease;
             position: relative;
             letter-spacing: -4px;
-            animation: float 3s ease-in-out infinite;
             text-align: center;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
         }
 
         .text-container:hover {
@@ -46,25 +32,43 @@
 
         .letter {
             display: inline-block;
-            transition: color 0.3s ease;
+            transition: all 0.5s ease;
         }
 
         .question-mark {
             display: inline-block;
-            transition: transform 0.5s ease, color 0.3s ease;
+            transition: all 0.5s ease;
         }
 
-        .text-container:hover .question-mark {
-            animation: rotate 0.5s ease forwards;
-        }
-
-        @keyframes rotate {
+        @keyframes morphLetter {
             0% {
-                transform: rotate(0deg);
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
             }
             100% {
-                transform: rotate(360deg);
+                transform: scale(1) rotate(360deg);
             }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        .morph {
+            animation: morphLetter 0.8s ease-out forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.8s ease-out forwards;
         }
 
         /* Mobile responsiveness */
@@ -118,54 +122,32 @@
         const textContainer = document.querySelector('.text-container');
         const questionMark = document.querySelector('.question-mark');
         const firstLetter = document.querySelector('.first-letter');
-        let navigationTimeout;
+        const letters = document.querySelectorAll('.letter');
         let hasBeenClicked = false;
 
-        textContainer.addEventListener('mouseenter', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'T';
-                questionMark.textContent = '.';
-            }
-        });
-
-        textContainer.addEventListener('mouseleave', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'K';
-                questionMark.textContent = '?';
-            }
-        });
-
-        // Add touch support for mobile devices
-        textContainer.addEventListener('touchstart', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'T';
-                questionMark.textContent = '.';
-            }
-        });
-
-        textContainer.addEventListener('touchend', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'K';
-                questionMark.textContent = '?';
-            }
-        });
-
-        // Add click event to change text and navigate to about page with delay
-        document.getElementById('kabo-text').addEventListener('click', () => {
-            // Change text permanently
+        textContainer.addEventListener('click', () => {
+            if (hasBeenClicked) return;
+            
             hasBeenClicked = true;
             firstLetter.textContent = 'T';
             questionMark.textContent = '.';
             
-            // Clear any existing timeout
-            if (navigationTimeout) {
-                clearTimeout(navigationTimeout);
-            }
+            // Animate each letter
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    letter.classList.add('morph');
+                }, index * 200);
+            });
+
+            // Animate question mark
+            setTimeout(() => {
+                questionMark.classList.add('fade-out');
+            }, 400);
             
-            // Set new timeout for navigation
-            navigationTimeout = setTimeout(() => {
+            // Navigate after animations
+            setTimeout(() => {
                 window.location.href = 'about.html';
-            }, 1500); // 1.5 second delay
+            }, 2000);
         });
     </script>
 </body>

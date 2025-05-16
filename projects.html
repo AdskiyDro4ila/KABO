@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Vault - Hidden Gems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/@geist/font@latest/Geist.css">
+    <link href="https://fonts.cdnfonts.com/css/blanka" rel="stylesheet">
+    <style>
+        /* Basic Reset & Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            background-color: #f0f2f5; /* Slightly cooler light grey */
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em; /* Larger title */
+            color: #1c1e21; /* Darker, slightly desaturated blue/grey */
+            margin-bottom: 15px;
+            font-weight: 700; /* Bolder */
+        }
+
+        .header .subtitle {
+            font-size: 1.3em; /* Prominent subtitle */
+            color: #606770;
+            max-width: 750px;
+            margin: 0 auto 20px auto;
+            font-style: italic;
+        }
+
+        .header .tagline {
+            font-size: 1.1em;
+            color: #4b4f56;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header p {
+            font-family: 'Blanka', 'Geist', 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #222;
+            margin-bottom: 0;
+            text-transform: uppercase;
+        }
+
+        /* Works Grid */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Slightly larger min width */
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Individual Work Card */
+        .work-card {
+            background: rgba(20, 20, 30, 0.85);
+            border: 2.5px solid #00ffe7;
+            border-radius: 8px;
+            box-shadow: 0 0 24px #00ffe7, 0 2px 24px rgba(0,0,0,0.25);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .work-card:hover {
+            transform: scale(1.04) rotate(-1deg);
+            box-shadow: 0 0 40px #00ffe7, 0 4px 40px rgba(0,0,0,0.35);
+            border-color: #ff00c8;
+        }
+
+        .work-card img {
+            filter: grayscale(1) contrast(1.2) brightness(0.9);
+            border-bottom: 2px solid #00ffe7;
+            width: 100%;
+            height: 220px; /* Slightly taller images */
+            object-fit: cover;
+            display: block;
+        }
+
+        .work-card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .work-card-content h3 {
+            font-family: 'Blanka', 'Geist', 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+            font-size: 2em;
+            letter-spacing: 0.12em;
+            color: #00ffe7;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .work-card-content p {
+            font-family: 'Geist', 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+            font-size: 1em;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5em;
+            }
+            .header .subtitle {
+                font-size: 1.1em;
+            }
+             .works-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2.1em;
+            }
+            .header .tagline {
+                font-size: 1em;
+            }
+            .work-card-content h3 {
+                font-size: 1.3em;
+            }
+             .works-grid {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <p>Bottomline</p>
+    </header>
+
+    <main class="works-grid">
+        <!-- Project 1 -->
+        <a href="project1.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project1/400/300" alt="Project 1 Preview">
+            <div class="work-card-content">
+                <h3>Project One</h3>
+                <p>Enter the unknown. Click to unlock.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 2 -->
+        <a href="project2.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project2/400/300" alt="Project 2 Preview">
+            <div class="work-card-content">
+                <h3>Project Two</h3>
+                <p>Where simplicity meets complexity. Uncover the second piece of our digital puzzle.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 3 -->
+        <a href="project3.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project3/400/300" alt="Project 3 Preview">
+            <div class="work-card-content">
+                <h3>Project Three</h3>
+                <p>Breaking boundaries with code. The third chapter in our digital story.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 4 -->
+        <a href="project4.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project4/400/300" alt="Project 4 Preview">
+            <div class="work-card-content">
+                <h3>Project Four</h3>
+                <p>Where innovation meets elegance. Discover the fourth creation in our collection.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 5 -->
+        <a href="project5.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project5/400/300" alt="Project 5 Preview">
+            <div class="work-card-content">
+                <h3>Project Five</h3>
+                <p>A digital masterpiece in the making. The fifth piece of our creative puzzle.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 6 -->
+        <a href="project6.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project6/400/300" alt="Project 6 Preview">
+            <div class="work-card-content">
+                <h3>Project Six</h3>
+                <p>Pushing the boundaries of possibility. The sixth creation in our digital vault.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 7 -->
+        <a href="project7.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project7/400/300" alt="Project 7 Preview">
+            <div class="work-card-content">
+                <h3>Project Seven</h3>
+                <p>Where code meets creativity. The final piece in our current collection.</p>
+            </div>
+        </article>
+        </a>
+
+        <!-- Project 228 -->
+        <a href="project228.html" style="text-decoration: none; color: inherit;">
+        <article class="work-card">
+            <img src="https://picsum.photos/seed/project228/400/300" alt="Project 228 Preview">
+            <div class="work-card-content">
+                <h3>Project 228</h3>
+                <p>A prism of insight, refracting the ordinary into the strange. Enter if you dare.</p>
+            </div>
+        </article>
+        </a>
+    </main>
+
+</body>
+</html> 

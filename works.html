@@ -5,24 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Works - KABO?</title>
     <style>
-        body {
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden;
+        }
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             color: #333;
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 17px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
+            width: 100%;
+            /* Remove vertical padding to avoid scroll */
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         h1 {
-            font-size: 36px;
-            margin-bottom: 30px;
+            font-size: 32px;
+            margin-bottom: 28px;
             text-align: center;
         }
 
@@ -39,22 +49,24 @@
         }
 
         h2 {
-            font-size: 24px;
-            margin-top: 40px;
-            margin-bottom: 20px;
+            font-size: 22px;
+            margin-top: 32px;
+            margin-bottom: 14px;
         }
 
         p {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            font-size: 17px;
         }
 
         ul {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             padding-left: 20px;
         }
 
         li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 17px;
         }
 
         .back-link {
@@ -163,37 +175,35 @@
 </head>
 <body>
     <div class="container">
-        <h1><a href="my-works.html" class="title-link">MY WORKS</a></h1>
+        <h1><a href="projects.html" class="title-link">MY WORKS</a></h1>
         
         <p><em>What is a work, but a question left unanswered?</em></p>
         
-        <p>To create is not to offer solutions. It is to set fire to what was assumed, to leave behind traces of something that refuses to settle.</p>
+        <p>To create is to set fire to what was assumed, to leave traces that refuse to settle.</p>
         
-        <p>What you will find here are not products. Not conclusions. Not neat, finished things to be consumed and forgotten.</p>
+        <p>What you find here are not products. Not conclusions. Not neat things.</p>
         
-        <p>These are fractures in the familiar. Open doors that do not promise to lead anywhere safe.</p>
+        <p>These are fractures in the familiar. Open doors that do not promise safety.</p>
         
         <h2>What has been built?</h2>
         
-        <p>Call them books, writings, thoughts—call them nothing at all. What matters is not what they are, but what they do to you.</p>
+        <p>Call them books, writings, thoughts—call them nothing. What matters is what they do to you.</p>
         
         <ul>
-            <li>Some will pull you into the abyss, where meaning dissolves, and only your own strength will bring you back.</li>
-            <li>Some will whisper of things you always suspected but never dared to name.</li>
-            <li>Some will demand to be rejected, for only through resistance does real thought emerge.</li>
+            <li>Some pull you into the abyss, where meaning dissolves.</li>
+            <li>Some whisper things you suspected but never named.</li>
+            <li>Some demand rejection; only through resistance does thought emerge.</li>
         </ul>
         
-        <p>What they share is this: they were never meant to comfort. They were never meant to be easy.</p>
+        <p>They were never meant to comfort or be easy.</p>
         
         <h2>How should one approach them?</h2>
         
-        <p>Not as a follower, not as a collector, but as one who is willing to wrestle. To read is to risk. To understand is to let something change you.</p>
+        <p>Not as a follower or collector, but as one willing to wrestle. To read is to risk.</p>
         
         <p>If you seek entertainment, look elsewhere. If you seek a mirror, enter.</p>
         
         <p><a href="unveiled.html" class="last-phrase"><span class="word">The</span> <span class="word">door</span> <span class="word">is</span> <span class="word">open</span><span class="word">.</span></a></p>
-        
-        <a href="about.html" class="back-link">← Back to About</a>
     </div>
 </body>
 </html> 

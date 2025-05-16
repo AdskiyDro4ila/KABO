@@ -13,58 +13,71 @@
             align-items: center;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-            overflow: hidden; /* Prevent scrolling on mobile */
-            position: relative; /* Added for absolute positioning of works link */
+            overflow: hidden;
+            position: relative;
         }
 
         .text-container {
             font-size: 72px;
             font-weight: bold;
             cursor: pointer;
-            transition: color 0.3s ease;
             position: relative;
             letter-spacing: -4px;
-            animation: float 3s ease-in-out infinite;
             text-align: center;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-            100% {
-                transform: translateY(0px);
-            }
+            z-index: 1;
+            color: #000;
+            transition: color 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1);
         }
 
         .text-container:hover {
-            color: #808080;
+            color: #222;
+            transform: scale(1.03);
         }
 
         .letter {
             display: inline-block;
-            transition: color 0.3s ease;
+            transition: all 0.5s ease;
+            position: relative;
         }
 
         .question-mark {
             display: inline-block;
-            transition: transform 0.5s ease, color 0.3s ease;
+            transition: all 0.5s ease;
+            position: relative;
         }
 
-        .text-container:hover .question-mark {
-            animation: rotate 0.5s ease forwards;
-        }
-
-        @keyframes rotate {
+        @keyframes morphLetter {
             0% {
-                transform: rotate(0deg);
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.5;
             }
             100% {
-                transform: rotate(360deg);
+                transform: scale(1) rotate(360deg);
+                opacity: 1;
             }
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        .morph {
+            animation: morphLetter 0.8s ease-out forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.8s ease-out forwards;
         }
 
         /* Mobile responsiveness */
@@ -74,7 +87,6 @@
             }
         }
 
-        /* Small mobile devices */
         @media (max-width: 480px) {
             .text-container {
                 font-size: 52px;
@@ -82,138 +94,29 @@
             }
         }
 
-        /* Hidden works link styles */
         .hidden-works {
             position: absolute;
             top: 50%;
             right: 20px;
             transform: translateY(-50%);
-            color: #f1f1f1; /* Very slightly different from background */
+            color: #f1f1f1;
             text-decoration: none;
             font-size: 24px;
             font-weight: bold;
-            opacity: 0.05; /* Almost invisible */
+            opacity: 0.05;
             transition: opacity 0.3s ease;
-            writing-mode: vertical-rl; /* Vertical text */
+            writing-mode: vertical-rl;
             text-orientation: mixed;
             letter-spacing: 2px;
         }
 
         .hidden-works:hover {
-            opacity: 0.2; /* Slightly more visible on hover */
-        }
-
-        /* Glitch animation styles */
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            5% {
-                transform: translate(2px, -2px);
-                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            10% {
-                transform: translate(-2px, 2px);
-                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            15% {
-                transform: translate(0);
-                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            20% {
-                transform: translate(-2px, -2px);
-                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            25% {
-                transform: translate(2px, 2px);
-                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            30% {
-                transform: translate(0);
-                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            35% {
-                transform: translate(2px, -2px);
-                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            40% {
-                transform: translate(-2px, 2px);
-                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            45% {
-                transform: translate(0);
-                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            50% {
-                transform: translate(-2px, -2px);
-                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            55% {
-                transform: translate(2px, 2px);
-                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            60% {
-                transform: translate(0);
-                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            65% {
-                transform: translate(2px, -2px);
-                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            70% {
-                transform: translate(-2px, 2px);
-                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            75% {
-                transform: translate(0);
-                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            80% {
-                transform: translate(-2px, -2px);
-                text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            85% {
-                transform: translate(2px, 2px);
-                text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            90% {
-                transform: translate(0);
-                text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            95% {
-                transform: translate(2px, -2px);
-                text-shadow: 2.896914047650351px 0 1px rgba(0,30,255,0.5), -2.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-            100% {
-                transform: translate(0);
-                text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px;
-            }
-        }
-
-        .glitch {
-            animation: glitch 1s infinite;
-        }
-
-        /* Shrink animation */
-        @keyframes shrink {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0.1);
-                opacity: 0;
-            }
-        }
-
-        .shrink {
-            animation: shrink 1.5s forwards;
+            opacity: 0.2;
         }
     </style>
 </head>
 <body>
-    <a href="works.html" class="hidden-works">MY WORKS</a>
+    <a href="projects.html" class="hidden-works">MY WORKS</a>
     <div class="text-container" id="kabo-text">
         <span class="letter first-letter">K</span>
         <span class="letter">A</span>
@@ -226,81 +129,53 @@
         const textContainer = document.querySelector('.text-container');
         const questionMark = document.querySelector('.question-mark');
         const firstLetter = document.querySelector('.first-letter');
-        let navigationTimeout;
+        const letters = document.querySelectorAll('.letter');
         let hasBeenClicked = false;
 
-        // Reset animation state when page loads
-        function resetAnimationState() {
-            textContainer.classList.remove('glitch', 'shrink');
+        // Reset text to initial state when page loads
+        function resetText() {
             firstLetter.textContent = 'K';
             questionMark.textContent = '?';
             hasBeenClicked = false;
+            letters.forEach(letter => {
+                letter.classList.remove('morph');
+            });
+            questionMark.classList.remove('fade-out');
         }
 
-        // Call reset function when page loads
-        window.addEventListener('load', resetAnimationState);
+        // Call reset when page loads
+        resetText();
 
-        // Also reset when returning from about page (using pageshow event)
+        // Also reset when coming back from bfcache (browser back/forward cache)
         window.addEventListener('pageshow', function(event) {
             if (event.persisted) {
-                resetAnimationState();
+                resetText();
             }
         });
 
-        textContainer.addEventListener('mouseenter', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'T';
-                questionMark.textContent = '.';
-            }
-        });
-
-        textContainer.addEventListener('mouseleave', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'K';
-                questionMark.textContent = '?';
-            }
-        });
-
-        // Add touch support for mobile devices
-        textContainer.addEventListener('touchstart', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'T';
-                questionMark.textContent = '.';
-            }
-        });
-
-        textContainer.addEventListener('touchend', () => {
-            if (!hasBeenClicked) {
-                firstLetter.textContent = 'K';
-                questionMark.textContent = '?';
-            }
-        });
-
-        // Add click event to change text and navigate to about page with delay
-        document.getElementById('kabo-text').addEventListener('click', () => {
-            // Change text permanently
+        textContainer.addEventListener('click', () => {
+            if (hasBeenClicked) return;
+            
             hasBeenClicked = true;
             firstLetter.textContent = 'T';
             questionMark.textContent = '.';
             
-            // Clear any existing timeout
-            if (navigationTimeout) {
-                clearTimeout(navigationTimeout);
-            }
-            
-            // Add glitch effect
-            textContainer.classList.add('glitch');
-            
-            // After 0.5 seconds, start shrinking
+            // Animate each letter
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    letter.classList.add('morph');
+                }, index * 200);
+            });
+
+            // Animate question mark
             setTimeout(() => {
-                textContainer.classList.remove('glitch');
-                textContainer.classList.add('shrink');
-            }, 500);
+                questionMark.classList.add('fade-out');
+            }, 400);
             
-            // Set new timeout for navigation
-            navigationTimeout = setTimeout(() => {
+            // Navigate after animations
+            setTimeout(() => {
                 window.location.href = 'about.html';
-            }, 1500); // 1.5 second delay
+            }, 2000);
         });
     </script>
 </body>
