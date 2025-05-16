@@ -2,302 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Poster Factory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Stellar Forge</title>
     <style>
         :root {
-            --text-color: #212529; --text-light-color: #343a40;
-            --button-bg: rgba(255, 255, 255, 0.8); --button-border: rgba(0,0,0,0.1);
-            --button-hover-bg: rgba(255,255,255,1); --focus-outline: #007bff;
+            --bg-deep-void: #03020c; --bg-nebula-hue1: #1a0a30; --bg-nebula-hue2: #2c1547;
+            --text-main: #f2f2f8; --text-dim: #b0b0c8;
+            --accent-primary: #00ddff; --accent-secondary: #ff50d0; /* Bright Cyan & Hot Pink */
+            --button-border: rgba(0, 221, 255, 0.6); --button-hover-bg: rgba(0, 221, 255, 0.15);
+            --ui-panel-bg: rgba(8, 4, 20, 0.6); --font-size-base: 12px;
         }
+        html,body{height:100%;overflow:hidden;}
         body {
-            margin: 0; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            color: var(--text-color); display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: background 0.8s ease-in-out; overflow-x: hidden;
+            margin:0;font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+            color:var(--text-main);background:radial-gradient(ellipse at 20% 30%, var(--bg-nebula-hue1) 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, var(--bg-nebula-hue2) 0%, transparent 55%), var(--bg-deep-void);
+            display:flex;flex-direction:column;align-items:center;justify-content:space-between;font-size:var(--font-size-base);padding-top:38px;padding-bottom:36px;
         }
-        *, *::before, *::after { box-sizing: border-box; }
+        *,*::before,*::after{box-sizing:border-box;}
         .controls {
-            position: fixed; z-index: 100; padding: 10px 15px; background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            display: flex; gap: 10px; align-items: center;
-            top: 0; left: 0; border-radius: 0 0 16px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position:fixed;z-index:100;padding:4px 8px;background:var(--ui-panel-bg);
+            backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:flex;gap:5px;align-items:center;
+            top:0;left:0;width:100%;border-bottom:1px solid rgba(0,221,255,0.1);
         }
-        .controls input[type="text"] {
-            font-size: 1rem; padding: 9px 12px; border: 1px solid #ced4da; border-radius: 5px;
-            min-width: 220px; background-color: var(--button-bg); color: var(--text-color);
-        }
-        .controls input[type="text"]::placeholder { color: #6c757d; }
-        button {
-            font-size: 0.9rem; padding: 9px 15px; border-radius: 5px; cursor: pointer;
-            background-color: var(--button-bg); border: 1px solid var(--button-border); color: var(--text-color);
-            transition: background-color 0.2s ease, box-shadow 0.2s ease; white-space: nowrap; font-weight: 500;
-        }
-        button:hover, button:focus-visible {
-            background-color: var(--button-hover-bg);
-            box-shadow: 0 0 0 2px var(--focus-outline), 0 2px 5px rgba(0,0,0,0.1); outline: none;
-        }
-        .poster-container {
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            padding: 20px; margin-top: 75px; margin-bottom: 75px; width: 90%; max-width: 850px;
-        }
-        #slogan { font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 0.4em; text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700;}
-        #subtitle { font-size: clamp(0.9rem, 2.5vw, 1.1rem); max-width: 50ch; margin-bottom: 1.5rem; color: var(--text-light-color); min-height: 1.5em; }
-        #posterCanvas {
-            max-width: 100%; height: auto; display: block; border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15); background-color: rgba(255,255,255,0.1);
-            width: 800px; height: 600px; /* Default drawing size before JS scaling */
-        }
-        .footer-actions {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 10px; padding: 10px 15px; background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px 16px 0 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        }
-        @media (max-width: 700px) { #posterCanvas { width: 100%; height: auto; aspect-ratio: 4 / 3 ; } }
-        @media (max-width: 600px) {
-            .controls { width:100%; left:0; border-radius:0; justify-content:space-between; padding:8px; }
-            .controls input[type="text"] { flex-grow:1; margin-right:8px; min-width:auto; font-size:0.9rem; padding:8px 10px;}
-            button {font-size:0.85rem; padding:8px 12px;}
-            .poster-container { margin-top:70px; margin-bottom:70px; padding:10px; width:95%;}
-            #slogan {font-size:1.7rem;} #subtitle {font-size:0.85rem;}
-            .footer-actions { width:100%; border-radius:0; justify-content:space-around; padding:8px; }
-        }
-        @media (prefers-reduced-motion: reduce) { body {transition:none;} }
+        .controls input{font-size:0.9em;padding:5px 7px;border:1px solid rgba(0,221,255,0.2);border-radius:3px;
+            flex-grow:1;background:rgba(0,0,8,0.3);color:var(--text-main);}
+        .controls input::placeholder{color:var(--text-dim);} .controls button{margin-left:auto;}
+        button{font-size:0.75em;padding:5px 10px;border-radius:3px;cursor:pointer;background:transparent;
+            border:1px solid var(--button-border);color:var(--accent-primary);transition:all 0.12s ease;
+            white-space:nowrap;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;}
+        button:hover:not(:disabled),button:focus-visible:not(:disabled){background:var(--button-hover-bg);color:#fff;
+            box-shadow:0 0 5px rgba(0,221,255,0.25),0 0 9px rgba(0,221,255,0.15);border-color:var(--accent-primary);}
+        button:disabled{opacity:0.45;cursor:progress;border-color:rgba(110,110,110,0.4);color:rgba(110,110,110,0.7);}
+        .poster-container{display:flex;flex-direction:column;align-items:center;text-align:center;
+            padding:3px 6px;width:100%;flex-grow:1;overflow:hidden;justify-content:center;}
+        #slogan{font-size:clamp(1.1rem,3vw,1.9rem);margin:3px 0;font-weight:600;letter-spacing:0.6px;}
+        #subtitle{font-size:clamp(0.6rem,1.8vw,0.8rem);max-width:50ch;margin:2px 0 7px 0;color:var(--text-dim);font-weight:300;}
+        #posterCanvas{max-width:100%;max-height:calc(100vh - 140px);display:block;border-radius:4px;}
+        .footer-actions{position:fixed;bottom:0;left:0;width:100%;display:flex;gap:5px;padding:4px 8px;justify-content:center;
+            background:var(--ui-panel-bg);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border-top:1px solid rgba(0,221,255,0.1);}
+        @media(min-width:580px){.controls{width:auto;border-radius:0 0 8px 0;} .controls input{min-width:170px;flex-grow:0;}}
     </style>
 </head>
 <body>
     <header class="controls">
-        <input type="text" id="vibeWordsInput" placeholder="E.g., Cosmic Calm Journey" aria-label="Enter 1 to 3 words for your vibe">
-        <button id="generateButton" aria-label="Generate new vibe poster">Create Vibe</button>
+        <input type="text" id="vibeWordsInput" placeholder="Celestial Shard Eruption" aria-label="Keywords for cosmic generation">
+        <button id="generateButton">Generate</button>
     </header>
     <main class="poster-container">
-        <h1 id="slogan">VIBE FACTORY</h1>
-        <p id="subtitle">Enter words for a unique visual poster.</p>
-        <canvas id="posterCanvas" role="img" aria-label="Vibe poster canvas"></canvas>
+        <h1 id="slogan">STELLAR FORGE</h1>
+        <p id="subtitle">Command the birth and death of stars.</p>
+        <canvas id="posterCanvas" role="img" aria-label="Interactive stellar particle canvas"></canvas>
     </main>
     <footer class="footer-actions">
-        <button id="downloadButton" aria-label="Download poster as PNG">Download PNG</button>
-        <button id="shareButton" aria-label="Share this vibe (experimental)">Share Vibe</button>
+        <button id="coreIgnitionButton">Ignite Core</button>
+        <button id="downloadButton">Snapshot</button>
+        <button id="shareButton">Signal Echo</button>
     </footer>
 
     <script>
-        const USER_WORDS_TEMPLATE = "{{USER_WORDS}}";
+        const UWT="{{USER_WORDS}}",C=document.getElementById('posterCanvas'),CTX=C.getContext('2d'),SL=document.getElementById('slogan'),SU=document.getElementById('subtitle'),VI=document.getElementById('vibeWordsInput'),CIB=document.getElementById('coreIgnitionButton');
+        let CW=[],PS=[],AFID,ISP=false,GT=0,CIA=false,CPS=null,CPT=0,CPP=0; // PS: ProtoStars, ISP: IsPaused, GT:GlobalTime, CIA:CoreIgnitionActive, CPS:CorePhaseState, CPT:CorePhaseTimer, CPP:CorePhaseProgress
+        const PRM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+        const PTS=['starFragment','gaseousCloud','protoCore'],OS_NUM=8,NOVA_PARTICLES=60,NOVA_FADE=100,NOVA_FLASH_DUR=350; // PTS: ProtoStarTypes
 
-        const canvas = document.getElementById('posterCanvas');
-        const ctx = canvas.getContext('2d');
-        const sloganEl = document.getElementById('slogan');
-        const subtitleEl = document.getElementById('subtitle');
-        const vibeWordsInput = document.getElementById('vibeWordsInput');
-        const canvasAriaLabelEl = document.getElementById('posterCanvas');
-
-        let currentWords = [];
-        let sceneElements = []; // Can be image objects or shape objects
-        let animationFrameId;
-        let isAnimationPaused = false;
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let usingFallbackArt = false;
-
-        const IMG_COUNT = 4, IMG_FETCH_SIZE = 250; // Images from Unsplash
-        const SHAPE_TYPES = ['circle', 'square', 'triangle', 'star']; // Geometric shapes
-        const MIN_SHAPES = 8, MAX_SHAPES = 12; // For fallback
-
-        function stringToHash(str) { let h = 0; for(let i=0; i<str.length; i++) {h=(h<<5)-h+str.charCodeAt(i); h|=0;} return Math.abs(h); }
-        function seededRandom(seedStr, salt="") { return (stringToHash(seedStr+salt) % 10000) / 10000; }
-        function parseUserWords(str) { return str.trim().toLowerCase().split(/\s+/).filter(Boolean).slice(0,3); }
-
-        function generateSloganAndSubtitle(words, status = "") {
-            const w = words.map(s => s.charAt(0).toUpperCase() + s.slice(1));
-            let slogan;
-            if(w.length===0) slogan = "DEFINE YOUR VIBE";
-            else if(w.length===1) slogan = [`${w[0]} ENERGY`, `${w[0]} VISUALIZED`, `ART OF ${w[0]}`][stringToHash(words.join('')+'sl1')%3];
-            else if(w.length===2) slogan = [`${w[0]} & ${w[1]}`, `${w[0]} MEETS ${w[1]}`, `ESSENCE OF ${w[0]}, ${w[1]}`][stringToHash(words.join('')+'sl2')%3];
-            else slogan = [`${w[0]}, ${w[1]}, ${w[2]}`, `A ${w.join(' ')} JOURNEY`, `THE ${w.join(' ')} EXPERIENCE`][stringToHash(words.join('')+'sl3')%3];
-            sloganEl.textContent = slogan.toUpperCase();
-            let sub = w.length > 0 ? `Vibe: ${w.join(', ')}.` : "Enter words to start.";
-            if (status) sub += ` ${status}`;
-            subtitleEl.textContent = sub.length < 50 ? sub : sub.substring(0, 47) + "...";
-            canvasAriaLabelEl.setAttribute('aria-label', `Animated poster. ${sub}`);
-        }
-
-        function generateBackgroundGradient(key) {
-            const h1=stringToHash(key+'bgH1')%360,s1=40+seededRandom(key,'bgS1')*30,l1=75+seededRandom(key,'bgL1')*20;
-            const h2=(h1+90+seededRandom(key,'bgH2off')*120)%360,s2=40+seededRandom(key,'bgS2')*30,l2=75+seededRandom(key,'bgL2')*20;
-            document.body.style.background = `linear-gradient(${45+seededRandom(key,'bgAng')*90}deg, hsl(${h1},${s1}%,${l1}%), hsl(${h2},${s2}%,${l2}%))`;
-        }
-
-        // --- Image Loading Logic ---
-        async function loadIndividualImage(wordQuery, key, index) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.crossOrigin = "Anonymous";
-                // Use a more general keyword if user words are too specific, plus a unique seed
-                const query = wordQuery ? `${wordQuery},abstract,pattern` : `abstract,texture,graphic`;
-                img.src = `https://source.unsplash.com/random/${IMG_FETCH_SIZE}x${IMG_FETCH_SIZE}/?${encodeURIComponent(query)}&cache_bust=${stringToHash(key + index + Date.now())}`;
-
-                const el = {img, x:0, y:0, rot:0, size:0, vx:0, vy:0, rSpeed:0, loaded:false, type:'image'};
-                img.onload = () => {
-                    if (img.naturalWidth <= 10) { resolve({...el, error: 'Placeholder image'}); return; }
-                    el.loaded = true;
-                    el.size = (canvas.width/7) + seededRandom(key,'isz'+index)*(canvas.width/10);
-                    el.x = el.size/2 + seededRandom(key,'ix'+index)*(canvas.width - el.size);
-                    el.y = el.size/2 + seededRandom(key,'iy'+index)*(canvas.height - el.size);
-                    el.rot = seededRandom(key,'irot'+index)*Math.PI*2;
-                    if(!prefersReducedMotion){
-                        el.vx=(seededRandom(key,'ivx'+index)-0.5)*0.3; el.vy=(seededRandom(key,'ivy'+index)-0.5)*0.3;
-                        el.rSpeed=(seededRandom(key,'irS'+index)-0.5)*0.003;
-                    }
-                    resolve(el);
-                };
-                img.onerror = () => resolve({...el, error: 'Load error'});
-            });
-        }
-        async function loadImagesForVibe(words, key) {
-            subtitleEl.textContent = `Loading images for "${words.join(', ')}"...`;
-            const promises = [];
-            for(let i=0; i<IMG_COUNT; i++) promises.push(loadIndividualImage(words[i%words.length] || "abstract", key, i));
-            
-            const results = await Promise.allSettled(promises);
-            sceneElements = results.filter(r => r.status === 'fulfilled' && r.value.loaded).map(r => r.value);
-
-            if (sceneElements.length < Math.max(1, IMG_COUNT / 2) ) { // If less than half (or 0 if IMG_COUNT=1) load, fallback
-                generateSloganAndSubtitle(words, `Image load failed (${sceneElements.length}/${IMG_COUNT}). Using fallback art.`);
-                createGeometricShapes(words, key); // Create fallback shapes
-                usingFallbackArt = true;
-            } else {
-                generateSloganAndSubtitle(words, `(${sceneElements.length}/${IMG_COUNT} images loaded)`);
-                usingFallbackArt = false;
-            }
-        }
-
-        // --- Geometric Shapes Fallback Logic ---
-        function createGeometricShapes(words, key) {
-            sceneElements = [];
-            const numShapes = MIN_SHAPES + (stringToHash(key + 'numS') % (MAX_SHAPES - MIN_SHAPES + 1));
-            const baseHue = stringToHash(key + 'shapeHue') % 360;
-
-            for (let i = 0; i < numShapes; i++) {
-                const type = SHAPE_TYPES[stringToHash(key+'type'+i) % SHAPE_TYPES.length];
-                const size = (canvas.width/18) + seededRandom(key,'gsz'+i)*(canvas.width/12);
-                sceneElements.push({
-                    type, size,
-                    x: size/2 + seededRandom(key,'gx'+i)*(canvas.width-size),
-                    y: size/2 + seededRandom(key,'gy'+i)*(canvas.height-size),
-                    color: `hsla(${(baseHue+i*(360/numShapes)+seededRandom(key,'gch'+i)*30-15)%360}, ${60+seededRandom(key,'gcs'+i)*25}%, ${50+seededRandom(key,'gcl'+i)*20}%, 0.7)`,
-                    rot: seededRandom(key,'grot'+i)*Math.PI*2,
-                    vx: prefersReducedMotion?0:(seededRandom(key,'gvx'+i)-0.5)*0.5,
-                    vy: prefersReducedMotion?0:(seededRandom(key,'gvy'+i)-0.5)*0.5,
-                    rSpeed: prefersReducedMotion?0:(seededRandom(key,'grS'+i)-0.5)*0.005,
-                    loaded: true // shapes are always "loaded"
-                });
-            }
-        }
-        function drawGeometricShape(s, Ctx) { //Combined draw for shapes
-            Ctx.fillStyle = s.color; Ctx.save(); Ctx.translate(s.x,s.y); Ctx.rotate(s.rot);
-            switch(s.type){
-                case 'circle': Ctx.beginPath(); Ctx.arc(0,0,s.size/2,0,Math.PI*2); Ctx.fill(); break;
-                case 'square': Ctx.fillRect(-s.size/2,-s.size/2,s.size,s.size); break;
-                case 'triangle': {const h=s.size*0.866; Ctx.beginPath(); Ctx.moveTo(0,-h*2/3); Ctx.lineTo(-s.size/2,h/3); Ctx.lineTo(s.size/2,h/3); Ctx.closePath(); Ctx.fill(); break;}
-                case 'star': {const rO=s.size/2,rI=rO*0.4; Ctx.beginPath(); Ctx.moveTo(0,-rO); for(let i=0;i<5;i++){Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rI);Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rO);} Ctx.path();Ctx.fill(); break;}
-            }
-            Ctx.restore();
-        }
-
-        // --- Animation & Drawing ---
-        function drawScene() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            sceneElements.forEach(el => {
-                if (!el.loaded) return;
-                if (el.type === 'image') {
-                    ctx.save(); ctx.translate(el.x, el.y); ctx.rotate(el.rot);
-                    const aspect = el.img.naturalWidth/el.img.naturalHeight; let w=el.size, h=el.size/aspect; if(h>el.size){h=el.size; w=el.size*aspect;}
-                    ctx.drawImage(el.img, -w/2, -h/2, w, h); ctx.restore();
-                } else { // Geometric shape
-                    drawGeometricShape(el, ctx);
-                }
-            });
-        }
-        function animateScene() {
-            animationFrameId = requestAnimationFrame(animateScene);
-            if (isAnimationPaused && !prefersReducedMotion) { drawScene(); return; }
-            
-            if (!prefersReducedMotion) {
-                sceneElements.forEach(el => {
-                    if (!el.loaded) return;
-                    el.x += el.vx; el.y += el.vy; el.rot = (el.rot + el.rSpeed + Math.PI*2) % (Math.PI*2);
-                    const bound = el.size * 0.4;
-                    if (el.x < bound || el.x > canvas.width-bound) { el.vx *= -1; el.x = Math.max(bound, Math.min(el.x, canvas.width-bound)); }
-                    if (el.y < bound || el.y > canvas.height-bound) { el.vy *= -1; el.y = Math.max(bound, Math.min(el.y, canvas.height-bound));}
-                });
-            }
-            drawScene();
-        }
+        function H(s){let h=0;for(let i=0;i<s.length;i++)h=(h<<5)-h+s.charCodeAt(i),h|=0;return Math.abs(h)}function SR(k,s=""){return(H(k+s)%1e4)/1e4}function PW(s){return s.trim().toLowerCase().split(/\s+/).filter(Boolean).slice(0,3)}
+        function TXT(w){const up=w.map(s=>s[0].toUpperCase()+s.slice(1));let t; if(!up.length)t="FORGE THE VOID";else if(up.length==1)t=[`${up[0]} GENESIS`,`${up[0]} PULSE`][H(w.join('')+'t1')%2];
+        else if(up.length==2)t=[`${up[0]} & ${up[1]} SPARK`,`${up[0]}-${up[1]} FIELD`][H(w.join('')+'t2')%2]; else t=[`${up.join(' ')} CASCADE`,`${up.join(' ')} NEXUS`][H(w.join('')+'t3')%2];
+        SL.textContent=t.toUpperCase();SU.textContent=up.length?`Forging: ${up.join(', ')}.`:"Shape primordial energies."; C.ariaLabel=`Canvas: ${SU.textContent}`}
+        function BG(k){const h1=220+SR(k,'bH1')*70,s1=55+SR(k,'bS1')*20,l1=5+SR(k,'bL1')*4,h2=(h1+30+SR(k,'bH2')*40)%360,s2=45+SR(k,'bS2')*18,l2=7+SR(k,'bL2')*5;
+        document.body.style.background=`radial-gradient(ellipse at 30% 25%, hsl(${h1},${s1}%,${l1+3}%) 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, hsl(${h2},${s2}%,${l2+3}%) 0%, transparent 50%), var(--bg-deep-void)`;}
         
-        async function generatePoster(userWordsStr) {
-            if(animationFrameId) cancelAnimationFrame(animationFrameId);
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+        function createProtoStars(k,cW,cH){PS=[];CPS=null;CPP=0;CPT=0;CIA=false;CIB.textContent="Ignite Core";CIB.disabled=false;
+            const bH=175+SR(k,'sH')*100; for(let i=0;i<OS_NUM;i++){
+            const t=PTS[H(k+'pt'+i)%PTS.length],bS=Math.min(cW,cH),s=(bS/(28+SR(k,'sD',i)*5))+SR(k,'sR'+i)*(bS/(20+SR(k,'sDr',i)*6));PS.push({t,s,oS:s,x:SR(k,'ix'+i)*cW,
+            y:SR(k,'iy'+i)*cH,vx:(SR(k,'vx'+i)-0.5)*0.25,vy:(SR(k,'vy'+i)-0.5)*0.25,ax:0,ay:0,ph:'drifting',age:0,
+            cl:`hsla(${(bH+SR(k,'cH'+i)*60-30)%360},${70+SR(k,'cS'+i)*25}%,${68+SR(k,'cL'+i)*15}%,${0.55+SR(k,'cA'+i)*0.25})`,
+            r:SR(k,'r'+i)*Math.PI*2,rs:PRM?0:(SR(k,'rs'+i)-0.5)*1.2e-3,m:s*0.09,pO:SR(k,'p'+i)*Math.PI*2,gH:(bH+SR(k,'cH'+i)*60-30+H(k+"gc"+i)%10-5)%360});}}
+        
+        function drawEntity(el,Ctx,gt,cW,cH){Ctx.save();Ctx.translate(el.x,el.y);Ctx.rotate(el.r);
+            const p=el.ph==='consumed'?0:Math.sin(gt*1.8e-3+el.pO),effS=el.s*(1+p*0.05);let o=parseFloat(el.cl.split(',')[3].slice(0,-1));
+            Ctx.globalAlpha=el.ph==='nova_particle'?(o*(1-el.age/NOVA_FADE)):(o*(0.9+p*0.1));Ctx.fillStyle=el.cl.substring(0,el.cl.lastIndexOf(','))+")";
+            Ctx.shadowBlur=effS*0.55; Ctx.shadowColor=`hsla(${el.gH},85%,70%,${0.35+p*0.1+(el.ph==='nova_particle'?0.1:0)})`;
+
+            if(el.ph==='nova_particle'){Ctx.beginPath();Ctx.arc(0,0,effS/1.2,0,Math.PI*2);Ctx.fill();Ctx.shadowBlur=0;Ctx.restore();return;} // Nova particles are simple orbs
+            switch(el.t){
+                case 'starFragment': const rO=effS/2,rI=rO*(0.35+p*0.04);Ctx.beginPath();Ctx.moveTo(0,-rO);for(let k=0;k<5;k++){Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rI);Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rO);}Ctx.closePath();Ctx.fill();break;
+                case 'gaseousCloud': Ctx.beginPath();Ctx.arc(0,0,effS/1.8,0,Math.PI*2);Ctx.fill(); Ctx.shadowBlur=effS*0.8; Ctx.shadowColor=`hsla(${el.gH},80%,65%,${0.2+p*0.1})`;Ctx.fill();break; // More pronounced glow for clouds
+                case 'protoCore': Ctx.beginPath();Ctx.arc(0,0,effS/2.2,0,Math.PI*2);Ctx.lineWidth=effS*0.15;Ctx.strokeStyle=Ctx.fillStyle;Ctx.stroke();break; // Ring for core
+            }Ctx.shadowBlur=0;Ctx.restore();}
+
+        function updatePhysics(cW,cH,gt){const DAMP=0.978,REPEL=0.9,WIND=1.5e-3,MAXV=1.1,PULL=8e-3,CRIT_D=cW*0.03,SHRINK=0.99;let colN=0;
+            PS=PS.filter(el=>el.ph!=='nova_particle'||el.age<NOVA_FADE);PS.forEach(el=>{el.ax=0;el.ay=0;if(el.ph==='nova_particle'){el.age++;el.vx*=DAMP;el.vy*=DAMP;return;}});
+            const wA=Math.sin(gt*8e-5)*Math.PI+Math.cos(gt*1.3e-4)*Math.PI;
+            PS.forEach(el=>{if(el.ph==='nova_particle'||el.ph==='consumed')return;
+                if(CIA&&CPS==='gathering'){const dxS=cW/2-el.x,dyS=cH/2-el.y;el.s*=SHRINK;el.ax+=dxS*PULL;el.ay+=dyS*PULL;if(Math.hypot(dxS,dyS)<CRIT_D&&el.s<el.oS*0.25)colN++;}
+                else{el.s=Math.min(el.oS,el.s/(SHRINK*0.999)*1.003);el.ax+=Math.cos(wA+el.pO*0.2)*WIND;el.ay+=Math.sin(wA+el.pO*0.2)*WIND;}});
             
-            const parsedWords = parseUserWords(userWordsStr);
-            if(parsedWords.length === 0){
-                alert("Please enter at least one word for your vibe!"); vibeWordsInput.focus();
-                generateSloganAndSubtitle([], "Enter words to begin."); return;
-            }
-            currentWords = parsedWords;
-            vibeWordsInput.value = currentWords.map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
-            const wordsKey = currentWords.join('-');
-
-            generateSloganAndSubtitle(currentWords, "Loading...");
-            generateBackgroundGradient(wordsKey);
+            if(CIA&&CPS==='gathering'&&colN/OS_NUM>0.65&&OS_NUM>0){CPS='collapsing';CPT=gt;CIB.disabled=true;CIB.textContent="CORE COLLAPSING...";}
+            if(CPS==='collapsing'){CPP=(gt-CPT)/100;if(CPP>=1){CPS='nova_burst';CIB.textContent="NOVA!";let consumedData=[];
+                PS.forEach(el=>{if(el.s<el.oS*0.2&&Math.hypot(el.x-cW/2,el.y-cH/2)<CRIT_D*1.2){consumedData.push({...el});el.ph='consumed';}else{el.s=el.oS;}});
+                const fl=document.createElement('div');fl.style=`position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,240,0.98)0%,rgba(255,230,200,0.6)30%,rgba(255,200,150,0.2)55%,transparent 75%);z-index:200;pointer-events:none;opacity:0;animation:novaBurstFlash ${NOVA_FLASH_DUR/1000}s cubic-bezier(0.25,1,0.5,1);`;
+                const sEl=document.createElement('style');sEl.innerHTML=`@keyframes novaBurstFlash{0%{opacity:0;transform:scale(0.2);}30%{opacity:1;transform:scale(1.2);}100%{opacity:0;transform:scale(3);}}`;document.head.appendChild(sEl);document.body.appendChild(fl);setTimeout(()=>{fl.remove();sEl.remove();},NOVA_FLASH_DUR);
+                let newParts=[];consumedData.forEach(cD=>{for(let i=0;i<NOVA_PARTICLES/consumedData.length;i++){const ang=SR(cD.cl+i+GT)*Math.PI*2,vel=(1.5+SR(cD.cl+'v'+i+GT)*1.5)*(PRM?0.3:1),sz=cD.oS*(0.15+SR(cD.cl+'s'+i)*0.1);
+                newParts.push({s:sz,oS:sz,x:cW/2,y:cH/2,vx:Math.cos(ang)*vel,vy:Math.sin(ang)*vel,ax:0,ay:0,ph:'nova_particle',age:0,
+                cl:cD.cl.replace(/hsla\(([^,]+),([^,]+),([^,]+),[^)]+\)/,`hsla($1,${Math.min(100,parseFloat(cD.cl.split(',')[1])+15)}%,${Math.min(100,parseFloat(cD.cl.split(',')[2])+10)}%,0.8)`), // Brighter particle color
+                r:0,rs:0,m:sz*0.03,pO:0,gH:cD.gH});}}); PS=PS.filter(el=>el.ph!=='consumed').concat(newParts);CIA=false;CPS=null;setTimeout(()=>{CIB.textContent="Ignite Core";CIB.disabled=false;CPP=0;CPT=0;},NOVA_FLASH_DUR+200);}}
             
-            // Try loading images, with fallback to shapes
-            await loadImagesForVibe(currentWords, wordsKey);
-            animateScene();
-        }
+            for(let i=0;i<PS.length;i++){for(let j=i+1;j<PS.length;j++){const e1=PS[i],e2=PS[j];if(e1.ph.includes('nova_')||e2.ph.includes('nova_')||e1.ph==='consumed'||e2.ph==='consumed')continue;
+                const dx=e2.x-e1.x,dy=e2.y-e1.y;let d=Math.hypot(dx,dy);if(d==0)d=0.1;const mS=(e1.s+e2.s)*0.5;if(d<mS){const o=mS-d,nX=dx/d,nY=dy/d,f=o*REPEL;
+                e1.ax-=nX*f/(e1.m*2);e1.ay-=nY*f/(e1.m*2);e2.ax+=nX*f/(e2.m*2);e2.ay+=nY*f/(e2.m*2);}}}
+            PS.forEach(el=>{if(el.ph==='consumed'||el.ph==='nova_particle')return; el.vx=(el.vx+el.ax)*DAMP;el.vy=(el.vy+el.ay)*DAMP;
+                const spd=Math.hypot(el.vx,el.vy);if(spd>MAXV){el.vx=(el.vx/spd)*MAXV;el.vy=(el.vy/spd)*MAXV;}
+                el.x+=el.vx;el.y+=el.vy;el.r=(el.r+el.rs+Math.PI*2)%(Math.PI*2);
+                if(el.x<0&&el.vx<0)el.x=cW;else if(el.x>cW&&el.vx>0)el.x=0;if(el.y<0&&el.vy<0)el.y=cH;else if(el.y>cH&&el.vy>0)el.y=0;
+                const pad=el.s*0.05; if((el.x<pad&&el.vx<0)||(el.x>cW-pad&&el.vx>0))el.vx*=-0.3; if((el.y<pad&&el.vy<0)||(el.y>cH-pad&&el.vy>0))el.vy*=-0.3;});}
         
-        // --- Event Listeners & Init ---
-        document.getElementById('generateButton').addEventListener('click', () => generatePoster(vibeWordsInput.value));
-        vibeWordsInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') generatePoster(vibeWordsInput.value); });
+        function animLoop(){GT++;AFID=requestAnimationFrame(animLoop);if(ISP&&!PRM)return; const dpr=window.devicePixelRatio||1,uW=C.width/dpr,uH=C.height/dpr;
+            if(!PRM)updatePhysics(uW,uH,GT);CTX.clearRect(0,0,uW,uH);PS.forEach(el=>drawEntity(el,CTX,GT,uW,uH));
+            if(CPS==='collapsing'){CTX.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent-secondary').trim()||'#ff50d0';CTX.globalAlpha=0.85;
+            const bH=7,bW=uW*0.5,bX=(uW-bW)/2,bY=uH-bH-7;CTX.fillRect(bX,bY,bW*Math.min(1,CPP),bH);CTX.globalAlpha=1;}}
         
-        document.getElementById('downloadButton').addEventListener('click', () => {
-            if (sceneElements.length === 0) { alert("Create a vibe first!"); return; }
-            // Temporarily pause animation and redraw for clean PNG if needed (often not necessary for toDataURL)
-            const wasPaused = isAnimationPaused; isAnimationPaused = true; drawScene();
-            const dataURL = canvas.toDataURL('image/png');
-            isAnimationPaused = wasPaused;
-
-            const link = document.createElement('a');
-            link.href = dataURL;
-            link.download = `${currentWords.join('-') || 'vibe'}-poster.png`;
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
-        });
-
-        document.getElementById('shareButton').addEventListener('click', async () => {
-            if (sceneElements.length === 0) { alert("Create a vibe first!"); return; }
-            const shareText = `Check out my vibe: ${currentWords.map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ')}! Slogan: ${sloganEl.textContent}. Made with Vibe Poster Factory.`;
-            const shareData = { title: 'My Vibe Poster', text: shareText };
-            try {
-                if(!navigator.share) throw new Error('Web Share API not supported.');
-                await navigator.share(shareData);
-            } catch(err) { alert(`Share failed: ${err.message}. You can download and share manually.`); }
-        });
-
-        canvas.addEventListener('pointerenter', () => { if(!prefersReducedMotion) isAnimationPaused = true; });
-        canvas.addEventListener('pointerleave', () => { if(!prefersReducedMotion) isAnimationPaused = false; });
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Correct canvas sizing for High DPI displays
-            const style = getComputedStyle(canvas);
-            const cssWidth = parseFloat(style.width);
-            const cssHeight = parseFloat(style.height);
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = cssWidth * dpr;
-            canvas.height = cssHeight * dpr;
-            ctx.scale(dpr, dpr); // Scale context to draw at full resolution
-
-            let initialVibe = "Digital Art Abstract";
-            if (USER_WORDS_TEMPLATE && USER_WORDS_TEMPLATE !== "{{USER_WORDS}}") initialVibe = USER_WORDS_TEMPLATE;
-            vibeWordsInput.value = initialVibe;
-            generatePoster(initialVibe);
-        });
+        function generate(ws){if(AFID)cancelAnimationFrame(AFID);GT=0;const pW=PW(ws);if(!pW.length){alert("Words forge stars!");VI.focus();TXT([]);return;}CW=pW;VI.value=pW.map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
+            BG(pW.join('-'));TXT(pW);const dpr=window.devicePixelRatio||1;createProtoStars(pW.join('-'),C.width/dpr,C.height/dpr);animLoop();}
+        function resize(){const dpr=window.devicePixelRatio||1,cn=document.querySelector('.poster-container'),aH=cn.clientHeight-SL.offsetHeight-SU.offsetHeight-12,aW=cn.clientWidth-12;
+            let nCW=Math.min(aW,aH*(4/3)),nCH=nCW*(3/4);if(nCH>aH){nCH=aH;nCW=nCH*(4/3);} C.style.width=`${nCW}px`;C.style.height=`${nCH}px`;C.width=nCW*dpr;C.height=nCH*dpr;CTX.setTransform(dpr,0,0,dpr,0,0);if(CW.length)generate(CW.join(' '));}
+        CIB.addEventListener('click',()=>{if(CPS==='collapsing'||CPS==='nova_burst')return;CIA=!CIA;CPS=CIA?'gathering':null;CIB.textContent=CIA?"Release Core":"Ignite Core";if(!CIA)PS.forEach(el=>el.s=el.oS);});
+        document.getElementById('generateButton').addEventListener('click',()=>generate(VI.value));VI.addEventListener('keypress',e=>{if(e.key==='Enter')generate(VI.value);});
+        document.getElementById('downloadButton').addEventListener('click',()=>{if(!PS.length){alert("Forge a cosmos first!");return;}const ip=ISP;ISP=true;const dpr=window.devicePixelRatio||1;
+            CTX.clearRect(0,0,C.width/dpr,C.height/dpr);PS.forEach(el=>drawEntity(el,CTX,GT,C.width/dpr,C.height/dpr));const du=C.toDataURL('image/png');ISP=ip;const l=document.createElement('a');l.href=du;l.download=`${CW.join('-')||'stellar_forge'}.png`;l.click();});
+        document.getElementById('shareButton').addEventListener('click',async ()=>{if(!PS.length){alert("Forge a cosmos first!");return;}const txt=`My Stellar Forge (${CW.map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}): ${SL.textContent}.`;
+            try{if(!navigator.share)throw new Error('Signal Relay offline.');await navigator.share({title:'Stellar Forge Creation',text:txt});}catch(e){alert(`Echo transmission failed: ${e.message}.`);}});
+        C.addEventListener('pointerenter',()=>ISP=PRM?!ISP:true);C.addEventListener('pointerleave',()=>ISP=false);
+        window.addEventListener('resize',resize);document.addEventListener('DOMContentLoaded',()=>{let iV=UWT&&UWT!=="{{USER_WORDS}}"?UWT:"Celestial Shard Eruption";VI.value=iV;resize();if(!CW.length&&PW(iV).length)generate(iV);});
     </script>
 </body>
 </html> 
