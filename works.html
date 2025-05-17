@@ -9,7 +9,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-y: auto;
         }
         body {
             font-family: Arial, sans-serif;
@@ -17,15 +17,15 @@
             color: #333;
             line-height: 1.5;
             font-size: 17px;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            padding: 20px 0;
         }
         .container {
             max-width: 800px;
             width: 100%;
-            /* Remove vertical padding to avoid scroll */
             padding: 0 20px;
             box-sizing: border-box;
         }
