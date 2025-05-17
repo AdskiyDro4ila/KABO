@@ -1,162 +1,619 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>Particle Keywords Deluxe</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Two - Code Vault</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f0f2f5;
-            color: #333;
-            padding: 20px;
+            margin: 0;
+            overflow: hidden;
+            background-color: #0a0a0a; /* Very dark background */
+            color: #fff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 30px;
-            color: #666;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
-
-        .back-link:hover {
-            color: #333;
-        }
-
-        .project-header {
+        #controlsContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(25, 25, 25, 0.9); /* Dark semi-transparent bg */
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.6);
             text-align: center;
-            margin-bottom: 50px;
+            z-index: 10;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+            width: 90%;
+            max-width: 450px; /* Max width for controls */
         }
 
-        .project-header h1 {
-            font-size: 2.5em;
-            color: #1c1e21;
-            margin-bottom: 15px;
+        #controlsContainer.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
-        .project-header .subtitle {
-            font-size: 1.2em;
-            color: #606770;
-            max-width: 600px;
-            margin: 0 auto;
+        #controlsContainer h1 {
+            color: #f0f0f0;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 2em; /* Adjusted size */
+            font-weight: 300; 
         }
 
-        .project-content {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-            margin-bottom: 30px;
-        }
-
-        .project-image {
-            width: 100%;
-            max-width: 800px;
-            height: auto;
-            border-radius: 8px;
-            margin: 20px auto;
+        #controlsContainer input[type="text"] {
             display: block;
+            width: calc(100% - 28px); /* Account for padding and border */
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #555; 
+            border-radius: 6px;
+            background-color: rgba(40,40,40,0.8); 
+            color: #fff; 
+            font-size: 1.1em;
+            transition: border-color 0.3s ease;
+        }
+        #controlsContainer input[type="text"]::placeholder {
+            color: #888;
+        }
+        #controlsContainer input[type="text"]:focus {
+            outline: none;
+            /* Border color on focus will be handled by JS potentially */
         }
 
-        .code-section {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-            font-family: 'Courier New', Courier, monospace;
+        #controlsContainer button {
+            padding: 12px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff; 
+            background-color: #007bff; 
+            border: none; 
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.15s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .description {
-            margin: 20px 0;
-            line-height: 1.8;
+        #controlsContainer button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        #controlsContainer button:active {
+            transform: translateY(0px) scale(1);
+             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        #hintText {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 25px;
+            margin-bottom: 0;
         }
 
-        .features {
-            margin: 30px 0;
-        }
-
-        .features h3 {
-            margin-bottom: 15px;
-            color: #1c1e21;
-        }
-
-        .features ul {
-            list-style-position: inside;
-            margin-left: 20px;
-        }
-
-        .features li {
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .project-header h1 {
-                font-size: 2em;
-            }
-            
-            .project-content {
-                padding: 20px;
-            }
+        canvas {
+            display: none; /* Initially hidden, shown by JS */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="projects.html" class="back-link">← Back to Projects</a>
-
-        <header class="project-header">
-            <h1>Project Two</h1>
-            <p class="subtitle">Where simplicity meets complexity</p>
-        </header>
-
-        <main class="project-content">
-            <img src="https://picsum.photos/seed/project2/800/400" alt="Project Two Preview" class="project-image">
-            
-            <div class="description">
-                <h2>About This Project</h2>
-                <p>Welcome to the second creation in our digital vault. This project explores the delicate balance between simplicity and complexity in web development.</p>
-            </div>
-
-            <div class="features">
-                <h3>Key Features</h3>
-                <ul>
-                    <li>Feature one description</li>
-                    <li>Feature two description</li>
-                    <li>Feature three description</li>
-                </ul>
-            </div>
-
-            <div class="code-section">
-                <pre><code>// Your code will go here
-// This is where you can showcase your project's code
-// The code will be displayed with syntax highlighting</code></pre>
-            </div>
-
-            <div class="description">
-                <h3>How It Works</h3>
-                <p>Explain the technical details and implementation of your project here. This is where you can share your insights and the challenges you overcame.</p>
-            </div>
-        </main>
+    <div id="controlsContainer">
+        <h1>Particle Keywords</h1>
+        <input type="text" id="keyword1Input" placeholder="First keyword">
+        <input type="text" id="keyword2Input" placeholder="Second keyword (optional)">
+        <button id="startButton">Launch</button>
+        <p id="hintText">Refresh page for a new color scheme!</p>
     </div>
+    <canvas id="particleCanvas"></canvas>
+
+    <script>
+        // --- Seeded Random Function ---
+        let currentSeed;
+        let seededRandom; 
+
+        function mulberry32(a) {
+            return function() {
+                var t = a += 0x6D2B79F5;
+                t = Math.imul(t ^ t >>> 15, t | 1);
+                t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            }
+        }
+        
+        // --- Color Scheme Generation ---
+        let baseHue, baseSaturation, baseLightness;
+        let UI_ACCENT_COLOR_STRING;
+        let UI_TEXT_COLOR_STRING = '#FFFFFF';
+        let UI_INPUT_BG_COLOR_STRING = 'rgba(50, 50, 50, 0.7)'; // Slightly lighter input bg
+        let UI_INPUT_BORDER_COLOR_STRING;
+        let HUE_VARIATION_RANGE = 0.08; // Particles will vary hue by +/- this
+
+        function hslToRgb(h, s, l) { // h, s, l in [0,1]
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l; // achromatic
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        function generateAndApplyColorScheme() {
+            baseHue = seededRandom(); 
+            baseSaturation = 0.65 + seededRandom() * 0.35; // Vibrant saturation
+            baseLightness = 0.55 + seededRandom() * 0.1;  // Bright but not pale
+
+            const accentRgb = hslToRgb(baseHue, baseSaturation, baseLightness);
+            UI_ACCENT_COLOR_STRING = `rgb(${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]})`;
+
+            const inputBorderRgb = hslToRgb(baseHue, baseSaturation, baseLightness * 0.8); // Slightly darker for border
+            UI_INPUT_BORDER_COLOR_STRING = `rgb(${inputBorderRgb[0]}, ${inputBorderRgb[1]}, ${inputBorderRgb[2]})`;
+
+            const accentLuminance = (0.299 * accentRgb[0] + 0.587 * accentRgb[1] + 0.114 * accentRgb[2]) / 255;
+            UI_TEXT_COLOR_STRING = accentLuminance > 0.55 ? '#222222' : '#FFFFFF';
+
+            const startButton = document.getElementById('startButton');
+            const keyword1Input = document.getElementById('keyword1Input');
+            const keyword2Input = document.getElementById('keyword2Input');
+            const hintText = document.getElementById('hintText');
+
+            if (startButton) {
+                startButton.style.backgroundColor = UI_ACCENT_COLOR_STRING;
+                startButton.style.color = UI_TEXT_COLOR_STRING;
+            }
+            if (keyword1Input) {
+                keyword1Input.style.borderColor = UI_ACCENT_COLOR_STRING; // Use main accent for border focus
+                keyword1Input.style.backgroundColor = UI_INPUT_BG_COLOR_STRING;
+                keyword1Input.addEventListener('focus', () => keyword1Input.style.borderColor = UI_ACCENT_COLOR_STRING);
+                keyword1Input.addEventListener('blur', () => keyword1Input.style.borderColor = UI_INPUT_BORDER_COLOR_STRING); // Revert to less prominent border
+            }
+            if (keyword2Input) {
+                keyword2Input.style.borderColor = UI_ACCENT_COLOR_STRING;
+                keyword2Input.style.backgroundColor = UI_INPUT_BG_COLOR_STRING;
+                keyword2Input.addEventListener('focus', () => keyword2Input.style.borderColor = UI_ACCENT_COLOR_STRING);
+                keyword2Input.addEventListener('blur', () => keyword2Input.style.borderColor = UI_INPUT_BORDER_COLOR_STRING);
+            }
+            if(hintText) {
+                hintText.style.color = `rgba(${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]}, 0.7)`;
+            }
+        }
+
+        function initSeedAndColorScheme() {
+            let storedSeed = sessionStorage.getItem('lastParticleSeed');
+            if (storedSeed && !isNaN(parseInt(storedSeed, 10))) {
+                currentSeed = parseInt(storedSeed, 10);
+            } else {
+                currentSeed = Math.floor(Date.now() * Math.random()) + 1; 
+            }
+            // Generate a new seed for next time, but use the current one for this session
+            sessionStorage.setItem('lastParticleSeed', (Math.floor(Date.now() * Math.random()) + 1).toString());
+            seededRandom = mulberry32(currentSeed);
+            // console.log("Using seed:", currentSeed);
+            generateAndApplyColorScheme();
+        }
+
+
+        // --- Particle Class ---
+        class Particle {
+            constructor(initialX, initialY, radius, pBaseHue, pBaseSaturation, pBaseLightness) {
+                this.x = initialX; 
+                this.y = initialY;
+                this.homeX = initialX; 
+                this.homeY = initialY; 
+                this.targetX = initialX; 
+                this.targetY = initialY;
+
+                let particleHue = pBaseHue + (seededRandom() - 0.5) * HUE_VARIATION_RANGE * 2; // More variation
+                if (particleHue < 0) particleHue += 1;
+                if (particleHue > 1) particleHue -= 1;
+                
+                let particleSaturation = Math.max(0.4, Math.min(1, pBaseSaturation + (seededRandom() - 0.5) * 0.3));
+                let particleLightness = Math.max(0.35, Math.min(0.85, pBaseLightness + (seededRandom() - 0.5) * 0.25));
+                
+                const rgb = hslToRgb(particleHue, particleSaturation, particleLightness);
+                this.baseColorRGB = `${rgb[0]},${rgb[1]},${rgb[2]}`;
+
+                this.radius = radius;
+                this.alpha = 1; 
+                this.mode = 'HOLD'; // 'HOLD', 'FORMING', 'DISPERSING'
+                
+                // Slower animations
+                this.easeFormation = 0.012 + seededRandom() * 0.018;
+                this.easeDispersal = 0.006 + seededRandom() * 0.01;
+                this.currentEase = this.easeFormation;
+                this.alphaDecay = 0.0015; // Slower fade
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.baseColorRGB}, ${this.alpha})`;
+                ctx.fill();
+            }
+
+            update(canvasWidth, canvasHeight) {
+                if (this.mode === 'HOLD') return;
+
+                let dx = this.targetX - this.x;
+                let dy = this.targetY - this.y;
+                
+                if (this.mode === 'FORMING' && Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+                    this.x = this.targetX;
+                    this.y = this.targetY;
+                } else {
+                    this.x += dx * this.currentEase;
+                    this.y += dy * this.currentEase;
+                }
+                
+                if (this.mode === 'DISPERSING') {
+                    this.alpha -= this.alphaDecay;
+                    if (this.alpha < 0) this.alpha = 0;
+                    if (this.alpha > 0.05 && (Math.abs(dx) > 5 || Math.abs(dy) > 5) && seededRandom() < 0.015) {
+                         this.targetX = seededRandom() * canvasWidth;
+                         this.targetY = seededRandom() * canvasHeight;
+                    }
+                }
+            }
+            
+            setFormationTarget(targetX, targetY) {
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.homeX = targetX; 
+                this.homeY = targetY;
+                this.alpha = 1; 
+                this.mode = 'FORMING';
+                this.currentEase = this.easeFormation;
+            }
+            
+            setDispersalTarget(canvasWidth, canvasHeight) {
+                this.targetX = seededRandom() * canvasWidth; 
+                this.targetY = seededRandom() * canvasHeight;
+                this.mode = 'DISPERSING';
+                this.currentEase = this.easeDispersal;
+            }
+        }
+
+        // --- Main Application ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        const controlsContainer = document.getElementById('controlsContainer');
+        const startButton = document.getElementById('startButton');
+        const keyword1Input = document.getElementById('keyword1Input');
+        const keyword2Input = document.getElementById('keyword2Input');
+        
+        let particles = [];
+        let animationFrameId;
+
+        const PARTICLE_RADIUS = 1.8; // Slightly larger particles
+        const PIXEL_SAMPLE_DENSITY = 4; // Adjusted for potentially larger fonts / glyphs
+        const HOLD_DURATION_MS = 4000; // Longer hold
+        const WORD1_DISPERSE_TO_WORD2_DELAY_MS = 1500; // Time word1 disperses before word2 starts forming
+        
+        const TEXT_BASELINE = 'alphabetic'; // Using alphabetic for more precise control with ascent/descent
+        const TEXT_ALIGN = 'center';
+        const MIN_FONT_SIZE = 20;
+        const DEFAULT_FONT_FAMILY = 'Arial, Helvetica, sans-serif'; 
+
+        let animationState = 'INIT'; 
+        let globalKeyword1 = "";
+        let globalKeyword2 = "";
+        
+        let holdTimer = null;
+        let transitionTimer = null; // Generic timer for transitions like disperse -> word2
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function calculateDynamicFontString(text, canvasRef, ctxRef) {
+            let fontSize = Math.min(canvasRef.width / (text.length * 0.7 || 1), canvasRef.height * 0.4); // More generous for length
+            fontSize = Math.max(fontSize, MIN_FONT_SIZE); 
+            fontSize = Math.min(fontSize, 250); 
+
+            let textFont = `bold ${fontSize}px ${DEFAULT_FONT_FAMILY}`;
+            ctxRef.font = textFont;
+            let textMetrics = ctxRef.measureText(text);
+            
+            const targetWidth = canvasRef.width * 0.85; 
+            if (textMetrics.width > targetWidth && targetWidth > 0) {
+                fontSize *= (targetWidth / textMetrics.width);
+            }
+            
+            let tempAscent = (textMetrics.actualBoundingBoxAscent || fontSize * 0.8);
+            let tempDescent = (textMetrics.actualBoundingBoxDescent || fontSize * 0.3);
+            let tempHeight = tempAscent + tempDescent;
+
+            const targetHeight = canvasRef.height * 0.5; // Max 50% of height
+            if (tempHeight > targetHeight && targetHeight > 0) {
+                 fontSize *= (targetHeight / tempHeight);
+            }
+
+            if (fontSize < MIN_FONT_SIZE) fontSize = MIN_FONT_SIZE;
+            
+            return `bold ${Math.floor(fontSize)}px ${DEFAULT_FONT_FAMILY}`;
+        }
+
+        function getPixelPositionsForWord(text, fontString, canvasWidth, canvasHeight) {
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.font = fontString;
+            const metrics = tempCtx.measureText(text);
+            const fontSize = parseFloat(fontString.match(/(\d+)px/)[1]) || MIN_FONT_SIZE;
+
+            let ascent = metrics.actualBoundingBoxAscent;
+            let descent = metrics.actualBoundingBoxDescent;
+            if (!ascent || !descent || ascent < 0 || descent < 0 ) { // Check for invalid metrics
+                ascent = fontSize * 0.75; 
+                descent = fontSize * 0.25; 
+            }
+
+            const textDrawHeight = ascent + descent;
+            const textWidth = metrics.width;
+            
+            const verticalPadding = fontSize * 0.4; // Generous vertical padding for glyphs like 'g'
+            const horizontalPadding = fontSize * 0.2;
+
+            tempCanvas.width = Math.ceil(textWidth + horizontalPadding * 2);
+            tempCanvas.height = Math.ceil(textDrawHeight + verticalPadding * 2);
+
+            tempCtx.font = fontString; 
+            tempCtx.fillStyle = '#FFFFFF'; 
+            tempCtx.textAlign = TEXT_ALIGN;
+            tempCtx.textBaseline = TEXT_BASELINE; // 'alphabetic'
+            
+            const drawY = ascent + verticalPadding; 
+            tempCtx.fillText(text, tempCanvas.width / 2, drawY);
+
+            const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+            const data = imageData.data;
+            const positions = [];
+
+            const offsetX = (canvasWidth - tempCanvas.width) / 2;
+            const offsetY = (canvasHeight - tempCanvas.height) / 2;
+
+            for (let y = 0; y < tempCanvas.height; y += PIXEL_SAMPLE_DENSITY) {
+                for (let x = 0; x < tempCanvas.width; x += PIXEL_SAMPLE_DENSITY) {
+                    const alphaIndex = (y * tempCanvas.width + x) * 4 + 3;
+                    if (data[alphaIndex] > 128) { 
+                        positions.push({ x: x + offsetX, y: y + offsetY });
+                    }
+                }
+            }
+            return positions;
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            let allParticlesAtTarget = true;
+            let allParticlesFaded = true;
+
+            particles.forEach(p => {
+                p.update(canvas.width, canvas.height);
+                p.draw(ctx);
+                if (p.mode === 'FORMING' && (Math.abs(p.x - p.targetX) > 0.5 || Math.abs(p.y - p.targetY) > 0.5)) {
+                    allParticlesAtTarget = false;
+                }
+                if (p.alpha > 0.01) {
+                    allParticlesFaded = false;
+                }
+            });
+
+            switch (animationState) {
+                case 'FORMING_WORD1':
+                    if (allParticlesAtTarget) {
+                        particles.forEach(p => p.mode = 'HOLD');
+                        animationState = 'HOLDING_WORD1';
+                        if(holdTimer) clearTimeout(holdTimer);
+                        holdTimer = setTimeout(() => {
+                            if (animationState === 'HOLDING_WORD1') {
+                                animationState = 'DISPERSING_WORD1';
+                                particles.forEach(p => p.setDispersalTarget(canvas.width, canvas.height));
+                                if (globalKeyword2) { // If there's a second word, set up transition
+                                    if (transitionTimer) clearTimeout(transitionTimer);
+                                    transitionTimer = setTimeout(() => {
+                                        if (animationState === 'DISPERSING_WORD1') { // Still in this state
+                                            startWord2Animation();
+                                        }
+                                    }, WORD1_DISPERSE_TO_WORD2_DELAY_MS);
+                                } else { // No second word, disperse and end
+                                   // DISPERSING_WORD1 will transition to DISPERSING_AND_ENDING
+                                }
+                            }
+                        }, HOLD_DURATION_MS);
+                    }
+                    break;
+                case 'DISPERSING_WORD1':
+                    if (!globalKeyword2 && allParticlesFaded) { // No word 2, and word 1 faded
+                        animationState = 'DONE';
+                    }
+                    // If globalKeyword2 exists, transition is handled by transitionTimer
+                    break;
+                case 'FORMING_WORD2':
+                    if (allParticlesAtTarget) {
+                        particles.forEach(p => p.mode = 'HOLD');
+                        animationState = 'HOLDING_WORD2';
+                        if(holdTimer) clearTimeout(holdTimer);
+                        holdTimer = setTimeout(() => {
+                            if (animationState === 'HOLDING_WORD2') {
+                                animationState = 'DISPERSING_WORD2';
+                                particles.forEach(p => p.setDispersalTarget(canvas.width, canvas.height));
+                            }
+                        }, HOLD_DURATION_MS);
+                    }
+                    break;
+                case 'DISPERSING_WORD2':
+                    if (allParticlesFaded) {
+                        animationState = 'DONE';
+                    }
+                    break;
+            }
+
+            if (animationState !== 'DONE' && animationState !== 'INIT') {
+                animationFrameId = requestAnimationFrame(animate);
+            } else {
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+                if (animationState === 'DONE') {
+                    // Optionally, bring controls back or show a message
+                    controlsContainer.classList.remove('hidden');
+                    canvas.style.display = 'none';
+                    displayMessageOnControls("Animation Complete! Enter new words or refresh.");
+                }
+            }
+        }
+        function displayMessageOnControls(message) {
+            const hint = document.getElementById('hintText');
+            if(hint) hint.textContent = message;
+        }
+
+
+        function setupAndStartWord1Animation() {
+            globalKeyword1 = keyword1Input.value.trim();
+            globalKeyword2 = keyword2Input.value.trim();
+
+            if (!globalKeyword1) {
+                alert("Please enter the first keyword.");
+                return;
+            }
+            
+            controlsContainer.classList.add('hidden');
+            canvas.style.display = 'block';
+            resizeCanvas(); // Ensure canvas is sized before getting particle positions
+
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            if(holdTimer) clearTimeout(holdTimer);
+            if(transitionTimer) clearTimeout(transitionTimer);
+
+            // Ensure a fresh seed for each "Launch", making color scheme new per refresh but particle layout new per launch
+            // seededRandom = mulberry32(Math.floor(Date.now() * Math.random()) + 1);
+
+            const fontString = calculateDynamicFontString(globalKeyword1, canvas, ctx);
+            const particleTargetPositions = getPixelPositionsForWord(globalKeyword1, fontString, canvas.width, canvas.height);
+            
+            if (!particleTargetPositions || particleTargetPositions.length === 0) {
+                displayMessageOnControls(`Cannot form: "${globalKeyword1}". Try another.`);
+                controlsContainer.classList.remove('hidden');
+                canvas.style.display = 'none';
+                return;
+            }
+            
+            particles = []; 
+            particleTargetPositions.forEach(pos => {
+                const startX = canvas.width / 2 + (seededRandom() - 0.5) * canvas.width * 1.2; 
+                const startY = canvas.height / 2 + (seededRandom() - 0.5) * canvas.height * 1.2;
+                const p = new Particle(startX, startY, PARTICLE_RADIUS, baseHue, baseSaturation, baseLightness);
+                p.setFormationTarget(pos.x, pos.y);
+                particles.push(p);
+            });
+
+            animationState = 'FORMING_WORD1';
+            if (!animationFrameId) animationFrameId = requestAnimationFrame(animate);
+        }
+
+        function startWord2Animation() {
+            // Particles are currently dispersing from Word 1
+            resizeCanvas(); 
+            
+            const fontString = calculateDynamicFontString(globalKeyword2, canvas, ctx);
+            const particleTargetPositions = getPixelPositionsForWord(globalKeyword2, fontString, canvas.width, canvas.height);
+            
+            if (!particleTargetPositions || particleTargetPositions.length === 0) {
+                // Word 2 failed, let word 1 continue to disperse and then end
+                animationState = 'DISPERSING_WORD1'; // Or a specific "fading_out_word1_no_word2" state
+                // The animate loop will then go to DONE when particles fade
+                return;
+            }
+
+            // Re-assign existing particles
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                const targetPos = particleTargetPositions[i % particleTargetPositions.length];
+                p.setFormationTarget(targetPos.x, targetPos.y);
+            }
+            
+            if (particleTargetPositions.length > particles.length) {
+                const needed = particleTargetPositions.length - particles.length;
+                for (let i = 0; i < needed; i++) {
+                    const targetPos = particleTargetPositions[particles.length + i];
+                    const startX = seededRandom() < 0.5 ? (seededRandom() < 0.5 ? -30 : canvas.width + 30) : seededRandom() * canvas.width;
+                    const startY = seededRandom() < 0.5 ? (seededRandom() < 0.5 ? -30 : canvas.height + 30) : seededRandom() * canvas.height;
+                    const p = new Particle(startX, startY, PARTICLE_RADIUS, baseHue, baseSaturation, baseLightness);
+                    p.setFormationTarget(targetPos.x, targetPos.y);
+                    particles.push(p);
+                }
+            } 
+            else if (particles.length > particleTargetPositions.length * 1.5 && particleTargetPositions.length > 0) {
+                for (let i = particleTargetPositions.length; i < particles.length; i++) {
+                     if (particles[i] && particles[i].mode !== 'DISPERSING') {
+                         particles[i].setDispersalTarget(canvas.width, canvas.height);
+                     }
+                }
+                 // Prune excess particles smoothly by just letting them disperse fully.
+                 // The existing particles might be more than word2 needs. Those without a new target
+                 // will just keep dispersing. The above loop re-targets, others will get handled implicitly.
+                 // This actually could mean only `particleTargetPositions.length` particles are used, the rest
+                 // from word 1 would need to be set to disperse explicitly if they aren't.
+                 // Let's explicitly set excess particles to disperse if they are not already:
+                 for(let i = particleTargetPositions.length; i < particles.length; i++){
+                    particles[i].setDispersalTarget(canvas.width, canvas.height);
+                    particles[i].alphaDecay = 0.005; // Disperse excess a bit faster
+                 }
+
+            }
+
+            animationState = 'FORMING_WORD2';
+            if (!animationFrameId) animationFrameId = requestAnimationFrame(animate);
+        }
+
+        function main() {
+            initSeedAndColorScheme(); 
+            startButton.addEventListener('click', setupAndStartWord1Animation);
+            window.addEventListener('resize', () => {
+                if (animationState !== 'INIT' && animationState !== 'DONE') {
+                    // If animation is running, a full restart is simplest
+                    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                    if(holdTimer) clearTimeout(holdTimer);
+                    if(transitionTimer) clearTimeout(transitionTimer);
+                    
+                    particles = []; // Clear existing particles
+                    
+                    // Re-show controls to allow user to restart with new dimensions
+                    controlsContainer.classList.remove('hidden');
+                    canvas.style.display = 'none';
+                    displayMessageOnControls("Resized. Please launch again.");
+                    animationState = 'INIT'; // Reset state
+                } else {
+                     // If controls are visible or animation done, just resize canvas (if it were visible)
+                     // or simply do nothing as controls will adapt
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', main);
+    </script>
 </body>
 </html> 
