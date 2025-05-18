@@ -3,137 +3,688 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Stellar Forge</title>
+    <title>PROJECT I</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
         :root {
-            --bg-deep-void: #03020c; --bg-nebula-hue1: #1a0a30; --bg-nebula-hue2: #2c1547;
-            --text-main: #f2f2f8; --text-dim: #b0b0c8;
-            --accent-primary: #00ddff; --accent-secondary: #ff50d0; /* Bright Cyan & Hot Pink */
-            --button-border: rgba(0, 221, 255, 0.6); --button-hover-bg: rgba(0, 221, 255, 0.15);
-            --ui-panel-bg: rgba(8, 4, 20, 0.6); --font-size-base: 12px;
+            --card-width-preview: 350px;
+            --card-height-preview: 200px;
+            --print-scale-factor: 3.5; 
+
+            --color-primary: #2563EB; /* Focused Blue */
+            --color-primary-dark: #1D4ED8;
+            --color-secondary: #059669; /* Rich Green */
+            --color-secondary-dark: #047857;
+            --color-accent: #D97706; /* Deep Amber */
+            --color-accent-dark: #B45309;
+            --color-neutral: #4B5563; /* Graphite */
+            
+            --color-text-dark: #111827; 
+            --color-text-medium: #374151;
+            --color-text-light: #6B7280;
+            
+            --color-bg: #E5E7EB; /* Light Stone Gray */
+            --color-surface: #FFFFFF; 
+            --color-border: #D1D5DB;
+            
+            --font-primary-ui: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-heading-ui: 'Montserrat', sans-serif;
+
+            /* Card Specific Fonts (examples, actual font strings are in JS) */
+            --font-card-serif: 'Playfair Display', serif;
+            --font-card-sans: 'Inter', sans-serif;
+            --font-card-mono: 'Roboto Mono', monospace;
+            --font-card-display-sans: 'Montserrat', sans-serif;
+
+
+            --border-radius-sm: 4px;
+            --border-radius-md: 6px; /* Slightly sharper */
+            --border-radius-lg: 10px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        html,body{height:100%;overflow:hidden;}
+
         body {
-            margin:0;font-family:"SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-            color:var(--text-main);background:radial-gradient(ellipse at 20% 30%, var(--bg-nebula-hue1) 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, var(--bg-nebula-hue2) 0%, transparent 55%), var(--bg-deep-void);
-            display:flex;flex-direction:column;align-items:center;justify-content:space-between;font-size:var(--font-size-base);padding-top:38px;padding-bottom:36px;
+            font-family: var(--font-primary-ui);
+            margin: 0; padding: 25px;
+            background-color: var(--color-bg);
+            color: var(--color-text-dark);
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; font-size: 16px; line-height: 1.6;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
         }
-        *,*::before,*::after{box-sizing:border-box;}
-        .controls {
-            position:fixed;z-index:100;padding:4px 8px;background:var(--ui-panel-bg);
-            backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:flex;gap:5px;align-items:center;
-            top:0;left:0;width:100%;border-bottom:1px solid rgba(0,221,255,0.1);
+
+        .main-container {
+            background: var(--color-surface);
+            padding: 30px 35px 40px;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%; max-width: 580px;
+            box-sizing: border-box; margin-bottom: 30px;
         }
-        .controls input{font-size:0.9em;padding:5px 7px;border:1px solid rgba(0,221,255,0.2);border-radius:3px;
-            flex-grow:1;background:rgba(0,0,8,0.3);color:var(--text-main);}
-        .controls input::placeholder{color:var(--text-dim);} .controls button{margin-left:auto;}
-        button{font-size:0.75em;padding:5px 10px;border-radius:3px;cursor:pointer;background:transparent;
-            border:1px solid var(--button-border);color:var(--accent-primary);transition:all 0.12s ease;
-            white-space:nowrap;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;}
-        button:hover:not(:disabled),button:focus-visible:not(:disabled){background:var(--button-hover-bg);color:#fff;
-            box-shadow:0 0 5px rgba(0,221,255,0.25),0 0 9px rgba(0,221,255,0.15);border-color:var(--accent-primary);}
-        button:disabled{opacity:0.45;cursor:progress;border-color:rgba(110,110,110,0.4);color:rgba(110,110,110,0.7);}
-        .poster-container{display:flex;flex-direction:column;align-items:center;text-align:center;
-            padding:3px 6px;width:100%;flex-grow:1;overflow:hidden;justify-content:center;}
-        #slogan{font-size:clamp(1.1rem,3vw,1.9rem);margin:3px 0;font-weight:600;letter-spacing:0.6px;}
-        #subtitle{font-size:clamp(0.6rem,1.8vw,0.8rem);max-width:50ch;margin:2px 0 7px 0;color:var(--text-dim);font-weight:300;}
-        #posterCanvas{max-width:100%;max-height:calc(100vh - 140px);display:block;border-radius:4px;}
-        .footer-actions{position:fixed;bottom:0;left:0;width:100%;display:flex;gap:5px;padding:4px 8px;justify-content:center;
-            background:var(--ui-panel-bg);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);border-top:1px solid rgba(0,221,255,0.1);}
-        @media(min-width:580px){.controls{width:auto;border-radius:0 0 8px 0;} .controls input{min-width:170px;flex-grow:0;}}
+
+        h1 {
+            text-align: center; color: var(--color-primary);
+            margin-top: 0; margin-bottom: 35px; font-size: 2.1em; /* slightly more reserved */
+            font-weight: 600; font-family: var(--font-heading-ui);
+        }
+
+        .section-title {
+            font-size: 1.05em; color: var(--color-neutral); /* Muted title */
+            margin-top: 25px; margin-bottom: 15px; padding-bottom: 8px;
+            border-bottom: 1px solid var(--color-border); font-weight: 500;
+            font-family: var(--font-heading-ui); display: flex; align-items: center; gap: 8px;
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+        .section-title svg { width: 18px; height: 18px; fill: currentColor; opacity: 0.7; }
+
+        .form-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-weight: 500; color: var(--color-text-medium); font-size: 0.85em; }
+
+        input[type="text"], select {
+            width: 100%; padding: 11px 14px; /* slightly tighter */
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-md); box-sizing: border-box;
+            font-size: 0.95em; color: var(--color-text-dark);
+            background-color: #F9FAFB; 
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        }
+        input[type="text"]:focus, select:focus {
+            border-color: var(--color-primary); background-color: var(--color-surface);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); outline: none;
+        }
+        select {
+            appearance: none; -webkit-appearance: none; -moz-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M5%208l5%205%205-5z%22%20fill%3D%22%236B7280%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat; background-position: right 12px center; background-size: 12px;
+            padding-right: 35px;
+        }
+
+        .color-picker-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+        .color-picker-group {
+            flex: 1 1 180px; display: flex; align-items: center; gap: 8px;
+            background-color: #F9FAFB; padding: 7px 10px; border-radius: var(--border-radius-md);
+        }
+        .color-picker-group label { flex-grow: 1; margin-bottom: 0; font-size: 0.8em; color: var(--color-text-medium); }
+        input[type="color"] {
+            min-width: 32px; height: 32px; padding: 0; border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-sm); cursor: pointer;
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            background-color: transparent; box-shadow: var(--shadow-sm);
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 3px; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: var(--border-radius-sm); }
+
+        .actions-group { margin-top: 25px; display: flex; flex-direction: column; gap: 10px; }
+        .actions-group .button-row { display: flex; gap: 10px; }
+
+        button {
+            color: white; padding: 11px 16px; /* Tighter padding */
+            border: none; border-radius: var(--border-radius-md);
+            cursor: pointer; font-size: 0.9em; font-weight: 500; 
+            font-family: var(--font-primary-ui);
+            transition: background-color 0.15s, transform 0.1s, box-shadow 0.15s;
+            width: 100%; flex-grow: 1;
+            box-shadow: var(--shadow-md);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-transform: uppercase; letter-spacing: 0.025em;
+        }
+        button:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+        button:active { transform: translateY(0px); box-shadow: var(--shadow-md); }
+        button svg { width: 0.9em; height: 0.9em; fill: currentColor; }
+
+        #generateBtn { background-color: var(--color-secondary); }
+        #generateBtn:hover { background-color: var(--color-secondary-dark); }
+        #randomStyleBtn { background-color: var(--color-accent); }
+        #randomStyleBtn:hover { background-color: var(--color-accent-dark); }
+
+        #flipBtn { background-color: var(--color-neutral); }
+        #flipBtn:hover { background-color: #374151; } /* Darker neutral */
+        #downloadBtn { background-color: var(--color-primary); }
+        #downloadBtn:hover { background-color: var(--color-primary-dark); }
+
+        .canvas-preview-container {
+            margin: 30px auto; width: var(--card-width-preview); height: var(--card-height-preview);
+            position: relative; border-radius: var(--border-radius-sm); /* Sharper edges for card */
+            overflow: hidden; box-shadow: var(--shadow-lg);
+            border: 1px solid #CFD8DC; /* Very subtle border, almost like cut paper */
+        }
+        #businessCardCanvasPreview { display: block; width: 100%; height: 100%; background-color: var(--color-surface); }
+        #businessCardCanvasDownload { display: none; }
+
+        .info-text { font-size: 0.8em; color: var(--color-text-medium); text-align: center; margin-top: 20px; margin-bottom: 0; line-height: 1.4; }
     </style>
 </head>
 <body>
-    <header class="controls">
-        <input type="text" id="vibeWordsInput" placeholder="Celestial Shard Eruption" aria-label="Keywords for cosmic generation">
-        <button id="generateButton">Generate</button>
-    </header>
-    <main class="poster-container">
-        <h1 id="slogan">STELLAR FORGE</h1>
-        <p id="subtitle">Command the birth and death of stars.</p>
-        <canvas id="posterCanvas" role="img" aria-label="Interactive stellar particle canvas"></canvas>
-    </main>
-    <footer class="footer-actions">
-        <button id="coreIgnitionButton">Ignite Core</button>
-        <button id="downloadButton">Snapshot</button>
-        <button id="shareButton">Signal Echo</button>
-    </footer>
+    <div class="main-container">
+        <h1>Apex Card Studio</h1>
+        <form id="cardForm">
+            <h2 class="section-title">
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+                Client Profile
+            </h2>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required value="Patrick Bateman">
+            </div>
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required value="Vice President">
+            </div>
+            <div class="form-group">
+                <label for="contact">Details (Pierce & Pierce | Phone etc.):</label>
+                <input type="text" id="contact" name="contact" required value="Pierce & Pierce | Mergers and Acquisitions | 555-6238">
+            </div>
 
-    <script>
-        const UWT="{{USER_WORDS}}",C=document.getElementById('posterCanvas'),CTX=C.getContext('2d'),SL=document.getElementById('slogan'),SU=document.getElementById('subtitle'),VI=document.getElementById('vibeWordsInput'),CIB=document.getElementById('coreIgnitionButton');
-        let CW=[],PS=[],AFID,ISP=false,GT=0,CIA=false,CPS=null,CPT=0,CPP=0; // PS: ProtoStars, ISP: IsPaused, GT:GlobalTime, CIA:CoreIgnitionActive, CPS:CorePhaseState, CPT:CorePhaseTimer, CPP:CorePhaseProgress
-        const PRM=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-        const PTS=['starFragment','gaseousCloud','protoCore'],OS_NUM=8,NOVA_PARTICLES=60,NOVA_FADE=100,NOVA_FLASH_DUR=350; // PTS: ProtoStarTypes
-
-        function H(s){let h=0;for(let i=0;i<s.length;i++)h=(h<<5)-h+s.charCodeAt(i),h|=0;return Math.abs(h)}function SR(k,s=""){return(H(k+s)%1e4)/1e4}function PW(s){return s.trim().toLowerCase().split(/\s+/).filter(Boolean).slice(0,3)}
-        function TXT(w){const up=w.map(s=>s[0].toUpperCase()+s.slice(1));let t; if(!up.length)t="FORGE THE VOID";else if(up.length==1)t=[`${up[0]} GENESIS`,`${up[0]} PULSE`][H(w.join('')+'t1')%2];
-        else if(up.length==2)t=[`${up[0]} & ${up[1]} SPARK`,`${up[0]}-${up[1]} FIELD`][H(w.join('')+'t2')%2]; else t=[`${up.join(' ')} CASCADE`,`${up.join(' ')} NEXUS`][H(w.join('')+'t3')%2];
-        SL.textContent=t.toUpperCase();SU.textContent=up.length?`Forging: ${up.join(', ')}.`:"Shape primordial energies."; C.ariaLabel=`Canvas: ${SU.textContent}`}
-        function BG(k){const h1=220+SR(k,'bH1')*70,s1=55+SR(k,'bS1')*20,l1=5+SR(k,'bL1')*4,h2=(h1+30+SR(k,'bH2')*40)%360,s2=45+SR(k,'bS2')*18,l2=7+SR(k,'bL2')*5;
-        document.body.style.background=`radial-gradient(ellipse at 30% 25%, hsl(${h1},${s1}%,${l1+3}%) 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, hsl(${h2},${s2}%,${l2+3}%) 0%, transparent 50%), var(--bg-deep-void)`;}
-        
-        function createProtoStars(k,cW,cH){PS=[];CPS=null;CPP=0;CPT=0;CIA=false;CIB.textContent="Ignite Core";CIB.disabled=false;
-            const bH=175+SR(k,'sH')*100; for(let i=0;i<OS_NUM;i++){
-            const t=PTS[H(k+'pt'+i)%PTS.length],bS=Math.min(cW,cH),s=(bS/(28+SR(k,'sD',i)*5))+SR(k,'sR'+i)*(bS/(20+SR(k,'sDr',i)*6));PS.push({t,s,oS:s,x:SR(k,'ix'+i)*cW,
-            y:SR(k,'iy'+i)*cH,vx:(SR(k,'vx'+i)-0.5)*0.25,vy:(SR(k,'vy'+i)-0.5)*0.25,ax:0,ay:0,ph:'drifting',age:0,
-            cl:`hsla(${(bH+SR(k,'cH'+i)*60-30)%360},${70+SR(k,'cS'+i)*25}%,${68+SR(k,'cL'+i)*15}%,${0.55+SR(k,'cA'+i)*0.25})`,
-            r:SR(k,'r'+i)*Math.PI*2,rs:PRM?0:(SR(k,'rs'+i)-0.5)*1.2e-3,m:s*0.09,pO:SR(k,'p'+i)*Math.PI*2,gH:(bH+SR(k,'cH'+i)*60-30+H(k+"gc"+i)%10-5)%360});}}
-        
-        function drawEntity(el,Ctx,gt,cW,cH){Ctx.save();Ctx.translate(el.x,el.y);Ctx.rotate(el.r);
-            const p=el.ph==='consumed'?0:Math.sin(gt*1.8e-3+el.pO),effS=el.s*(1+p*0.05);let o=parseFloat(el.cl.split(',')[3].slice(0,-1));
-            Ctx.globalAlpha=el.ph==='nova_particle'?(o*(1-el.age/NOVA_FADE)):(o*(0.9+p*0.1));Ctx.fillStyle=el.cl.substring(0,el.cl.lastIndexOf(','))+")";
-            Ctx.shadowBlur=effS*0.55; Ctx.shadowColor=`hsla(${el.gH},85%,70%,${0.35+p*0.1+(el.ph==='nova_particle'?0.1:0)})`;
-
-            if(el.ph==='nova_particle'){Ctx.beginPath();Ctx.arc(0,0,effS/1.2,0,Math.PI*2);Ctx.fill();Ctx.shadowBlur=0;Ctx.restore();return;} // Nova particles are simple orbs
-            switch(el.t){
-                case 'starFragment': const rO=effS/2,rI=rO*(0.35+p*0.04);Ctx.beginPath();Ctx.moveTo(0,-rO);for(let k=0;k<5;k++){Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rI);Ctx.rotate(Math.PI/5);Ctx.lineTo(0,-rO);}Ctx.closePath();Ctx.fill();break;
-                case 'gaseousCloud': Ctx.beginPath();Ctx.arc(0,0,effS/1.8,0,Math.PI*2);Ctx.fill(); Ctx.shadowBlur=effS*0.8; Ctx.shadowColor=`hsla(${el.gH},80%,65%,${0.2+p*0.1})`;Ctx.fill();break; // More pronounced glow for clouds
-                case 'protoCore': Ctx.beginPath();Ctx.arc(0,0,effS/2.2,0,Math.PI*2);Ctx.lineWidth=effS*0.15;Ctx.strokeStyle=Ctx.fillStyle;Ctx.stroke();break; // Ring for core
-            }Ctx.shadowBlur=0;Ctx.restore();}
-
-        function updatePhysics(cW,cH,gt){const DAMP=0.978,REPEL=0.9,WIND=1.5e-3,MAXV=1.1,PULL=8e-3,CRIT_D=cW*0.03,SHRINK=0.99;let colN=0;
-            PS=PS.filter(el=>el.ph!=='nova_particle'||el.age<NOVA_FADE);PS.forEach(el=>{el.ax=0;el.ay=0;if(el.ph==='nova_particle'){el.age++;el.vx*=DAMP;el.vy*=DAMP;return;}});
-            const wA=Math.sin(gt*8e-5)*Math.PI+Math.cos(gt*1.3e-4)*Math.PI;
-            PS.forEach(el=>{if(el.ph==='nova_particle'||el.ph==='consumed')return;
-                if(CIA&&CPS==='gathering'){const dxS=cW/2-el.x,dyS=cH/2-el.y;el.s*=SHRINK;el.ax+=dxS*PULL;el.ay+=dyS*PULL;if(Math.hypot(dxS,dyS)<CRIT_D&&el.s<el.oS*0.25)colN++;}
-                else{el.s=Math.min(el.oS,el.s/(SHRINK*0.999)*1.003);el.ax+=Math.cos(wA+el.pO*0.2)*WIND;el.ay+=Math.sin(wA+el.pO*0.2)*WIND;}});
+            <h2 class="section-title">
+                <svg viewBox="0 0 20 20"><path d="M5 4a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2H5zm10 1H5a1 1 0 00-1 1v6a1 1 0 001 1h10a1 1 0 001-1V6a1 1 0 00-1-1z"/></svg>
+                Card Specification
+            </h2>
+            <div class="form-group">
+                <label for="fontFamily">Font Scheme:</label>
+                <select id="fontFamily"></select>
+            </div>
+            <div class="color-picker-row">
+                <div class="color-picker-group">
+                    <label for="bgColor">Front BG:</label>
+                    <input type="color" id="bgColor" value="#F8F0E3">
+                </div>
+                <div class="color-picker-group">
+                    <label for="textColor">Front Text:</label>
+                    <input type="color" id="textColor" value="#303030">
+                </div>
+            </div>
+            <div class="color-picker-row">
+                <div class="color-picker-group">
+                    <label for="accentColor">Back BG:</label>
+                    <input type="color" id="accentColor" value="#303030">
+                </div>
+                 <div class="color-picker-group">
+                    <label for="backTextColor">Back Text:</label>
+                    <input type="color" id="backTextColor" value="#F8F0E3">
+                </div>
+            </div>
             
-            if(CIA&&CPS==='gathering'&&colN/OS_NUM>0.65&&OS_NUM>0){CPS='collapsing';CPT=gt;CIB.disabled=true;CIB.textContent="CORE COLLAPSING...";}
-            if(CPS==='collapsing'){CPP=(gt-CPT)/100;if(CPP>=1){CPS='nova_burst';CIB.textContent="NOVA!";let consumedData=[];
-                PS.forEach(el=>{if(el.s<el.oS*0.2&&Math.hypot(el.x-cW/2,el.y-cH/2)<CRIT_D*1.2){consumedData.push({...el});el.ph='consumed';}else{el.s=el.oS;}});
-                const fl=document.createElement('div');fl.style=`position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle,rgba(255,255,240,0.98)0%,rgba(255,230,200,0.6)30%,rgba(255,200,150,0.2)55%,transparent 75%);z-index:200;pointer-events:none;opacity:0;animation:novaBurstFlash ${NOVA_FLASH_DUR/1000}s cubic-bezier(0.25,1,0.5,1);`;
-                const sEl=document.createElement('style');sEl.innerHTML=`@keyframes novaBurstFlash{0%{opacity:0;transform:scale(0.2);}30%{opacity:1;transform:scale(1.2);}100%{opacity:0;transform:scale(3);}}`;document.head.appendChild(sEl);document.body.appendChild(fl);setTimeout(()=>{fl.remove();sEl.remove();},NOVA_FLASH_DUR);
-                let newParts=[];consumedData.forEach(cD=>{for(let i=0;i<NOVA_PARTICLES/consumedData.length;i++){const ang=SR(cD.cl+i+GT)*Math.PI*2,vel=(1.5+SR(cD.cl+'v'+i+GT)*1.5)*(PRM?0.3:1),sz=cD.oS*(0.15+SR(cD.cl+'s'+i)*0.1);
-                newParts.push({s:sz,oS:sz,x:cW/2,y:cH/2,vx:Math.cos(ang)*vel,vy:Math.sin(ang)*vel,ax:0,ay:0,ph:'nova_particle',age:0,
-                cl:cD.cl.replace(/hsla\(([^,]+),([^,]+),([^,]+),[^)]+\)/,`hsla($1,${Math.min(100,parseFloat(cD.cl.split(',')[1])+15)}%,${Math.min(100,parseFloat(cD.cl.split(',')[2])+10)}%,0.8)`), // Brighter particle color
-                r:0,rs:0,m:sz*0.03,pO:0,gH:cD.gH});}}); PS=PS.filter(el=>el.ph!=='consumed').concat(newParts);CIA=false;CPS=null;setTimeout(()=>{CIB.textContent="Ignite Core";CIB.disabled=false;CPP=0;CPT=0;},NOVA_FLASH_DUR+200);}}
+            <div class="actions-group">
+                <button type="submit" id="generateBtn">
+                    <svg viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828zM3 10a7 7 0 0110.707-6.249L6.249 10.707A6.982 6.982 0 013 10z"/></svg>
+                    Refine & Update
+                </button>
+                <div class="button-row">
+                    <button type="button" id="randomStyleBtn">
+                        <svg viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm10 0v2H5V3h10zm-2 4H7v2h6V7zm0 4H7v2h6v-2zM5 17v-2h10v2H5z" transform="rotate(45 10 10)"/></svg>
+                         Impress Me
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="canvas-preview-container">
+            <canvas id="businessCardCanvasPreview"></canvas>
+        </div>
+        <canvas id="businessCardCanvasDownload"></canvas>
+
+        <div class="actions-group">
+             <div class="button-row">
+                <button type="button" id="flipBtn" style="display:none;">
+                    <svg viewBox="0 0 20 20"><path d="M8 5H2.5A1.5 1.5 0 001 6.5v7A1.5 1.5 0 002.5 15H8v2H2.5A3.5 3.5 0 01-1 13.5v-7A3.5 3.5 0 012.5 3H8v2zm9.5-2H12V1h5.5A3.5 3.5 0 0121 4.5v7a3.5 3.5 0 01-3.5 3.5H12v-2h5.5a1.5 1.5 0 001.5-1.5v-7A1.5 1.5 0 0017.5 3zM6.45 8.45a.5.5 0 00-.7-.7L3.3 10.2a.5.5 0 000 .7l2.45 2.45a.5.5 0 00.7-.7L5.18 10.9h9.64l-1.27-1.25a.5.5 0 00-.7.7l1.95 1.95a.5.5 0 00.35.15.5.5 0 00.35-.15l1.95-1.95a.5.5 0 10-.7-.7l-1.28 1.25H5.18l1.27-1.25z"/></svg>
+                    Flip Card
+                </button>
+                <button type="button" id="downloadBtn" style="display:none;">
+                     <svg viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                    Download
+                </button>
+            </div>
+        </div>
+        <p class="info-text">For reservations, call (212) 555-6342. Font rendering varies. Output: Hi-Res PNG.</p>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cardForm = document.getElementById('cardForm');
+    const nameInput = document.getElementById('name');
+    const titleInput = document.getElementById('title');
+    const contactInput = document.getElementById('contact');
+    
+    const fontFamilySelect = document.getElementById('fontFamily');
+    const bgColorPicker = document.getElementById('bgColor');
+    const textColorPicker = document.getElementById('textColor');
+    const accentColorPicker = document.getElementById('accentColor');
+    const backTextColorPicker = document.getElementById('backTextColor');
+
+    const previewCanvas = document.getElementById('businessCardCanvasPreview');
+    const downloadCanvas = document.getElementById('businessCardCanvasDownload');
+    
+    const generateBtn = document.getElementById('generateBtn'); // Technically submit
+    const randomStyleBtn = document.getElementById('randomStyleBtn');
+    const flipBtn = document.getElementById('flipBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    const rootStyles = getComputedStyle(document.documentElement);
+    const cardWidthPreview = parseInt(rootStyles.getPropertyValue('--card-width-preview'));
+    const cardHeightPreview = parseInt(rootStyles.getPropertyValue('--card-height-preview'));
+    const printScaleFactor = parseFloat(rootStyles.getPropertyValue('--print-scale-factor'));
+
+    previewCanvas.width = cardWidthPreview; previewCanvas.height = cardHeightPreview;
+    downloadCanvas.width = cardWidthPreview * printScaleFactor; downloadCanvas.height = cardHeightPreview * printScaleFactor;
+    
+    const LOCAL_STORAGE_KEY = 'apexCardStudio_v7';
+    let currentSpec = {}; 
+    let currentUserData = null;
+    let isFrontView = true;
+
+    const AVAILABLE_FONTS_SCHEMES = [ // More descriptive names for font schemes
+        { name: "Classic Serif (Bateman)", main: "'Playfair Display', serif", detail: "'Inter', sans-serif" },
+        { name: "Corporate Sans (Pierce)", main: "'Montserrat', sans-serif", detail: "'Inter', sans-serif" },
+        { name: "Elegant Mono (Allen)", main: "'Inter', sans-serif", detail: "'Roboto Mono', monospace" },
+        { name: "Modern Minimalist", main: "'Inter', sans-serif", detail: "'Inter', sans-serif" },
+        { name: "Bold Display", main: "'Playfair Display', serif", detail: "'Montserrat', sans-serif"},
+    ];
+
+    function populateFontSelector() {
+        AVAILABLE_FONTS_SCHEMES.forEach(scheme => {
+            const option = document.createElement('option');
+            // Store the entire scheme object as a JSON string in the option's value
+            option.value = JSON.stringify({main: scheme.main, detail: scheme.detail}); 
+            option.textContent = scheme.name;
+            option.style.fontFamily = scheme.main; // Just to style the dropdown itself somewhat
+            fontFamilySelect.appendChild(option);
+        });
+    }
+    populateFontSelector();
+
+    function getSelectedFontScheme() {
+        try {
+            return JSON.parse(fontFamilySelect.value);
+        } catch (e) { // Fallback if parsing fails
+            return { main: "'Inter', sans-serif", detail: "'Inter', sans-serif" };
+        }
+    }
+
+
+    const PREDEFINED_THEMES = [
+        { 
+            id:"bateman_bone", 
+            bgColor:"#F8F0E3", textColor:"#303030", 
+            accentColor:"#303030", backTextColor:"#F8F0E3", 
+            fontScheme: AVAILABLE_FONTS_SCHEMES[0], 
+            layout:"classic-centered"
+        },
+        { 
+            id:"pierce_corporate", 
+            bgColor:"#FFFFFF", textColor:"#101010", 
+            accentColor:"#101010", backTextColor:"#FFFFFF", 
+            fontScheme: AVAILABLE_FONTS_SCHEMES[1], 
+            layout:"edge-aligned-left",
+            nameWeight: "600", titleWeight: "400", detailWeight: "300", titleTransform: "uppercase"
+        },
+        { 
+            id:"allen_dorsia", 
+            bgColor:"#EAE6E0", textColor:"#3E3C38", 
+            accentColor:"#3E3C38", backTextColor:"#EAE6E0", 
+            fontScheme: AVAILABLE_FONTS_SCHEMES[2], 
+            layout:"asymmetric-block",
+            nameWeight: "500", titleWeight: "500", detailWeight: "400", titleSizeFactor: 0.85
+        },
+        { 
+            id:"van_patten_charcoal", 
+            bgColor:"#252525", textColor:"#D5D5D5", 
+            accentColor:"#D5D5D5", backTextColor:"#252525", 
+            fontScheme: AVAILABLE_FONTS_SCHEMES[3], 
+            layout:"minimal-top-left",
+            nameWeight: "300", titleWeight: "300", detailWeight: "300", titleTransform: "uppercase", letterSpacing: "0.05em"
+        },
+        {
+            id:"fisher_watermark", // subtle reference to 'watermark' comment in movie
+            bgColor:"#FCFCFA", textColor:"#2C3333",
+            accentColor:"#B0A990", backTextColor:"#FCFCFA", // muted gold/stone
+            fontScheme: AVAILABLE_FONTS_SCHEMES[4],
+            layout: "classic-serif-accented",
+            nameWeight: "400", titleWeight:"400", detailWeight: "400"
+        },
+        {
+            id: "mcknight_stone",
+            bgColor: "#D7CEC7", textColor: "#4F4A45",
+            accentColor: "#4F4A45", backTextColor: "#D7CEC7",
+            fontScheme: AVAILABLE_FONTS_SCHEMES[1],
+            layout: "centered-rule-above",
+            nameWeight: "700", titleWeight: "400", detailWeight: "400", titleSizeFactor: 0.9
+        }
+    ];
+
+
+    function generateTheme(data) { // Based on user input hash
+        let hash = 0;
+        const str = (data.name || "") + (data.title || "");
+        for (let i = 0; i < str.length; i++) { hash = ((hash << 5) - hash) + str.charCodeAt(i); hash |= 0; }
+        const theme = PREDEFINED_THEMES[Math.abs(hash) % PREDEFINED_THEMES.length];
+        // Ensure we are creating a new object for currentSpec
+        return { ...theme, fontScheme: { ...theme.fontScheme } }; 
+    }
+
+    function pickRandomTheme() {
+        const theme = PREDEFINED_THEMES[Math.floor(Math.random() * PREDEFINED_THEMES.length)];
+        return { ...theme, fontScheme: { ...theme.fontScheme } };
+    }
+    
+    function updateAppearanceControls(spec) {
+        fontFamilySelect.value = JSON.stringify(spec.fontScheme); // Store the scheme object
+        bgColorPicker.value = spec.bgColor;
+        textColorPicker.value = spec.textColor;
+        accentColorPicker.value = spec.accentColor;
+        backTextColorPicker.value = spec.backTextColor;
+    }
+
+    function syncCurrentSpecFromControls() {
+        currentSpec.fontScheme = getSelectedFontScheme();
+        currentSpec.bgColor = bgColorPicker.value;
+        currentSpec.textColor = textColorPicker.value;
+        currentSpec.accentColor = accentColorPicker.value;
+        currentSpec.backTextColor = backTextColorPicker.value;
+    }
+    
+
+    function renderCard(canvas, spec, userData, isFront, scale = 1) {
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width; const H = canvas.height;
+        const PADDING = 20 * scale; // More generous padding
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.textBaseline = "alphabetic"; // More typographically sound baseline
+
+        if (isFront) renderFront(ctx, W, H, PADDING, spec, userData, scale);
+        else renderBack(ctx, W, H, PADDING, spec, userData, scale);
+    }
+
+    function renderFront(ctx, W, H, PADDING, spec, userData, scale) {
+        ctx.fillStyle = spec.bgColor;
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = spec.textColor;
+        
+        const { main: mainFont, detail: detailFont } = spec.fontScheme;
+
+        let nameFontSize = 20 * scale;
+        let titleFontSize = 12 * scale * (spec.titleSizeFactor || 1);
+        let contactFontSize = 9 * scale;
+        let lineSpacingNameTitle = 10 * scale;
+        let lineSpacingTitleContact = 18 * scale; // More space before contact details
+        let contactLineHeight = contactFontSize * 1.6;
+        
+        const nameText = userData.name;
+        const titleText = spec.titleTransform === 'uppercase' ? userData.title.toUpperCase() : userData.title;
+        const contactLines = userData.contact.split('|').map(s => s.trim()).filter(s => s);
+        
+        ctx.letterSpacing = spec.letterSpacing || "0px"; // Apply global letter spacing if specified by theme
+
+        if (spec.layout === "classic-centered") {
+            ctx.textAlign = 'center';
+            let currentY = H / 2 - (nameFontSize + lineSpacingNameTitle + titleFontSize + lineSpacingTitleContact + (contactLines.length * contactLineHeight) - contactLineHeight/2 ) / 2;
             
-            for(let i=0;i<PS.length;i++){for(let j=i+1;j<PS.length;j++){const e1=PS[i],e2=PS[j];if(e1.ph.includes('nova_')||e2.ph.includes('nova_')||e1.ph==='consumed'||e2.ph==='consumed')continue;
-                const dx=e2.x-e1.x,dy=e2.y-e1.y;let d=Math.hypot(dx,dy);if(d==0)d=0.1;const mS=(e1.s+e2.s)*0.5;if(d<mS){const o=mS-d,nX=dx/d,nY=dy/d,f=o*REPEL;
-                e1.ax-=nX*f/(e1.m*2);e1.ay-=nY*f/(e1.m*2);e2.ax+=nX*f/(e2.m*2);e2.ay+=nY*f/(e2.m*2);}}}
-            PS.forEach(el=>{if(el.ph==='consumed'||el.ph==='nova_particle')return; el.vx=(el.vx+el.ax)*DAMP;el.vy=(el.vy+el.ay)*DAMP;
-                const spd=Math.hypot(el.vx,el.vy);if(spd>MAXV){el.vx=(el.vx/spd)*MAXV;el.vy=(el.vy/spd)*MAXV;}
-                el.x+=el.vx;el.y+=el.vy;el.r=(el.r+el.rs+Math.PI*2)%(Math.PI*2);
-                if(el.x<0&&el.vx<0)el.x=cW;else if(el.x>cW&&el.vx>0)el.x=0;if(el.y<0&&el.vy<0)el.y=cH;else if(el.y>cH&&el.vy>0)el.y=0;
-                const pad=el.s*0.05; if((el.x<pad&&el.vx<0)||(el.x>cW-pad&&el.vx>0))el.vx*=-0.3; if((el.y<pad&&el.vy<0)||(el.y>cH-pad&&el.vy>0))el.vy*=-0.3;});}
+            ctx.font = `${spec.nameWeight || '400'} ${nameFontSize}px ${mainFont}`;
+            ctx.fillText(nameText, W / 2, currentY + nameFontSize * 0.8); // Adjusted for alphabetic baseline
+            currentY += nameFontSize + lineSpacingNameTitle;
+
+            ctx.font = `${spec.titleWeight || '400'} ${titleFontSize}px ${detailFont}`; // Title might use detailFont
+            ctx.fillText(titleText, W / 2, currentY + titleFontSize*0.8);
+            currentY += titleFontSize + lineSpacingTitleContact;
+            
+            ctx.font = `${spec.detailWeight || '400'} ${contactFontSize}px ${detailFont}`;
+            contactLines.forEach((line) => {
+                ctx.fillText(line, W / 2, currentY + contactFontSize*0.8);
+                currentY += contactLineHeight;
+            });
+        } else if (spec.layout === "edge-aligned-left") {
+            ctx.textAlign = 'left';
+            let currentY = PADDING + nameFontSize * 0.8;
+
+            ctx.font = `${spec.nameWeight || '600'} ${nameFontSize}px ${mainFont}`;
+            ctx.fillText(nameText, PADDING, currentY);
+            currentY += lineSpacingNameTitle * 0.8; // Adjusted for no actual name height here, more aesthetic
+
+            ctx.font = `${spec.titleWeight || '400'} ${titleFontSize}px ${mainFont}`; // Title using mainFont
+            ctx.fillText(titleText, PADDING, currentY + titleFontSize * 0.8);
+
+            let contactY = H - PADDING - (contactLines.length * contactLineHeight) + contactLineHeight * 0.2; // Start from bottom
+            ctx.font = `${spec.detailWeight || '300'} ${contactFontSize}px ${detailFont}`;
+            contactLines.slice().reverse().forEach((line) => { // Fill from bottom up
+                 ctx.fillText(line, PADDING, contactY);
+                 contactY -= contactLineHeight;
+            });
+        } else if (spec.layout === "asymmetric-block") {
+            ctx.textAlign = 'left';
+            let nameY = PADDING + nameFontSize * 1.5;
+            ctx.font = `${spec.nameWeight || '500'} ${nameFontSize}px ${mainFont}`;
+            ctx.fillText(nameText, PADDING, nameY);
+
+            let titleY = nameY + titleFontSize * 1.2;
+            ctx.font = `${spec.titleWeight || '500'} ${titleFontSize}px ${mainFont}`; // Title could be a bit bolder here
+            ctx.fillText(titleText, PADDING, titleY);
+            
+            let contactBlockWidth = W / 2.5;
+            let contactX = W - PADDING - contactBlockWidth;
+            let contactY = PADDING + contactFontSize * 0.8;
+            ctx.textAlign = 'right';
+            ctx.font = `${spec.detailWeight || '400'} ${contactFontSize}px ${detailFont}`;
+             contactLines.forEach((line) => {
+                ctx.fillText(line, W - PADDING, contactY + contactFontSize * 0.8);
+                contactY += contactLineHeight;
+            });
+
+        } else if (spec.layout === "minimal-top-left") {
+            ctx.textAlign = 'left';
+            let currentY = PADDING + nameFontSize * 0.8;
+            ctx.font = `${spec.nameWeight || '300'} ${nameFontSize}px ${mainFont}`;
+            ctx.fillText(nameText, PADDING, currentY);
+            currentY += nameFontSize * 0.5 + lineSpacingNameTitle * 0.5;
+            
+            ctx.font = `${spec.titleWeight || '300'} ${titleFontSize}px ${detailFont}`;
+            ctx.fillText(titleText, PADDING, currentY + titleFontSize * 0.8);
+            currentY += titleFontSize + lineSpacingTitleContact * 1.2;
+            
+            ctx.font = `${spec.detailWeight || '300'} ${contactFontSize}px ${detailFont}`;
+             contactLines.forEach((line) => {
+                ctx.fillText(line, PADDING, currentY + contactFontSize*0.8);
+                currentY += contactLineHeight;
+            });
+        } else if (spec.layout === "classic-serif-accented") {
+            ctx.textAlign = 'center';
+            let currentY = PADDING * 1.5 + nameFontSize * 0.8;
+
+            ctx.font = `${spec.nameWeight || '400'} ${nameFontSize*1.1}px ${mainFont}`; // Larger name
+            ctx.fillText(nameText, W / 2, currentY);
+            currentY += nameFontSize * 1.1 + lineSpacingNameTitle * 0.5;
+            
+            // Accent line
+            const lineLength = W / 5;
+            ctx.strokeStyle = spec.textColor; // Using text color for subtle line
+            ctx.globalAlpha = 0.5;
+            ctx.lineWidth = 0.7 * scale;
+            ctx.beginPath();
+            ctx.moveTo(W/2 - lineLength/2, currentY);
+            ctx.lineTo(W/2 + lineLength/2, currentY);
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+            currentY += lineSpacingNameTitle * 0.7;
+
+
+            ctx.font = `${spec.titleWeight || '400'} ${titleFontSize}px ${detailFont}`;
+            ctx.fillText(titleText, W/2, currentY + titleFontSize * 0.8);
+            currentY += titleFontSize + lineSpacingTitleContact * 0.8;
+
+            ctx.font = `${spec.detailWeight || '400'} ${contactFontSize}px ${detailFont}`;
+            contactLines.forEach((line) => {
+                ctx.fillText(line, W/2, currentY + contactFontSize * 0.8);
+                currentY += contactLineHeight;
+            });
+        } else if (spec.layout === "centered-rule-above") {
+            ctx.textAlign = 'center';
+            const totalTextHeight = nameFontSize + titleFontSize + (contactLines.length * contactLineHeight);
+            const startY = (H - totalTextHeight - lineSpacingNameTitle - lineSpacingTitleContact) / 2;
+
+            let ruleY = startY - lineSpacingNameTitle * 0.5;
+            const lineLength = W / 6;
+            ctx.strokeStyle = spec.textColor;
+            ctx.globalAlpha = 0.6;
+            ctx.lineWidth = 1 * scale;
+            ctx.beginPath();
+            ctx.moveTo(W/2 - lineLength/2, ruleY);
+            ctx.lineTo(W/2 + lineLength/2, ruleY);
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+
+            let currentY = startY + nameFontSize * 0.8;
+            ctx.font = `${spec.nameWeight || '700'} ${nameFontSize}px ${mainFont}`;
+            ctx.fillText(nameText, W / 2, currentY);
+            currentY += lineSpacingNameTitle;
+
+            ctx.font = `${spec.titleWeight || '400'} ${titleFontSize}px ${mainFont}`; // title uses main too
+            ctx.fillText(titleText, W / 2, currentY + titleFontSize * 0.8);
+            currentY += titleFontSize + lineSpacingTitleContact;
+
+            ctx.font = `${spec.detailWeight || '400'} ${contactFontSize}px ${detailFont}`;
+            contactLines.forEach((line) => {
+                ctx.fillText(line, W / 2, currentY + contactFontSize * 0.8);
+                currentY += contactLineHeight;
+            });
+        }
+
+        ctx.letterSpacing = "0px"; // Reset for other operations or next draw
+    }
+    
+    function renderBack(ctx, W, H, PADDING, spec, userData, scale) {
+        ctx.fillStyle = spec.accentColor;
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = spec.backTextColor;
+        ctx.textAlign = 'center';
         
-        function animLoop(){GT++;AFID=requestAnimationFrame(animLoop);if(ISP&&!PRM)return; const dpr=window.devicePixelRatio||1,uW=C.width/dpr,uH=C.height/dpr;
-            if(!PRM)updatePhysics(uW,uH,GT);CTX.clearRect(0,0,uW,uH);PS.forEach(el=>drawEntity(el,CTX,GT,uW,uH));
-            if(CPS==='collapsing'){CTX.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent-secondary').trim()||'#ff50d0';CTX.globalAlpha=0.85;
-            const bH=7,bW=uW*0.5,bX=(uW-bW)/2,bY=uH-bH-7;CTX.fillRect(bX,bY,bW*Math.min(1,CPP),bH);CTX.globalAlpha=1;}}
+        const { main: mainFont, detail: detailFont } = spec.fontScheme;
         
-        function generate(ws){if(AFID)cancelAnimationFrame(AFID);GT=0;const pW=PW(ws);if(!pW.length){alert("Words forge stars!");VI.focus();TXT([]);return;}CW=pW;VI.value=pW.map(w=>w[0].toUpperCase()+w.slice(1)).join(' ');
-            BG(pW.join('-'));TXT(pW);const dpr=window.devicePixelRatio||1;createProtoStars(pW.join('-'),C.width/dpr,C.height/dpr);animLoop();}
-        function resize(){const dpr=window.devicePixelRatio||1,cn=document.querySelector('.poster-container'),aH=cn.clientHeight-SL.offsetHeight-SU.offsetHeight-12,aW=cn.clientWidth-12;
-            let nCW=Math.min(aW,aH*(4/3)),nCH=nCW*(3/4);if(nCH>aH){nCH=aH;nCW=nCH*(4/3);} C.style.width=`${nCW}px`;C.style.height=`${nCH}px`;C.width=nCW*dpr;C.height=nCH*dpr;CTX.setTransform(dpr,0,0,dpr,0,0);if(CW.length)generate(CW.join(' '));}
-        CIB.addEventListener('click',()=>{if(CPS==='collapsing'||CPS==='nova_burst')return;CIA=!CIA;CPS=CIA?'gathering':null;CIB.textContent=CIA?"Release Core":"Ignite Core";if(!CIA)PS.forEach(el=>el.s=el.oS);});
-        document.getElementById('generateButton').addEventListener('click',()=>generate(VI.value));VI.addEventListener('keypress',e=>{if(e.key==='Enter')generate(VI.value);});
-        document.getElementById('downloadButton').addEventListener('click',()=>{if(!PS.length){alert("Forge a cosmos first!");return;}const ip=ISP;ISP=true;const dpr=window.devicePixelRatio||1;
-            CTX.clearRect(0,0,C.width/dpr,C.height/dpr);PS.forEach(el=>drawEntity(el,CTX,GT,C.width/dpr,C.height/dpr));const du=C.toDataURL('image/png');ISP=ip;const l=document.createElement('a');l.href=du;l.download=`${CW.join('-')||'stellar_forge'}.png`;l.click();});
-        document.getElementById('shareButton').addEventListener('click',async ()=>{if(!PS.length){alert("Forge a cosmos first!");return;}const txt=`My Stellar Forge (${CW.map(w=>w[0].toUpperCase()+w.slice(1)).join(' ')}): ${SL.textContent}.`;
-            try{if(!navigator.share)throw new Error('Signal Relay offline.');await navigator.share({title:'Stellar Forge Creation',text:txt});}catch(e){alert(`Echo transmission failed: ${e.message}.`);}});
-        C.addEventListener('pointerenter',()=>ISP=PRM?!ISP:true);C.addEventListener('pointerleave',()=>ISP=false);
-        window.addEventListener('resize',resize);document.addEventListener('DOMContentLoaded',()=>{let iV=UWT&&UWT!=="{{USER_WORDS}}"?UWT:"Celestial Shard Eruption";VI.value=iV;resize();if(!CW.length&&PW(iV).length)generate(iV);});
-    </script>
+        // Option 1: Company Name (First part of contact line, if available) or simple "P&P"
+        let companyName = "PIERCE & PIERCE"; // Default if nothing else.
+        const contactParts = userData.contact.split('|').map(s => s.trim());
+        if(contactParts.length > 0 && contactParts[0].toLowerCase().includes("pierce")){
+             companyName = contactParts[0].toUpperCase();
+        } else if (contactParts.length > 0) {
+            companyName = contactParts[0]; // Could be website or other primary line
+        }
+        
+
+        // Very simple and stark
+        if (companyName.length > 15) { // If it's long (like a URL), make it smaller
+             ctx.font = `400 ${10 * scale}px ${detailFont}`; // Use detailFont for URLs potentially
+        } else { // For company names
+            ctx.font = `600 ${14 * scale}px ${mainFont}`; // Use mainFont for P&P etc.
+             ctx.letterSpacing = "0.1em";
+        }
+
+        ctx.fillText(companyName, W / 2, H / 2 + (5 * scale)); // Adjusted for alphabetic
+        ctx.letterSpacing = "0px";
+    }
+
+
+    function performCardUpdate() {
+        currentUserData = { name: nameInput.value.trim(), title: titleInput.value.trim(), contact: contactInput.value.trim() };
+        if (!currentUserData.name || !currentUserData.title || !currentUserData.contact) {
+            alert("Please complete all client profile fields."); return false;
+        }
+        syncCurrentSpecFromControls(); 
+        renderCard(previewCanvas, currentSpec, currentUserData, isFrontView, 1);
+        renderCard(downloadCanvas, currentSpec, currentUserData, isFrontView, printScaleFactor);
+        
+        flipBtn.style.display = 'flex'; 
+        downloadBtn.style.display = 'flex';
+        
+        flipBtn.childNodes[1].nodeValue = isFrontView ? " Flip to Back" : " Flip to Front";
+        saveToLocalStorage(); return true;
+    }
+    
+    function handleGenerateTheme(event) { 
+        if(event) event.preventDefault();
+        currentUserData = { name: nameInput.value.trim(), title: titleInput.value.trim(), contact: contactInput.value.trim() };
+        if (!currentUserData.name || !currentUserData.title || !currentUserData.contact) {
+            alert("Please complete profile details first."); return;
+        }
+        currentSpec = generateTheme(currentUserData);                         
+        updateAppearanceControls(currentSpec);
+        isFrontView = true; performCardUpdate();
+    }
+
+    function handleRandomStyle() {
+        if (!currentUserData) { 
+             currentUserData = { name: nameInput.value.trim() || "Luis Carruthers", title: titleInput.value.trim() || "Vice President", contact: contactInput.value.trim() || "Pierce & Pierce | 555-1234" };
+        }
+        currentSpec = pickRandomTheme(); 
+        updateAppearanceControls(currentSpec);
+        isFrontView = true; performCardUpdate();
+    }
+
+    function handleAppearanceChangeAndUpdate() {
+        if (!currentUserData) { 
+             currentUserData = { name: nameInput.value.trim() || "Paul Allen", title: titleInput.value.trim() || "Vice President", contact: contactInput.value.trim() || "Pierce & Pierce | 555-PAUL" };
+             if (!currentSpec.layout) { 
+                currentSpec = {...PREDEFINED_THEMES[0]}; updateAppearanceControls(currentSpec);
+             }
+        }
+        performCardUpdate();
+    }
+
+    function handleFlip() {
+        if (!currentSpec || !currentUserData) return;
+        isFrontView = !isFrontView; performCardUpdate();
+    }
+    
+    function handleDownload() {
+        if (!currentSpec || !currentUserData) { alert("Please generate a card first."); return; }
+        renderCard(downloadCanvas, currentSpec, currentUserData, isFrontView, printScaleFactor); 
+        try {
+            const dataUrl = downloadCanvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            const safeName = (currentUserData.name.replace(/[^a-z0-9_.-]/gi, '_').toLowerCase() || 'business_card');
+            const side = isFrontView ? 'front' : 'back';
+            link.download = `${safeName}_${side}_apex.png`; link.href = dataUrl; // Added suffix
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        } catch (e) { console.error("Download error:", e); alert("Download failed. Try again or check browser console.");}
+    }
+    
+    function saveToLocalStorage() {
+         try { if (currentSpec && currentUserData) localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ spec: currentSpec, userData: currentUserData, view: isFrontView })); }
+         catch (e) { console.warn("localStorage save error:", e); }
+    }
+
+    function loadFromLocalStorage() {
+        try {
+            const storedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (storedDataString) {
+                const storedData = JSON.parse(storedDataString);
+                if (storedData && storedData.spec && storedData.userData && storedData.spec.fontScheme) { // Check fontScheme
+                    currentSpec = storedData.spec; currentUserData = storedData.userData;
+                    isFrontView = storedData.view !== undefined ? storedData.view : true;
+                    nameInput.value = currentUserData.name || ''; titleInput.value = currentUserData.title || ''; contactInput.value = currentUserData.contact || '';
+                    updateAppearanceControls(currentSpec); performCardUpdate();
+                    return true; 
+                }
+            }
+        } catch (e) { console.warn("localStorage load error:", e); localStorage.removeItem(LOCAL_STORAGE_KEY); } // Clear corrupted data
+        return false; 
+    }
+
+    cardForm.addEventListener('submit', handleGenerateTheme); 
+    randomStyleBtn.addEventListener('click', handleRandomStyle);
+    
+    fontFamilySelect.addEventListener('change', handleAppearanceChangeAndUpdate);
+    bgColorPicker.addEventListener('input', handleAppearanceChangeAndUpdate);
+    textColorPicker.addEventListener('input', handleAppearanceChangeAndUpdate);
+    accentColorPicker.addEventListener('input', handleAppearanceChangeAndUpdate);
+    backTextColorPicker.addEventListener('input', handleAppearanceChangeAndUpdate);
+    
+    downloadBtn.addEventListener('click', handleDownload);
+    flipBtn.addEventListener('click', handleFlip);
+
+    if (!loadFromLocalStorage()) handleGenerateTheme(); 
+});
+</script>
 </body>
 </html> 

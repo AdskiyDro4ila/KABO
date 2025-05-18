@@ -10,9 +10,8 @@
             --accent-color: #00ffff; 
             --accent-text-color: #000000;
             --bg-color: #080215; 
-            --controls-bg: rgba(12, 7, 28, 0.9); /* Slightly darker, more defined bar */
-            --input-bg: rgba(30, 20, 55, 0.75); /* Background for input elements */
-            /* --input-border: removed, using shadows and bg for definition */
+            --controls-bg: rgba(12, 7, 28, 0.9);
+            --input-bg: rgba(30, 20, 55, 0.75);
             --text-color: #e8e8ff;
             --text-secondary-color: #a8a8d0;
         }
@@ -43,28 +42,29 @@
             left: 0;
             width: 100%;
             background-color: var(--controls-bg);
-            padding: 15px 20px; /* Increased padding for better spacing */
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.65); /* Slightly stronger shadow for definition */
+            padding: 15px 20px 30px 20px; 
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.65); 
             z-index: 100;
-            border-top: 1px solid rgba(var(--accent-rgb, 0, 255, 255), 0.4); /* More visible top border */
+            border-top: 1px solid rgba(var(--accent-rgb, 0, 255, 255), 0.4); 
             display: flex;
             align-items: center;
             justify-content: space-around; 
             gap: 15px; 
             flex-wrap: wrap; 
+            box-sizing: border-box;
         }
 
         .input-group, .control-group {
             display: flex;
             flex-direction: column;
             flex-grow: 1; 
-            min-width: 170px; /* Adjusted min-width */
+            min-width: 170px; 
         }
         
         .input-group label, .control-group label {
             font-size: 0.78em; 
             color: var(--text-secondary-color);
-            margin-bottom: 4px; /* More space below label */
+            margin-bottom: 4px; 
             text-transform: uppercase;
             letter-spacing: 0.75px; 
             font-family: 'Orbitron', Arial, sans-serif;
@@ -72,23 +72,22 @@
 
         #uiContainer input[type="text"] {
             padding: 10px 12px; 
-            /* border: 1px solid var(--input-border); Removed explicit border */
-            border: none; /* Explicitly no border */
+            border: none; 
             border-radius: 5px; 
             background-color: var(--input-bg); 
             color: var(--text-color); 
             font-size: 1em; 
-            transition: background-color 0.25s ease, box-shadow 0.25s ease; /* Transition background for focus */
+            transition: background-color 0.25s ease, box-shadow 0.25s ease; 
             outline: none;
-            box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb, 0, 255, 255), 0.2); /* Subtle inset border effect */
+            box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb, 0, 255, 255), 0.2); 
         }
         #uiContainer input[type="text"]::placeholder {
             color: var(--text-secondary-color);
             opacity: 0.65;
         }
         #uiContainer input[type="text"]:focus {
-            background-color: rgba(40, 30, 65, 0.85); /* Darker bg on focus */
-            box-shadow: inset 0 0 0 1.5px var(--accent-color), 0 0 10px rgba(var(--accent-rgb), 0.4); /* Inset border + outer glow */
+            background-color: rgba(40, 30, 65, 0.85); 
+            box-shadow: inset 0 0 0 1.5px var(--accent-color), 0 0 10px rgba(var(--accent-rgb), 0.4); 
         }
         
         .control-group {
@@ -97,11 +96,10 @@
         #speedControl {
             width: 100%; 
             -webkit-appearance: none; appearance: none;
-            height: 6px; /* Slightly thicker slider track */
+            height: 6px; 
             background: var(--input-bg);
             border-radius: 3px; outline: none; opacity: 0.9;
             transition: opacity .2s;
-            /* border: 1px solid var(--input-border); Removed explicit border */
             border: none;
             box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb, 0, 255, 255), 0.15);
             margin-top: 2px; 
@@ -112,8 +110,8 @@
             width: 16px; height: 16px; 
             background: var(--accent-color);
             border-radius: 50%; cursor: pointer;
-            border: 2.5px solid var(--controls-bg); /* Thumb border matches control bar bg for 'cutout' look */
-            box-shadow: 0 0 7px rgba(var(--accent-rgb), 0.7); /* Stronger thumb glow */
+            border: 2.5px solid var(--controls-bg); 
+            box-shadow: 0 0 7px rgba(var(--accent-rgb), 0.7); 
         }
         #speedControl::-moz-range-thumb { 
             width: 14px; height: 14px;
@@ -122,53 +120,83 @@
             border: 2.5px solid var(--controls-bg);
         }
 
-        #startButton { 
-            padding: 11px 25px; /* Slightly more padding */
-            font-size: 1em; 
-            font-weight: 700; /* Bolder text */
-            color: var(--accent-text-color); 
-            background-color: var(--accent-color); 
-            border: none; 
-            border-radius: 5px;
+        #startButton {
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 5px; 
             cursor: pointer;
+            min-width: 130px;
+            padding: 0; 
+            display: inline-block; 
+            vertical-align: middle; 
+            position: relative; 
             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.15s ease;
-            text-transform: uppercase;
-            letter-spacing: 1.3px; 
-            font-family: 'Orbitron', Arial, sans-serif;
-            position: relative;
-            overflow: hidden;
-            min-width: 130px; 
-            text-align: center;
-            /* Add a subtle outset effect instead of a hard border */
-            box-shadow: 0 2px 0px 0px rgba(var(--accent-rgb-darker, 0, 200, 200), 0.7), /* bottom edge highlight */
-                        0 0 0 1px rgba(var(--accent-rgb, 0, 255, 255), 0.3); /* thin outline */
         }
-        #startButton:before { 
-            content: ''; position: absolute;
+
+        .button-content-wrapper {
+            display: block; 
+            padding: 11px 25px; 
+            box-sizing: border-box; 
+            color: var(--accent-text-color); 
+            font-family: 'Orbitron', Arial, sans-serif;
+            font-size: 1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            text-align: center;
+            position: relative; 
+            overflow: hidden;   
+            border-radius: inherit; 
+            border: 1px solid rgba(var(--accent-rgb, 0, 255, 255), 0.4); 
+            border-bottom-width: 2px; 
+            border-bottom-color: rgba(var(--accent-rgb-darker, 0, 200, 200), 0.7); 
+            transition: border-color 0.2s ease, border-bottom-width 0.15s ease;
+        }
+
+        .button-content-wrapper::before {
+            content: '';
+            position: absolute;
             top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
             transition: left 0.35s ease;
         }
-        #startButton:hover:before { left: 100%; }
+
         #startButton:hover {
-            transform: translateY(-2px); 
-            background-color: rgba(var(--accent-rgb-lighter, 50, 255, 255), 1); /* Slightly lighter on hover */
-            box-shadow: 0 4px 0px 0px rgba(var(--accent-rgb-darker, 0, 200, 200), 0.7),
-                        0 0 0 1.5px var(--accent-color), /* thicker outline on hover */
-                        0 6px 20px rgba(var(--accent-rgb), 0.35);
+            transform: translateY(-2px);
+            background-color: rgba(var(--accent-rgb-lighter, 50, 255, 255), 1);
+            box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.35); 
         }
+        #startButton:hover .button-content-wrapper {
+            border-color: var(--accent-color); 
+            border-bottom-width: 4px; 
+        }
+        #startButton:hover .button-content-wrapper::before {
+            left: 100%; 
+        }
+
         #startButton:active {
-            transform: translateY(0px); /* Push down effect */
-            box-shadow: 0 1px 0px 0px rgba(var(--accent-rgb-darker, 0, 200, 200), 0.7),
-                        0 0 0 1px rgba(var(--accent-rgb), 0.3),
-                        0 2px 12px rgba(var(--accent-rgb), 0.3);
+            transform: translateY(0px); 
+            box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.3);
         }
+        #startButton:active .button-content-wrapper {
+            border-bottom-width: 1px; 
+        }
+
         #startButton:disabled {
-            background-color: #4a4a55; 
-            color: #888; cursor: not-allowed;
-            box-shadow: none; transform: none;
+            background-color: #4a4a55;
+            cursor: not-allowed;
+            box-shadow: none; 
+            transform: none; 
         }
-        #startButton:disabled:before { display: none; }
+        #startButton:disabled .button-content-wrapper {
+            color: #888;
+            border-color: #555; 
+            border-bottom-color: #404040; 
+            border-bottom-width: 2px; 
+        }
+        #startButton:disabled .button-content-wrapper::before {
+            display: none; 
+        }
 
         #mainCanvas {
             flex-grow: 1; 
@@ -192,7 +220,9 @@
             <label for="speedControl">Speed</label>
             <input type="range" id="speedControl" min="0.3" max="4" step="0.1" value="1.2">
         </div>
-        <button id="startButton">Launch</button>
+        <button id="startButton">
+            <span class="button-content-wrapper">Launch</span>
+        </button>
     </div>
 
     <script>
@@ -235,7 +265,7 @@
         const DEFAULT_FONT_FAMILY = "'Orbitron', Arial, Helvetica, sans-serif";
 
         let animationState = 'INIT'; 
-        let globalKeyword1 = "", globalKeyword2 = ""; // Typo fixed here from previous
+        let globalKeyword1 = "", globalKeyword2 = ""; 
         let holdTimer = null, transitionTimer = null;
 
 
@@ -253,7 +283,6 @@
             const secondaryHue = (baseHue + 0.3 + seededRandom() * 0.4) % 1.0; 
             const secondaryRgb = hslToRgb(secondaryHue, baseSaturation * 0.8, baseLightness * 0.9);
 
-            // For button's hover and shadow effects, pre-calculate lighter/darker versions
             const accentRgbLighter = hslToRgb(baseHue, Math.min(1, baseSaturation + 0.1), Math.min(1, baseLightness + 0.08));
             const accentRgbDarker = hslToRgb(baseHue, Math.max(0, baseSaturation - 0.1), Math.max(0, baseLightness - 0.12));
 
@@ -261,7 +290,7 @@
             rootStyle.setProperty('--accent-rgb', `${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]}`);
             rootStyle.setProperty('--accent-rgb-secondary', `${secondaryRgb[0]}, ${secondaryRgb[1]}, ${secondaryRgb[2]}`);
             rootStyle.setProperty('--accent-rgb-lighter', `${accentRgbLighter[0]}, ${accentRgbLighter[1]}, ${accentRgbLighter[2]}`);
-            rootStyle.setProperty('--accent-rgb-darker', `${accentRgbDarker[0]}, ${accentRgbDarker[1]}, ${accentRgbDarker[2]}`);
+            rootStyle.setProperty('--accent-rgb-darker', `${accentRgbDarker[0]}, ${accentRgbDarker[1]}, ${accentRgbDarker[2]}`); 
             rootStyle.setProperty('--accent-color', accentColor);
 
             const accentLuminance = (0.299*accentRgb[0] + 0.587*accentRgb[1] + 0.114*accentRgb[2])/255;
@@ -305,7 +334,7 @@
         }
 
         // --- Canvas & Text Logic (Same as before) ---
-        function resizeCanvasAndUI() { const uiHeight = uiContainer.offsetHeight || 75; /* Adjusted fallback height */ canvas.width = window.innerWidth; canvas.height = Math.max(100, window.innerHeight - uiHeight); }
+        function resizeCanvasAndUI() { const uiHeight = uiContainer.offsetHeight || 75; canvas.width = window.innerWidth; canvas.height = Math.max(100, window.innerHeight - uiHeight); }
         function calculateDynamicFontString(text,cRef,ctxRef){ let fS=Math.min(cRef.width/(text.length*0.65||1),cRef.height*0.45);fS=Math.max(fS,MIN_FONT_SIZE);fS=Math.min(fS,300);let tF=`bold ${fS}px ${DEFAULT_FONT_FAMILY}`;ctxRef.font=tF;let tM=ctxRef.measureText(text);const tW=cRef.width*0.9;if(tM.width>tW&&tW>0){fS*=(tW/tM.width);}let asc=(tM.actualBoundingBoxAscent||fS*0.8);let desc=(tM.actualBoundingBoxDescent||fS*0.3);let tH=asc+desc;const TH=cRef.height*0.55;if(tH>TH&&TH>0){fS*=(TH/tH);}if(fS<MIN_FONT_SIZE)fS=MIN_FONT_SIZE;return`bold ${Math.floor(fS)}px ${DEFAULT_FONT_FAMILY}`;}
         function getPixelPositionsForWord(text,fontString,cw,ch){ const tC=document.createElement('canvas');const tCtx=tC.getContext('2d');tCtx.font=fontString;const mets=tCtx.measureText(text);const fS=parseFloat(fontString.match(/(\d+)px/)[1])||MIN_FONT_SIZE;let asc=mets.actualBoundingBoxAscent,desc=mets.actualBoundingBoxDescent;if(!asc||!desc||asc<0||desc<0){asc=fS*0.75;desc=fS*0.25;}const tDH=asc+desc;const tW=mets.width;const vP=fS*0.45,hP=fS*0.25;tC.width=Math.ceil(tW+hP*2);tC.height=Math.ceil(tDH+vP*2);tCtx.font=fontString;tCtx.fillStyle='#FFF';tCtx.textAlign=TEXT_ALIGN;tCtx.textBaseline=TEXT_BASELINE;const dY=asc+vP;tCtx.fillText(text,tC.width/2,dY);const iD=tCtx.getImageData(0,0,tC.width,tC.height);const data=iD.data;const pos=[];const oX=(cw-tC.width)/2;const oY=(ch-tC.height)/2;for(let y=0;y<tC.height;y+=PIXEL_SAMPLE_DENSITY){for(let x=0;x<tC.width;x+=PIXEL_SAMPLE_DENSITY){const aI=(y*tC.width+x)*4+3;if(data[aI]>128){pos.push({x:x+oX,y:y+oY});}}}return pos;}
         
@@ -334,7 +363,6 @@
             if(!targets||targets.length===0){alert(`Cannot form: "${globalKeyword1}".`);enableUIControls();return;}
             particles=[]; targets.forEach(pos=>{const sX=canvas.width/2+(seededRandom()-0.5)*canvas.width*1.3;const sY=canvas.height/2+(seededRandom()-0.5)*canvas.height*1.3;const p=new Particle(sX,sY,PARTICLE_RADIUS,baseHue,baseSaturation,baseLightness);p.setFormationTarget(pos.x,pos.y);particles.push(p);});
             animationState='FORMING_WORD1'; if(!animationFrameId)animationFrameId=requestAnimationFrame(animate);
-            // Enable UI slightly after to ensure setup doesn't cause race if user clicks fast
             setTimeout(enableUIControls, 150); 
         }
         function startWord2Animation() { 
@@ -367,6 +395,7 @@
                     particles=[]; enableUIControls(); animationState='INIT'; 
                 }
             });
+             globalKeyword1 = ""; globalKeyword2 = ""; // Initialize global keywords
         }
         document.addEventListener('DOMContentLoaded', main);
     </script>

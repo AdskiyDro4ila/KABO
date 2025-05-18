@@ -70,24 +70,31 @@
             color: #808080;
         }
 
-        /* Special styling for the last word */
-        .last-word {
+        /* Special styling for the last phrase */
+        .last-phrase {
             display: inline-block;
             cursor: pointer;
             transition: color 0.3s ease;
             font-weight: bold;
+            text-decoration: none; /* Remove underline from link */
+            color: inherit; /* Use the same color as regular text */
         }
 
-        .last-word:hover {
+        .last-phrase:hover {
             color: #3498db; /* Blue color on hover */
         }
 
-        .last-word .word {
+        .last-phrase .word {
             display: inline-block;
             transition: transform 0.3s ease, color 0.3s ease;
+            margin-right: 0.2em; /* Add space between words */
         }
 
-        .last-word:hover .word {
+        .last-phrase .word:last-child {
+            margin-right: 0; /* Remove margin from last word */
+        }
+
+        .last-phrase:hover .word {
             animation: float 1s ease infinite alternate;
         }
 
@@ -101,8 +108,8 @@
         }
 
         /* Add delay to each word's animation */
-        .last-word:hover .word:nth-child(1) { animation-delay: 0.1s; }
-        .last-word:hover .word:nth-child(2) { animation-delay: 0.2s; }
+        .last-phrase:hover .word:nth-child(1) { animation-delay: 0.1s; }
+        .last-phrase:hover .word:nth-child(2) { animation-delay: 0.2s; }
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
@@ -148,7 +155,7 @@
         
         <p>Some roads disappear into the dark. Some words demand more.</p>
         
-        <p>If that is you, then <a href="works.html" class="last-word"><span class="word">on</span><span class="word">.</span></a></p>
+        <p>If that is you, then <a href="works.html" class="last-phrase"><span class="word">on</span><span class="word">.</span></a></p>
     </div>
 </body>
 </html> 
